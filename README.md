@@ -8,7 +8,7 @@ Static site for [narulanding.com](https://narulanding.com). Upload **this folder
 index.html
 colors_and_type.css
 naru-i18n.js
-assets/
+assets/                 (includes k-tech-carbon-bridge-guide.pdf)
 articles/
 Brand fonts/
 ```
@@ -46,6 +46,17 @@ After editing the main project files, refresh this bundle by copying again from 
 - Font files under `Brand fonts/` (see parent `.gitignore` / project notes)
 
 Commit and push to GitHub; Pages redeploys automatically.
+
+## Vercel + Resend lead magnet capture
+
+This repo now includes `api/lead-magnet.js` (a Vercel Serverless Function) to store lead-magnet emails in Resend before opening the PDF.
+
+Set these environment variables in Vercel Project Settings:
+
+- `RESEND_API_KEY`
+- `RESEND_AUDIENCE_ID`
+
+Then redeploy. The front-end posts to `/api/lead-magnet` and opens `assets/k-tech-carbon-bridge-guide.pdf` on success.
 
 ## Do not upload
 

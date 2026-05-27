@@ -527,6 +527,7 @@
                 <button type="button" class="btn-primary" onclick="lmSubmit()">Open the guide <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
               </div>
               <p id="lm-email-error" class="hidden text-xs mt-2" style="color:#f4ab91">Please enter a valid work email address.</p>
+              <p id="lm-submit-error" class="hidden text-xs mt-2" style="color:#f4ab91">Something went wrong. Please try again in a moment.</p>
               <p class="text-xs mt-3" style="color:rgba(251,248,243,.55)">The PDF opens in a new tab. One follow-up email may follow — unsubscribe anytime.</p>
             </div>
             <!-- state 3: loading -->
@@ -1054,6 +1055,7 @@
                 <button type="button" class="btn-primary" onclick="lm2Submit()"><i data-lucide="download" class="w-4 h-4"></i> Get the guide</button>
               </div>
               <p id="lm2-email-error" class="hidden text-xs mt-2" style="color:#f4ab91">Please enter a valid work email address.</p>
+              <p id="lm2-submit-error" class="hidden text-xs mt-2" style="color:#f4ab91">Something went wrong. Please try again in a moment.</p>
               <p class="text-xs mt-3" style="color:rgba(251,248,243,.55)">The PDF opens in a new tab after you submit your email.</p>
             </div>
             <div id="lm2-state-2" class="hidden">
@@ -1353,23 +1355,43 @@
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value).trim());
   }
 
-  function deliverLeadMagnet(emailInput, errorEl, onStart, onSuccess) {
+  async function saveLeadMagnetEmail(email, source) {
+    const response = await fetch('/api/lead-magnet', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, source })
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok || !payload?.ok) {
+      throw new Error(payload?.error || 'Unable to save contact');
+    }
+    return payload;
+  }
+
+  async function deliverLeadMagnet(emailInput, errorEl, submitErrorEl, source, onStart, onSuccess, onFail) {
     const email = emailInput?.value?.trim() || '';
     if (!isValidEmail(email)) {
+      submitErrorEl?.classList.add('hidden');
       errorEl?.classList.remove('hidden');
       emailInput?.setAttribute('aria-invalid', 'true');
       emailInput?.focus();
       return false;
     }
     errorEl?.classList.add('hidden');
+    submitErrorEl?.classList.add('hidden');
     emailInput?.removeAttribute('aria-invalid');
     onStart?.();
-    window.open(LEAD_MAGNET_PDF, '_blank', 'noopener,noreferrer');
-    setTimeout(() => {
+    try {
+      await saveLeadMagnetEmail(email, source);
+      window.open(LEAD_MAGNET_PDF, '_blank', 'noopener,noreferrer');
       onSuccess?.();
       if (window.lucide) lucide.createIcons();
-    }, 500);
-    return true;
+      return true;
+    } catch (_) {
+      submitErrorEl?.classList.remove('hidden');
+      onFail?.();
+      return false;
+    }
   }
 
   function lmDownload(){
@@ -1379,10 +1401,12 @@
     if(window.lucide) lucide.createIcons();
   }
 
-  function lmSubmit(){
-    deliverLeadMagnet(
+  async function lmSubmit(){
+    await deliverLeadMagnet(
       document.getElementById('lm-email'),
       document.getElementById('lm-email-error'),
+      document.getElementById('lm-submit-error'),
+      'home-lead-magnet',
       () => {
         document.getElementById('lm-state-2').classList.add('hidden');
         document.getElementById('lm-state-3').classList.remove('hidden');
@@ -1391,14 +1415,20 @@
       () => {
         document.getElementById('lm-state-3').classList.add('hidden');
         document.getElementById('lm-state-4').classList.remove('hidden');
+      },
+      () => {
+        document.getElementById('lm-state-3').classList.add('hidden');
+        document.getElementById('lm-state-2').classList.remove('hidden');
       }
     );
   }
 
-  function lm2Submit(){
-    deliverLeadMagnet(
+  async function lm2Submit(){
+    await deliverLeadMagnet(
       document.getElementById('lm2-email'),
       document.getElementById('lm2-email-error'),
+      document.getElementById('lm2-submit-error'),
+      'insights-lead-magnet',
       () => {
         document.getElementById('lm2-state-1').classList.add('hidden');
         document.getElementById('lm2-state-2').classList.remove('hidden');
@@ -1407,6 +1437,10 @@
       () => {
         document.getElementById('lm2-state-2').classList.add('hidden');
         document.getElementById('lm2-state-3').classList.remove('hidden');
+      },
+      () => {
+        document.getElementById('lm2-state-2').classList.add('hidden');
+        document.getElementById('lm2-state-1').classList.remove('hidden');
       }
     );
   }
