@@ -1,0 +1,334 @@
+/* =============================================================
+   Naru — Design Tokens
+   Colors, typography, spacing, radii, shadows, motion
+   ============================================================= */
+
+/* Brand-uploaded Instrument Serif */
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('Brand fonts/Instrument_Serif/InstrumentSerif-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Instrument Serif';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('Brand fonts/Instrument_Serif/InstrumentSerif-Italic.ttf') format('truetype');
+}
+
+/* Brand-uploaded Geist (variable) */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('Brand fonts/Geist/Geist-VariableFont_wght.ttf') format('truetype-variations'),
+       url('Brand fonts/Geist/Geist-VariableFont_wght.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Geist';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('Brand fonts/Geist/Geist-Italic-VariableFont_wght.ttf') format('truetype-variations'),
+       url('Brand fonts/Geist/Geist-Italic-VariableFont_wght.ttf') format('truetype');
+}
+
+/* Brand-uploaded Geist Mono (variable) */
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('Brand fonts/Geist_Mono/GeistMono-VariableFont_wght.ttf') format('truetype-variations'),
+       url('Brand fonts/Geist_Mono/GeistMono-VariableFont_wght.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('Brand fonts/Geist_Mono/GeistMono-Italic-VariableFont_wght.ttf') format('truetype-variations'),
+       url('Brand fonts/Geist_Mono/GeistMono-Italic-VariableFont_wght.ttf') format('truetype');
+}
+
+:root {
+  /* -----------------------------------------------------------
+     COLOR — Paper & Ink
+     A warm, low-saturation palette. Cream paper, ink text,
+     terracotta as the singular emotional accent.
+     ----------------------------------------------------------- */
+
+  /* Paper (backgrounds, surfaces) */
+  --paper-0: #FBF8F3;   /* lightest — large surfaces */
+  --paper-1: #F7F1E8;   /* default page background */
+  --paper-2: #F0E8DA;   /* raised card / hover */
+  --paper-3: #E8DFD2;   /* pressed / divider area */
+
+  /* Ink (text, line) */
+  --ink-1:   #1F1A17;   /* primary text, headings */
+  --ink-2:   #4A4239;   /* body text */
+  --ink-3:   #6E665B;   /* secondary text, captions */
+  --ink-4:   #8B847B;   /* tertiary, placeholder */
+  --ink-5:   #B8B0A4;   /* disabled, faint lines */
+
+  /* Accents — vibrant, but still warm and earthen */
+  --clay:     #D94E26;  /* primary accent — vivid terracotta */
+  --clay-soft:#F4AB91;  /* clay tint for backgrounds */
+  --clay-ink: #8A2E14;  /* clay pressed/dark */
+
+  --sage:     #5A9466;  /* secondary accent — deeper, livelier green */
+  --sage-soft:#BCDCB8;
+  --sage-ink: #2F5A3A;
+
+  --sky:      #2F6BAA;  /* link / info — saturated dusty blue */
+  --sky-soft: #B0CFEC;
+
+  --ochre:    #E0A21F;  /* warning / highlight — bright warm gold */
+  --ochre-soft:#F5DA86;
+
+  /* Semantic */
+  --bg:           var(--paper-1);
+  --bg-elevated:  var(--paper-0);
+  --bg-sunken:    var(--paper-2);
+  --surface:      var(--paper-0);
+  --surface-hover:var(--paper-2);
+
+  --fg:           var(--ink-1);
+  --fg-muted:     var(--ink-2);
+  --fg-subtle:    var(--ink-3);
+  --fg-faint:     var(--ink-4);
+  --fg-disabled:  var(--ink-5);
+
+  --line:         rgba(31, 26, 23, 0.10);
+  --line-strong:  rgba(31, 26, 23, 0.18);
+  --line-faint:   rgba(31, 26, 23, 0.05);
+
+  --accent:       var(--clay);
+  --accent-soft:  var(--clay-soft);
+  --accent-ink:   var(--clay-ink);
+
+  --link:         var(--ink-1);
+  --link-hover:   var(--clay);
+
+  /* -----------------------------------------------------------
+     TYPOGRAPHY
+     ----------------------------------------------------------- */
+
+  --font-serif: 'Instrument Serif', 'Cormorant Garamond', Georgia, serif;
+  --font-sans:  'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono:  'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Scale (modular ~1.2 with display jumps) */
+  --t-display:  clamp(48px, 7vw, 96px);
+  --t-h1:       clamp(36px, 4.5vw, 60px);
+  --t-h2:       clamp(28px, 3.2vw, 40px);
+  --t-h3:       22px;
+  --t-h4:       18px;
+  --t-body:     16px;
+  --t-small:    14px;
+  --t-caption:  12px;
+  --t-mono:     13px;
+
+  /* Line heights */
+  --lh-display: 1.02;
+  --lh-heading: 1.15;
+  --lh-body:    1.55;
+  --lh-tight:   1.25;
+
+  /* Weights */
+  --w-light:    300;
+  --w-regular:  400;
+  --w-medium:   500;
+  --w-semi:     600;
+
+  /* Tracking */
+  --tr-display: 0.04em;
+  --tr-heading: 0.03em;
+  --tr-body:    0;
+  --tr-caps:    0.08em;
+
+  /* -----------------------------------------------------------
+     SPACING — 4px base, named for intent
+     ----------------------------------------------------------- */
+  --s-0:  0;
+  --s-1:  4px;
+  --s-2:  8px;
+  --s-3:  12px;
+  --s-4:  16px;
+  --s-5:  20px;
+  --s-6:  24px;
+  --s-7:  32px;
+  --s-8:  40px;
+  --s-9:  56px;
+  --s-10: 72px;
+  --s-11: 96px;
+  --s-12: 128px;
+
+  /* -----------------------------------------------------------
+     RADII — gently rounded, never pill-y (except inputs)
+     ----------------------------------------------------------- */
+  --r-xs:  4px;
+  --r-sm:  8px;
+  --r-md:  12px;
+  --r-lg:  16px;
+  --r-xl:  24px;
+  --r-2xl: 32px;
+  --r-pill: 999px;
+
+  /* -----------------------------------------------------------
+     SHADOWS — soft, warm, layered
+     We use a long, low-opacity warm shadow under cards,
+     never blue/cool drop shadows.
+     ----------------------------------------------------------- */
+  --shadow-xs: 0 1px 2px rgba(31, 26, 23, 0.04);
+  --shadow-sm: 0 2px 4px rgba(31, 26, 23, 0.05), 0 1px 2px rgba(31, 26, 23, 0.04);
+  --shadow-md: 0 8px 24px -8px rgba(31, 26, 23, 0.10), 0 2px 4px rgba(31, 26, 23, 0.04);
+  --shadow-lg: 0 24px 48px -16px rgba(31, 26, 23, 0.16), 0 4px 8px rgba(31, 26, 23, 0.04);
+  --shadow-xl: 0 40px 80px -24px rgba(31, 26, 23, 0.22), 0 8px 16px rgba(31, 26, 23, 0.06);
+  --shadow-inset: inset 0 1px 0 rgba(255,255,255,0.6), inset 0 -1px 0 rgba(31,26,23,0.04);
+
+  /* -----------------------------------------------------------
+     MOTION — slow, gentle. Never bouncy.
+     ----------------------------------------------------------- */
+  --ease-out:   cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-in-out:cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-soft:  cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast:   140ms;
+  --dur-med:    260ms;
+  --dur-slow:   520ms;
+
+  /* -----------------------------------------------------------
+     LAYOUT
+     ----------------------------------------------------------- */
+  --container:  1180px;
+  --container-narrow: 720px;
+  --gutter:     clamp(20px, 4vw, 48px);
+}
+
+/* =============================================================
+   Semantic typography classes
+   ============================================================= */
+
+.t-display {
+  font-family: var(--font-serif);
+  font-weight: var(--w-regular);
+  font-size: var(--t-display);
+  line-height: var(--lh-display);
+  letter-spacing: var(--tr-display);
+  color: var(--fg);
+}
+.t-display em, .t-display i { font-style: italic; }
+
+.t-h1 {
+  font-family: var(--font-serif);
+  font-weight: var(--w-regular);
+  font-size: var(--t-h1);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--tr-heading);
+  color: var(--fg);
+}
+
+.t-h2 {
+  font-family: var(--font-serif);
+  font-weight: var(--w-regular);
+  font-size: var(--t-h2);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--tr-heading);
+  color: var(--fg);
+}
+
+.t-h3 {
+  font-family: var(--font-sans);
+  font-weight: var(--w-medium);
+  font-size: var(--t-h3);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tr-heading);
+  color: var(--fg);
+}
+
+.t-h4 {
+  font-family: var(--font-sans);
+  font-weight: var(--w-medium);
+  font-size: var(--t-h4);
+  line-height: var(--lh-tight);
+  color: var(--fg);
+}
+
+.t-body {
+  font-family: var(--font-sans);
+  font-weight: var(--w-regular);
+  font-size: var(--t-body);
+  line-height: var(--lh-body);
+  color: var(--fg-muted);
+}
+
+.t-lead {
+  font-family: var(--font-sans);
+  font-weight: var(--w-regular);
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+
+.t-small {
+  font-family: var(--font-sans);
+  font-size: var(--t-small);
+  line-height: 1.5;
+  color: var(--fg-subtle);
+}
+
+.t-caption {
+  font-family: var(--font-sans);
+  font-size: var(--t-caption);
+  line-height: 1.4;
+  color: var(--fg-subtle);
+  letter-spacing: 0;
+}
+
+.t-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: var(--w-medium);
+  letter-spacing: var(--tr-caps);
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+}
+
+.t-mono {
+  font-family: var(--font-mono);
+  font-size: var(--t-mono);
+  color: var(--fg-muted);
+}
+
+.t-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: var(--w-regular);
+  font-size: clamp(24px, 3vw, 38px);
+  line-height: 1.35;
+  color: var(--fg);
+  letter-spacing: 0.03em;
+}
+
+/* =============================================================
+   Base resets that work nicely with this system
+   ============================================================= */
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-size: var(--t-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--clay-soft);
+  color: var(--ink-1);
+}

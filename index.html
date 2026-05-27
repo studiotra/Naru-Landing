@@ -1,0 +1,1378 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Naru — Biotech &amp; Clean Energy Innovation Intermediary</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="colors_and_type.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  :root{
+    /* Wireframe aliases → colors_and_type.css */
+    --paper: var(--paper-0);
+    --paper-2: var(--paper-2);
+    --ink: var(--ink-1);
+    --pine: var(--sage-ink);
+    --pine-mid: var(--sage);
+    --pine-deep: #1F3D2A;
+    --amber: var(--clay);
+    --amber-deep: var(--clay-ink);
+    --sand: var(--paper-2);
+    --sand-2: var(--paper-3);
+    --mist: var(--ink-3);
+    --line: var(--paper-3);
+  }
+  *{box-sizing:border-box}
+  html,body{background:var(--paper);color:var(--ink);font-family:var(--font-sans);scroll-behavior:smooth}
+  .display{font-family:var(--font-serif);letter-spacing:.04em;font-weight:var(--w-regular)}
+  .serif-it{font-family:var(--font-serif);font-style:italic;font-weight:var(--w-regular);letter-spacing:.04em}
+
+  /* ---------- crossing motif ---------- */
+  .crossing{display:inline-flex;align-items:center;gap:7px;height:14px}
+  .crossing .node{width:9px;height:9px;border-radius:50%;background:var(--pine);flex:none}
+  .crossing .node.end{width:13px;height:13px}
+  .crossing .node.amber{background:var(--amber)}
+  .crossing .seg{height:1.5px;background:var(--line);width:34px;position:relative;overflow:visible}
+  .crossing .seg::after{content:"";position:absolute;top:50%;left:0;width:7px;height:7px;border-radius:50%;background:var(--amber);transform:translate(-50%,-50%);animation:travel 3.4s cubic-bezier(.6,.05,.4,.95) infinite}
+  .crossing .seg:nth-child(4)::after{animation-delay:.4s}
+  @keyframes travel{0%{left:0;opacity:0}10%{opacity:1}90%{opacity:1}100%{left:100%;opacity:0}}
+
+  /* ---------- buttons ---------- */
+  .btn-primary{background:var(--amber);color:var(--ink);border-radius:8px;padding:.85rem 1.5rem;font-weight:600;font-size:.92rem;display:inline-flex;align-items:center;gap:.5rem;transition:transform .18s ease,box-shadow .18s ease,background .18s ease;border:1px solid var(--amber-deep);cursor:pointer}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 26px -10px rgba(217,78,38,.6);background:#E5704E}
+  .btn-primary:active{transform:translateY(0)}
+  .btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:.85rem 1.5rem;font-weight:500;font-size:.92rem;display:inline-flex;align-items:center;gap:.5rem;transition:border-color .18s ease,background .18s ease,transform .18s ease;cursor:pointer}
+  .btn-ghost:hover{border-color:var(--pine);background:rgba(47,90,58,.04);transform:translateY(-2px)}
+  .btn-pine{background:var(--pine);color:#FBF8F3;border-radius:8px;padding:.85rem 1.5rem;font-weight:600;font-size:.92rem;display:inline-flex;align-items:center;gap:.5rem;transition:transform .18s ease,box-shadow .18s ease;border:1px solid var(--pine-deep);cursor:pointer}
+  .btn-pine:hover{transform:translateY(-2px);box-shadow:0 12px 26px -12px rgba(47,90,58,.55)}
+
+  /* ---------- chips / pills ---------- */
+  .eyebrow{font-size:.74rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--pine-mid)}
+  .pill{display:inline-flex;align-items:center;gap:.4rem;padding:.32rem .72rem;border-radius:999px;background:rgba(47,90,58,.06);border:1px solid rgba(47,90,58,.16);color:var(--pine);font-size:.76rem;font-weight:600}
+  .chip{display:inline-flex;align-items:center;gap:.35rem;padding:.28rem .65rem;border-radius:999px;background:var(--paper);border:1px solid var(--line);color:var(--mist);font-size:.74rem;font-weight:500}
+
+  /* ---------- cards ---------- */
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:14px;transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease}
+  .card-hover:hover{transform:translateY(-5px);box-shadow:0 18px 40px -22px rgba(20,24,26,.28);border-color:var(--sand-2)}
+  .card-sand{background:var(--sand);border:1px solid var(--sand-2);border-radius:14px}
+
+  /* ---------- reveals ---------- */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal[data-d="1"]{transition-delay:.08s}
+  .reveal[data-d="2"]{transition-delay:.16s}
+  .reveal[data-d="3"]{transition-delay:.24s}
+  .reveal[data-d="4"]{transition-delay:.32s}
+
+  /* ---------- nav ---------- */
+  .nav-link{color:var(--mist);font-size:.9rem;font-weight:500;position:relative;padding:.3rem 0;transition:color .18s ease;cursor:pointer}
+  .nav-link:hover{color:var(--ink)}
+  .nav-link.active{color:var(--ink)}
+  .nav-link.active::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:2px;background:var(--amber);border-radius:2px}
+
+  /* ---------- page routing ---------- */
+  .page{display:none;animation:pagein .5s cubic-bezier(.16,1,.3,1)}
+  .page.active{display:block}
+  @keyframes pagein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  /* ---------- misc ---------- */
+  .grid-paper{background-image:linear-gradient(rgba(47,90,58,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(47,90,58,.045) 1px,transparent 1px);background-size:34px 34px}
+  .hairline{height:1px;background:var(--line)}
+  .stat-num{font-family:var(--font-serif);font-weight:var(--w-regular);letter-spacing:.035em;line-height:1}
+  .marquee-track{display:flex;gap:3.5rem;animation:marq 34s linear infinite;white-space:nowrap}
+  @keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  details>summary{list-style:none;cursor:pointer}
+  details>summary::-webkit-details-marker{display:none}
+  details[open] .chev{transform:rotate(180deg)}
+  .chev{transition:transform .25s ease}
+  .tab-btn{padding:.55rem 1rem;border-radius:8px;font-size:.86rem;font-weight:500;color:var(--mist);border:1px solid transparent;background:transparent;cursor:pointer;transition:all .18s ease}
+  .tab-btn.active{background:var(--paper);border-color:var(--line);color:var(--ink);box-shadow:0 2px 8px -4px rgba(20,24,26,.18)}
+  .tab-btn:hover:not(.active){color:var(--ink)}
+  input,textarea,select{background:var(--paper)!important;border:1px solid var(--line)!important;color:var(--ink)!important;border-radius:9px!important;font-family:var(--font-sans)!important}
+  input:focus,textarea:focus,select:focus{outline:none!important;border-color:var(--pine)!important;box-shadow:0 0 0 4px rgba(47,90,58,.1)!important}
+  label{color:var(--ink);font-size:.82rem;font-weight:600}
+  ::selection{background:var(--amber);color:var(--ink)}
+  .link-arrow{display:inline-flex;align-items:center;gap:.32rem;color:var(--pine);font-weight:600;font-size:.88rem;cursor:pointer;transition:gap .18s ease}
+  .link-arrow:hover{gap:.55rem}
+  .wire-ribbon{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(20,24,26,.92);backdrop-filter:blur(8px)}
+  .ribbon-chip{padding:.22rem .6rem;border-radius:6px;font-size:.72rem;font-weight:500;color:#B8B0A4;cursor:pointer;transition:all .15s ease;border:1px solid transparent}
+  .ribbon-chip:hover{color:#fff;border-color:rgba(255,255,255,.18)}
+  .ribbon-chip.on{background:var(--amber);color:var(--ink);font-weight:600}
+  /* lead magnet brochure mock */
+  .brochure{position:relative;transition:transform .4s cubic-bezier(.16,1,.3,1)}
+  .brochure:hover{transform:rotate(-2deg) translateY(-6px)}
+  .brochure-shadow{box-shadow:0 30px 60px -24px rgba(20,24,26,.45)}
+  .pulse-ring{position:absolute;inset:0;border-radius:8px;border:2px solid var(--amber);opacity:0;animation:pulsering 2.6s ease-out infinite}
+  @keyframes pulsering{0%{opacity:.7;transform:scale(1)}100%{opacity:0;transform:scale(1.12)}}
+  .spin{animation:spin 0.7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .count-up{display:inline-block}
+
+
+  /* ─── Naru system overrides ─── */
+  body{font-feature-settings:"ss01" on, "cv11" on;}
+  .display{text-wrap:pretty;}
+  .btn-primary{border-radius:12px;border:none;font-weight:500;padding:.85rem 1.4rem;color:#FBF8F3;background:var(--amber);box-shadow:0 1px 2px rgba(31,26,23,.10);}
+  .btn-primary:hover{transform:translateY(-1px);background:var(--amber-deep);box-shadow:0 8px 18px -8px rgba(217,78,38,.45);}
+  .btn-primary:active{transform:translateY(1px);box-shadow:none;}
+  .btn-ghost{border-radius:12px;border:1px solid var(--line);background:transparent;}
+  .btn-ghost:hover{background:rgba(31,26,23,0.04);border-color:rgba(31,26,23,0.18);transform:translateY(-1px);}
+  .btn-pine{border-radius:12px;background:var(--ink);color:#FBF8F3;border:none;font-weight:500;}
+  .btn-pine:hover{transform:translateY(-1px);background:#3a322c;box-shadow:0 8px 18px -8px rgba(31,26,23,.35);}
+  .btn-pine:active{transform:translateY(1px);}
+  .card{border-radius:16px;border:1px solid var(--line);box-shadow:0 1px 2px rgba(31,26,23,.04);}
+  .card-hover:hover{transform:translateY(-3px);box-shadow:0 18px 36px -18px rgba(31,26,23,.18), 0 2px 4px rgba(31,26,23,.04);border-color:rgba(31,26,23,0.12);}
+  .card-sand{border-radius:16px;}
+  .pill{background:rgba(47,90,58,.07);border:1px solid rgba(47,90,58,.16);color:var(--pine);font-weight:500;letter-spacing:.01em;}
+  .chip{font-weight:500;border-radius:999px;}
+  input,textarea,select{border-radius:12px!important;background:var(--paper)!important;border:1px solid var(--line)!important;font-family:var(--font-sans)!important;}
+  input:focus,textarea:focus,select:focus{border-color:var(--amber)!important;box-shadow:0 0 0 3px rgba(217,78,38,.15)!important;}
+  .eyebrow{font-weight:500;letter-spacing:.08em;color:var(--mist);}
+  .nav-link.active::after{background:var(--amber);}
+  ::selection{background:#F4AB91;color:var(--ink);}
+  .stat-num{font-weight:var(--w-regular);letter-spacing:.035em;}
+  /* tighten the crossing dot color */
+  .crossing .node.amber{background:var(--amber);}
+  .crossing .seg::after{background:var(--amber);}
+  html[lang="ko"] body{word-break:keep-all;}
+  html[lang="ko"] .eyebrow{text-transform:none;letter-spacing:.04em;}
+
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- ============ NAV ============ -->
+<header class="sticky top-0 z-40 border-b border-[color:var(--line)] bg-[rgba(252,251,248,.86)] backdrop-blur-xl">
+  <div class="max-w-[1200px] mx-auto px-5 h-[70px] flex items-center gap-8">
+    <a data-to="home" class="nav-to flex items-center gap-2.5 cursor-pointer">
+      <span class="crossing" style="height:13px">
+        <span class="node end"></span><span class="seg" style="width:22px"></span><span class="node amber"></span><span class="seg" style="width:22px"></span><span class="node end"></span>
+      </span>
+      <span class="display text-xl font-semibold tracking-tight">Naru</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-7" id="main-nav">
+      <span data-to="services" class="nav-to nav-link" data-i18n="nav.services">Services</span>
+      <span data-to="how" class="nav-to nav-link" data-i18n="nav.how">How It Works</span>
+      <span data-to="sectors" class="nav-to nav-link" data-i18n="nav.sectors">Sectors</span>
+      <span data-to="ecosystem" class="nav-to nav-link" data-i18n="nav.ecosystem">Ecosystem</span>
+      <span data-to="insights" class="nav-to nav-link" data-i18n="nav.insights">Insights</span>
+      <span data-to="about" class="nav-to nav-link" data-i18n="nav.about">About</span>
+    </nav>
+    <div class="ml-auto flex items-center gap-3">
+      <div class="hidden sm:flex items-center gap-1 text-xs text-[color:var(--mist)] border border-[color:var(--line)] rounded-full p-0.5">
+        <button type="button" class="lang-btn px-2.5 py-1 rounded-full bg-[color:var(--ink)] text-[#FBF8F3] font-semibold" data-lang="en">EN</button>
+        <button type="button" class="lang-btn px-2.5 py-1 rounded-full" data-lang="ko">KO</button>
+      </div>
+      <a data-to="contact" class="nav-to btn-primary text-sm hidden sm:inline-flex"><span data-i18n="cta.discovery">Book a Discovery Call</span> <i data-lucide="arrow-up-right" class="w-4 h-4"></i></a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<!-- ==================== HOME ==================== -->
+<section class="page active" id="page-home">
+
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 grid-paper opacity-70"></div>
+    <div class="absolute -top-32 -right-32 w-[480px] h-[480px] rounded-full" style="background:radial-gradient(circle,rgba(217,78,38,.16),transparent 68%)"></div>
+    <div class="absolute -bottom-40 -left-24 w-[420px] h-[420px] rounded-full" style="background:radial-gradient(circle,rgba(47,90,58,.1),transparent 68%)"></div>
+    <div class="relative max-w-[1200px] mx-auto px-5 pt-20 pb-24">
+      <div class="max-w-3xl">
+        <span class="eyebrow reveal" data-i18n="hero.eyebrow">Biotech &amp; Clean Energy innovation intermediary</span>
+        <h1 class="display text-[clamp(2.6rem,6vw,4.6rem)] leading-[1.04] font-semibold mt-4 reveal" data-d="1" data-i18n-html="hero.title">
+          Connecting <span class="serif-it" style="color:var(--pine)">solvers</span><br>with <span class="serif-it" style="color:var(--amber)">seekers.</span>
+        </h1>
+        <p class="text-lg text-[color:var(--mist)] mt-6 max-w-xl reveal" data-d="2" data-i18n="hero.sub">
+          Naru sources, qualifies, funds, and lands biotech and clean-energy innovation across borders. One bilingual desk — from first brief to signed deal.
+        </p>
+        <div class="flex flex-wrap gap-3 mt-8 reveal" data-d="3">
+          <a data-to="contact" class="nav-to btn-primary"><span data-i18n="cta.discovery">Book a Discovery Call</span> <i data-lucide="arrow-up-right" class="w-4 h-4"></i></a>
+          <a data-to="how" class="nav-to btn-ghost"><span data-i18n="cta.how">See how it works</span> <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+        </div>
+        <div class="flex flex-wrap gap-5 mt-8 text-sm text-[color:var(--mist)] reveal" data-d="4">
+          <span class="flex items-center gap-1.5"><i data-lucide="shield-check" class="w-4 h-4" style="color:var(--pine-mid)"></i> <span data-i18n="hero.trust.nda">NDA before the call</span></span>
+          <span class="flex items-center gap-1.5"><i data-lucide="languages" class="w-4 h-4" style="color:var(--pine-mid)"></i> <span data-i18n="hero.trust.bilingual">Bilingual KR / EN desk</span></span>
+          <span class="flex items-center gap-1.5"><i data-lucide="badge-percent" class="w-4 h-4" style="color:var(--pine-mid)"></i> <span data-i18n="hero.trust.fee">Paid on closed deals</span></span>
+        </div>
+      </div>
+
+      <!-- Hero crossing visual -->
+      <div class="mt-16 card p-6 md:p-8 reveal" data-d="2">
+        <div class="flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
+          <div class="flex-1">
+            <div class="eyebrow mb-2" style="color:var(--mist)" data-i18n="hero.gap.eyebrow">The Pacific gap</div>
+            <p class="display text-2xl leading-snug" data-i18n-html="hero.gap.text">Canada has the funding and the storage. Korea has the technology. <span class="serif-it" style="color:var(--pine)">Nobody is running the bridge.</span></p>
+          </div>
+          <div class="flex items-center justify-center gap-3 md:gap-5">
+            <div class="text-center">
+              <div class="w-20 h-20 rounded-2xl flex items-center justify-center" style="background:var(--sand)">
+                <span class="display text-xl" style="color:var(--pine)">KR</span>
+              </div>
+              <div class="text-xs text-[color:var(--mist)] mt-2 font-medium" data-i18n="hero.gap.tech">Technology</div>
+            </div>
+            <span class="crossing">
+              <span class="node end"></span><span class="seg"></span><span class="node"></span><span class="seg"></span><span class="node end amber"></span>
+            </span>
+            <div class="text-center">
+              <div class="w-20 h-20 rounded-2xl flex items-center justify-center" style="background:var(--pine)">
+                <span class="display text-xl" style="color:var(--amber)">CA</span>
+              </div>
+              <div class="text-xs text-[color:var(--mist)] mt-2 font-medium" data-i18n="hero.gap.capital">Capital &amp; Ground</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Proof bar -->
+  <section class="py-9 border-y border-[color:var(--line)] overflow-hidden bg-[color:var(--paper-2)]">
+    <div class="max-w-[1200px] mx-auto px-5">
+      <p class="eyebrow mb-5" style="color:var(--mist)" data-i18n="proof.eyebrow">We work alongside</p>
+      <div class="overflow-hidden">
+        <div class="marquee-track">
+          <div class="flex gap-14 items-center text-[color:var(--mist)] text-lg font-medium">
+            <span>KIER</span><span>KIST</span><span>ETRI</span><span>KRIBB</span><span>KIAT · NTB</span><span>NRC IRAP</span><span>Mitacs</span><span>SIF · NGen</span><span>KEPCO E&amp;C</span><span>KIGAM</span>
+          </div>
+          <div class="flex gap-14 items-center text-[color:var(--mist)] text-lg font-medium" aria-hidden="true">
+            <span>KIER</span><span>KIST</span><span>ETRI</span><span>KRIBB</span><span>KIAT · NTB</span><span>NRC IRAP</span><span>Mitacs</span><span>SIF · NGen</span><span>KEPCO E&amp;C</span><span>KIGAM</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The problem -->
+  <section class="py-24">
+    <div class="max-w-[1200px] mx-auto px-5">
+      <div class="max-w-2xl reveal">
+        <span class="eyebrow" data-i18n="problem.eyebrow">Why Canadian operators stall</span>
+        <h2 class="display text-4xl md:text-5xl mt-3" data-i18n="problem.title">The capital is here. The right technology partner is the hard part to find.</h2>
+        <p class="text-[color:var(--mist)] mt-4" data-i18n="problem.sub">Canada's clean-economy funding stack is one of the most generous in the world. The bottleneck isn't capital — it's everything between a funded mandate and a working technology.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5 mt-12">
+        <article class="card card-hover p-7 reveal" data-d="1">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-5" style="background:var(--sand)"><i data-lucide="package-search" class="w-5 h-5" style="color:var(--pine)"></i></div>
+          <h3 class="display text-xl" data-i18n="problem.c1.title">The hardware bottleneck</h3>
+          <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n="problem.c1.body">Everyone is competing for the same short list of qualified solvents, sorbents, cell chemistries, and EPCs. FEED cycles tie up your engineers for 12–18 months before a single tonne is captured.</p>
+        </article>
+        <article class="card card-hover p-7 reveal" data-d="2">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-5" style="background:var(--sand)"><i data-lucide="git-pull-request-closed" class="w-5 h-5" style="color:var(--pine)"></i></div>
+          <h3 class="display text-xl" data-i18n="problem.c2.title">The stage-gate wall</h3>
+          <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n="problem.c2.body">A pilot that works in the lab stalls on the climb to 10&nbsp;MW slipstream and 100&nbsp;MW commercial. The know-how to bridge that gap sits in a very small global pool.</p>
+        </article>
+        <article class="card card-hover p-7 reveal" data-d="3">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-5" style="background:var(--sand)"><i data-lucide="map-pin-off" class="w-5 h-5" style="color:var(--pine)"></i></div>
+          <h3 class="display text-xl" data-i18n="problem.c3.title">Your search stops at the border</h3>
+          <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n="problem.c3.body">You scan US suppliers reflexively. Korean R&amp;D — including capture pilots that have run at 10&nbsp;MW since 2010 — is functionally invisible in English-language deal flow.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- What we do -->
+  <section class="py-24 bg-[color:var(--paper-2)] border-y border-[color:var(--line)]">
+    <div class="max-w-[1200px] mx-auto px-5">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-12">
+        <div class="reveal">
+          <span class="eyebrow" data-i18n="services.eyebrow">What we do</span>
+          <h2 class="display text-4xl md:text-5xl mt-3" data-i18n-html="services.title">Five service lines.<br>One bilingual desk.</h2>
+        </div>
+        <a data-to="services" class="nav-to link-arrow reveal" data-d="1"><span data-i18n="cta.allServices">All services</span> <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+        <div class="card card-hover p-6 reveal" data-d="1">
+          <span class="display text-3xl" style="color:var(--pine-mid)">A</span>
+          <h3 class="display text-lg mt-2" data-i18n="services.a.title">Technology sourcing</h3>
+          <p class="text-sm text-[color:var(--mist)] mt-1.5 leading-relaxed" data-i18n="services.a.body">We map your technical brief onto Korean GRIs, university TLOs, and scale-ups — and hand you a scored shortlist.</p>
+        </div>
+        <div class="card card-hover p-6 reveal" data-d="2">
+          <span class="display text-3xl" style="color:var(--pine-mid)">B</span>
+          <h3 class="display text-lg mt-2" data-i18n="services.b.title">Grant &amp; program navigation</h3>
+          <p class="text-sm text-[color:var(--mist)] mt-1.5 leading-relaxed" data-i18n="services.b.body">NRC IRAP, SIF, Net Zero Accelerator, the NRC&nbsp;×&nbsp;KIAT co-innovation call — sequenced and stacked.</p>
+        </div>
+        <div class="card card-hover p-6 reveal" data-d="3">
+          <span class="display text-3xl" style="color:var(--pine-mid)">C</span>
+          <h3 class="display text-lg mt-2" data-i18n="services.c.title">Partnership &amp; B2B match</h3>
+          <p class="text-sm text-[color:var(--mist)] mt-1.5 leading-relaxed" data-i18n="services.c.body">Licensing, technical-services agreements, JV structures, clinical and utility pilots — matched and brokered.</p>
+        </div>
+        <div class="card card-hover p-6 reveal" data-d="1">
+          <span class="display text-3xl" style="color:var(--pine-mid)">D</span>
+          <h3 class="display text-lg mt-2" data-i18n="services.d.title">Capital &amp; IR connect</h3>
+          <p class="text-sm text-[color:var(--mist)] mt-1.5 leading-relaxed" data-i18n="services.d.body">Korean strategics and CVCs for your raise; Canadian capital for inbound Korean ventures. Both directions.</p>
+        </div>
+        <div class="card card-hover p-6 reveal" data-d="2">
+          <span class="display text-3xl" style="color:var(--pine-mid)">E</span>
+          <h3 class="display text-lg mt-2" data-i18n="services.e.title">Forums &amp; trade missions</h3>
+          <p class="text-sm text-[color:var(--mist)] mt-1.5 leading-relaxed" data-i18n="services.e.body">Curated Korea–Canada roundtables and delegations — the relationship flywheel that makes deals possible.</p>
+        </div>
+        <a data-to="services" class="nav-to card card-hover p-6 reveal flex flex-col justify-center items-start" data-d="3" style="background:var(--pine);border-color:var(--pine-deep)">
+          <span class="text-[#FBF8F3] display text-lg" data-i18n="services.card.title">Build your engagement</span>
+          <span class="text-sm mt-1.5" style="color:rgba(251,248,243,.7)" data-i18n="services.card.sub">Most clients combine one or two lines into a package.</span>
+          <span class="link-arrow mt-3" style="color:var(--amber)"><span data-i18n="services.card.link">See how</span> <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why an agent -->
+  <section class="py-24">
+    <div class="max-w-[1200px] mx-auto px-5 grid md:grid-cols-2 gap-12 items-center">
+      <div class="reveal">
+        <span class="eyebrow" data-i18n="model.eyebrow">The model</span>
+        <h2 class="display text-4xl md:text-5xl mt-3" data-i18n-html="model.title">Cross-Pacific deal specialists.<br><span class="serif-it" style="color:var(--pine)">Backed by named experts.</span></h2>
+        <p class="text-[color:var(--mist)] mt-4 leading-relaxed" data-i18n-html="model.body">Every cross-border deal needs three roles: the <strong style="color:var(--ink)">analyst</strong> who vets the science, the <strong style="color:var(--ink)">dealmaker</strong> who builds trust and closes, and the <strong style="color:var(--ink)">operator</strong> who runs it after signing. Our team specializes in the dealmaking — and we partner with a named bench of technical advisors and operating firms for the rest, so every step is led by someone who does that work full-time.</p>
+        <a data-to="about" class="nav-to link-arrow mt-6"><span data-i18n="model.link">Why this matters</span> <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+      </div>
+      <div class="space-y-3 reveal" data-d="2">
+        <div class="card p-5 flex items-center gap-4" style="opacity:.6">
+          <span class="display text-2xl w-9 text-center" style="color:var(--mist)">01</span>
+          <div><div class="font-semibold" data-i18n="model.r1.title">Technical Analyst</div><div class="text-xs text-[color:var(--mist)]" data-i18n="model.r1.sub">Named advisor bench &amp; partner firms</div></div>
+        </div>
+        <div class="card p-5 flex items-center gap-4" style="border-color:var(--pine);box-shadow:0 14px 34px -20px rgba(47,90,58,.4)">
+          <span class="display text-2xl w-9 text-center" style="color:var(--pine)">02</span>
+          <div><div class="font-semibold flex items-center gap-2"><span data-i18n="model.r2.title">Dealmaker / Connector</span> <span class="chip" style="background:var(--amber);border-color:var(--amber-deep);color:var(--ink)">Naru</span></div><div class="text-xs text-[color:var(--mist)]" data-i18n="model.r2.sub">Doors, trust, bilingual negotiation, the close</div></div>
+        </div>
+        <div class="card p-5 flex items-center gap-4" style="opacity:.6">
+          <span class="display text-2xl w-9 text-center" style="color:var(--mist)">03</span>
+          <div><div class="font-semibold" data-i18n="model.r3.title">Operator</div><div class="text-xs text-[color:var(--mist)]" data-i18n="model.r3.sub">Your team, post-signing</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sectors -->
+  <section class="py-24 bg-[color:var(--paper-2)] border-y border-[color:var(--line)]">
+    <div class="max-w-[1200px] mx-auto px-5">
+      <div class="max-w-2xl reveal mb-12">
+        <span class="eyebrow" data-i18n="sectors.eyebrow">Sectors</span>
+        <h2 class="display text-4xl md:text-5xl mt-3" data-i18n="sectors.title">Two sectors. Real depth.</h2>
+        <p class="text-[color:var(--mist)] mt-4" data-i18n="sectors.sub">We don't do everything-and-also-Korea. Two domains, chosen because the deals are high-value, the cycles favour a patient agent, and the public funding is abundant on both sides.</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-5">
+        <a data-to="sectors" class="nav-to card card-hover p-8 reveal" data-d="1">
+          <div class="flex items-center justify-between">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:var(--sand)"><i data-lucide="dna" class="w-6 h-6" style="color:var(--pine)"></i></div>
+            <i data-lucide="arrow-up-right" class="w-5 h-5" style="color:var(--mist)"></i>
+          </div>
+          <h3 class="display text-2xl mt-5" data-i18n="sectors.bio.title">Biotech &amp; Medical Devices</h3>
+          <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n="sectors.bio.body">KRIBB, KAIST, SNU and the K-bio cluster pair with Canadian hospital networks and clinical infrastructure. Antibody platforms, regenerative therapies, cardiometabolic devices.</p>
+        </a>
+        <a data-to="sectors" class="nav-to card card-hover p-8 reveal" data-d="2">
+          <div class="flex items-center justify-between">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:var(--sand)"><i data-lucide="wind" class="w-6 h-6" style="color:var(--pine)"></i></div>
+            <i data-lucide="arrow-up-right" class="w-5 h-5" style="color:var(--mist)"></i>
+          </div>
+          <h3 class="display text-2xl mt-5" data-i18n="sectors.clean.title">Clean Energy &amp; CCUS</h3>
+          <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n="sectors.clean.body">KIER and KIST hold capture chemistries with 10&nbsp;MW pilot data. Canadian battery JVs and CCUS operators are deploying multi-billion-dollar capex right now.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Numbers -->
+  <section class="py-24">
+    <div class="max-w-[1200px] mx-auto px-5">
+      <div class="max-w-2xl reveal mb-12">
+        <span class="eyebrow" data-i18n="stats.eyebrow">Numbers that matter</span>
+        <h2 class="display text-4xl md:text-5xl mt-3" data-i18n="stats.title">Why the math works.</h2>
+      </div>
+      <div class="grid md:grid-cols-4 gap-5">
+        <div class="card p-6 reveal" data-d="1">
+          <div class="stat-num text-5xl" style="color:var(--pine)"><span class="count-up" data-target="4.96" data-dec="2">0</span><span class="text-2xl">%</span></div>
+          <p class="text-sm font-semibold mt-3" data-i18n="stats.s1.title">Korea R&amp;D intensity</p>
+          <p class="text-xs text-[color:var(--mist)] mt-1" data-i18n="stats.s1.body">2nd in the OECD. Canada sits near 1.7%.</p>
+        </div>
+        <div class="card p-6 reveal" data-d="2">
+          <div class="stat-num text-5xl" style="color:var(--pine)">$<span class="count-up" data-target="15" data-dec="0">0</span><span class="text-2xl">B</span></div>
+          <p class="text-sm font-semibold mt-3" data-i18n="stats.s2.title">Canada Growth Fund</p>
+          <p class="text-xs text-[color:var(--mist)] mt-1" data-i18n="stats.s2.body">Concessional capital for clean-economy deployment.</p>
+        </div>
+        <div class="card p-6 reveal" data-d="3">
+          <div class="stat-num text-5xl" style="color:var(--pine)"><span class="count-up" data-target="50" data-dec="0">0</span><span class="text-2xl">%</span></div>
+          <p class="text-sm font-semibold mt-3" data-i18n="stats.s3.title">CCUS ITC (capture)</p>
+          <p class="text-xs text-[color:var(--mist)] mt-1" data-i18n="stats.s3.body">Refundable. 37.5% on transport &amp; storage.</p>
+        </div>
+        <div class="card p-6 reveal" data-d="4" style="background:var(--pine);border-color:var(--pine-deep)">
+          <div class="stat-num text-5xl" style="color:var(--amber)">&gt;<span class="count-up" data-target="50" data-dec="0">0</span><span class="text-2xl">%</span></div>
+          <p class="text-sm font-semibold mt-3 text-[#FBF8F3]" data-i18n="stats.s4.title">Project envelope covered</p>
+          <p class="text-xs mt-1" style="color:rgba(251,248,243,.65)" data-i18n="stats.s4.body">By stacking Canadian + Korean public capital.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== WHY KOREA · WHY NOW (marketing / sales) ========== -->
+  <section class="py-24 bg-[color:var(--paper-2)] border-y border-[color:var(--line)]" id="why-korea">
+    <div class="max-w-[1200px] mx-auto px-5">
+      <div class="max-w-3xl reveal mb-14">
+        <span class="eyebrow" data-i18n="korea.eyebrow">For Canadian operators</span>
+        <h2 class="display text-4xl md:text-5xl mt-3 leading-[1.08]" data-i18n-html="korea.title">Why Korea — and why the window is <span class="serif-it" style="color:var(--pine)">closing, not opening.</span></h2>
+        <p class="text-[color:var(--mist)] mt-4 leading-relaxed" data-i18n-html="korea.sub">Biotech and clean energy are capital-heavy and policy-timed. Korea is not a generic “Asia option”: it is a concentrated R&amp;D and industrial deployment stack with a formal trade and innovation spine to Canada. The points below are drawn from public frameworks — the same ones we map in <a href="#leadmagnet" class="font-semibold text-[color:var(--pine)] underline decoration-[color:var(--pine-mid)] underline-offset-2 hover:text-[color:var(--ink)]">The K-Tech Carbon Bridge</a> guide.</p>
+      </div>
+
+      <!-- Why South Korea -->
+      <div class="mb-16">
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8 reveal">
+          <div>
+            <h3 class="display text-3xl md:text-4xl" data-i18n="korea.sk.title">Why South Korea?</h3>
+            <p class="text-[color:var(--mist)] mt-2 text-lg" data-i18n="korea.sk.sub">The missing puzzle piece for Canadian CCUS</p>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-5">
+          <article class="card card-hover p-7 reveal" data-d="1">
+            <div class="flex items-center gap-2 mb-3"><i data-lucide="factory" class="w-5 h-5" style="color:var(--pine)"></i><span class="pill text-[.72rem]" data-i18n="korea.c1.pill">Lab-to-Fab</span></div>
+            <h4 class="display text-xl" data-i18n="korea.c1.title">The scale-up &amp; manufacturing powerhouse</h4>
+            <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="korea.c1.body">While Canada excels in early-stage R&amp;D (TRL 1–4), scaling up to commercial facilities (TRL 5–9) can be a major bottleneck. South Korea is arguably the world’s best at <strong style="color:var(--ink)">Lab-to-Fab commercialization</strong> — with the world-class EPC and manufacturing ecosystem required to turn lab-scale innovation into commercial-scale reality, faster than anyone else.</p>
+          </article>
+          <article class="card card-hover p-7 reveal" data-d="2">
+            <div class="flex items-center gap-2 mb-3"><i data-lucide="shield-check" class="w-5 h-5" style="color:var(--pine)"></i><span class="pill text-[.72rem]">Friend-shoring</span></div>
+            <h4 class="display text-xl" data-i18n="korea.c2.title">The ideal “friend-shoring” partner</h4>
+            <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="korea.c2.body">In today’s geopolitical climate, navigating the supply chain between the US and China is risky. South Korea offers the perfect <strong style="color:var(--ink)">friend-shoring destination</strong> — top-tier technology and strict IP protection laws, with a stable and reliable partnership without the geopolitical risks or aggressive takeover threats.</p>
+          </article>
+          <article class="card card-hover p-7 reveal" data-d="1">
+            <div class="flex items-center gap-2 mb-3"><i data-lucide="timer" class="w-5 h-5" style="color:var(--pine)"></i><span class="pill text-[.72rem]" data-i18n="korea.c3.pill">Time is CAPEX</span></div>
+            <h4 class="display text-xl" data-i18n="korea.c3.title">Unmatched execution speed</h4>
+            <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="korea.c3.body">In North America, project development and engineering cycles can be slow — which directly increases your CAPEX. South Korea’s engineering culture is built on <strong style="color:var(--ink)">unprecedented agility and speed</strong>. Partnering with a Korean firm can cut pilot design and procurement time in half, saving millions in CAPEX.</p>
+          </article>
+          <article class="card card-hover p-7 reveal" data-d="2">
+            <div class="flex items-center gap-2 mb-3"><i data-lucide="layers" class="w-5 h-5" style="color:var(--pine)"></i><span class="pill text-[.72rem]" data-i18n="korea.c4.pill">Dual grants</span></div>
+            <h4 class="display text-xl" data-i18n="korea.c4.title">Co-funding synergy</h4>
+            <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="korea.c4.body">Partnering with a Korean company doesn’t just bring technology — it brings capital. The Korean government is deploying billions into global R&amp;D for carbon neutrality. With the right partnership structure, we can <strong style="color:var(--ink)">match Canadian grants (SDTC, IRAP) with Korean government funds</strong> — drastically lowering the equity burden and risk for your project.</p>
+          </article>
+        </div>
+      </div>
+
+      <!-- Why act now -->
+      <div>
+        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8 reveal">
+          <h3 class="display text-3xl md:text-4xl" data-i18n-html="now.title">Why companies should <span class="serif-it" style="color:var(--pine)">act now</span></h3>
+        </div>
+        <div class="grid md:grid-cols-3 gap-5">
+          <article class="card p-7 reveal" data-d="1" style="border-color:var(--amber);box-shadow:0 0 0 1px rgba(217,78,38,.25)">
+            <span class="eyebrow" style="color:var(--amber-deep)" data-i18n="now.c1.eyebrow">Tax &amp; policy clock</span>
+            <h4 class="display text-xl mt-2" data-i18n="now.c1.title">CCUS ITC: full rate this decade</h4>
+            <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="now.c1.body">Canada’s <strong style="color:var(--ink)">refundable CCUS Investment Tax Credit</strong> applies to eligible expenditures from 2022 through 2030 at the headline rates (including up to <strong style="color:var(--ink)">50%</strong> on eligible capture equipment and <strong style="color:var(--ink)">37.5%</strong> on transport, storage, and use). From <strong style="color:var(--ink)">2031 to 2040</strong>, those rates are <strong style="color:var(--ink)">halved</strong> — then the credit ends. Capital scheduled after 2030 still matters, but the envelope is strictly smaller.</p>
+            <p class="text-[.65rem] text-[color:var(--mist)] mt-3" data-i18n="now.c1.src">Source: Canada Revenue Agency — CCUS Investment Tax Credit (clean-economy ITC rules).</p>
+          </article>
+          <article class="card p-7 reveal" data-d="2">
+            <span class="eyebrow" style="color:var(--mist)" data-i18n="now.c2.eyebrow">Deployment targets</span>
+            <h4 class="display text-xl mt-2" data-i18n="now.c2.title">2030 storage and abatement curves</h4>
+            <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="now.c2.body">Ottawa’s emissions-reduction plan points to <strong style="color:var(--ink)">at least ~15&nbsp;Mt CO₂/yr</strong> of permanent storage capacity by 2030 — roughly tripling today’s installed base. Korea’s national framework includes a <strong style="color:var(--ink)">~11.2&nbsp;Mt CO₂/yr CCUS sequestration target for 2030</strong>. Both governments are mobilizing capital into the same decade — which means <strong style="color:var(--ink)">EPC slots, offtake, and qualified vendors lock up early</strong>, not at FEED completion.</p>
+            <p class="text-[.65rem] text-[color:var(--mist)] mt-3" data-i18n="now.c2.src">Sources: Natural Resources Canada — Carbon Management Strategy; Republic of Korea 1st Basic Plan (2023).</p>
+          </article>
+          <article class="card p-7 reveal" data-d="3">
+            <span class="eyebrow" style="color:var(--mist)" data-i18n="now.c3.eyebrow">First-mover + Korea rulebook</span>
+            <h4 class="display text-xl mt-2" data-i18n="now.c3.title">Sourcing arbitrage is temporary</h4>
+            <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="now.c3.body">Korea’s <strong style="color:var(--ink)">Act on the Capture, Transportation, Storage and Utilization of Carbon Dioxide</strong> entered into force in <strong style="color:var(--ink)">February&nbsp;2025</strong>, clarifying licensing, infrastructure, and market rules for CO₂ as a managed resource. That reduces ambiguity for Korean champions — and signals a <strong style="color:var(--ink)">busier outbound technology and equipment lane</strong> as projects firm up. Waiting until “everyone sources Korea” means higher licence fees and picked-over pilot windows.</p>
+            <p class="text-[.65rem] text-[color:var(--mist)] mt-3" data-i18n="now.c3.src">Source: National Assembly enactment / legal commentary (e.g. Kim &amp; Chang, 2024–2025).</p>
+          </article>
+        </div>
+        <div class="grid md:grid-cols-2 gap-5 mt-5">
+          <article class="card p-7 reveal" data-d="1">
+            <div class="flex items-center gap-2 text-[color:var(--pine)] font-semibold text-sm"><i data-lucide="layers" class="w-4 h-4"></i> <span data-i18n="now.b1.title">Bilateral momentum</span></div>
+            <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="now.b1.body">The <strong style="color:var(--ink)">2023 MOU</strong> between Canada and Korea on <strong style="color:var(--ink)">critical minerals, clean-energy transition, and energy security</strong> explicitly names cooperation on CCUS and carbon removal. The <strong style="color:var(--ink)">July&nbsp;2024 Canada–Korea Comprehensive Strategic Partnership action plan</strong> adds implementation rails for trade, supply chains, and innovation. Programs and ministerial trade missions are aligned with that direction — the practical work is matchmaking and diligence, not writing white papers.</p>
+          </article>
+          <article class="card p-7 reveal" data-d="2">
+            <div class="flex items-center gap-2 text-[color:var(--pine)] font-semibold text-sm"><i data-lucide="timer" class="w-4 h-4"></i> <span data-i18n="now.b2.title">Programs evolve — stacks don’t wait</span></div>
+            <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="now.b2.body">Non-dilutive pathways shift: for example, <strong style="color:var(--ink)">SDTC was wound down as an independent foundation in mid‑2024</strong> with programming folded toward <strong style="color:var(--ink)">NRC‑led successors</strong> — a reminder to sequence grants with current owners, not last year’s deck. The <strong style="color:var(--ink)">NRC IRAP × KIAT</strong> call is annual; CCUS ITC eligibility ties to project design choices made <em>before</em> procurement.</p>
+            <p class="text-[.65rem] text-[color:var(--mist)] mt-3" data-i18n="now.b2.src">Source: Government of Canada announcements; NRC / IRAP program pages.</p>
+          </article>
+        </div>
+        <div class="mt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 reveal">
+          <p class="text-sm text-[color:var(--mist)] max-w-2xl" data-i18n-html="now.footer">We are not immigration counsel, tax counsel, or EPC. We <strong style="color:var(--ink)">route you to primary sources and named counterparties</strong>, then run the agent function until close.</p>
+          <a data-to="contact" class="nav-to btn-primary shrink-0"><span data-i18n="cta.discovery">Book a Discovery Call</span> <i data-lucide="arrow-up-right" class="w-4 h-4"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== LEAD MAGNET CTA SECTION ========== -->
+  <section class="py-24 bg-[color:var(--pine)] relative overflow-hidden" id="leadmagnet">
+    <div class="absolute inset-0 grid-paper" style="opacity:.06"></div>
+    <div class="absolute -top-24 -right-16 w-[360px] h-[360px] rounded-full" style="background:radial-gradient(circle,rgba(217,78,38,.22),transparent 68%)"></div>
+    <div class="relative max-w-[1200px] mx-auto px-5">
+      <div class="grid md:grid-cols-[1.1fr,.9fr] gap-12 items-center">
+        <!-- copy side -->
+        <div class="reveal">
+          <span class="eyebrow" style="color:var(--amber)">Free digital brochure</span>
+          <h2 class="display text-4xl md:text-5xl mt-3 text-[#FBF8F3] leading-[1.08]">
+            The Canadian Operator's Guide to <span class="serif-it" style="color:var(--amber)">Korean Innovation.</span>
+          </h2>
+          <p class="mt-4 leading-relaxed" style="color:rgba(251,248,243,.78)">
+            A 10-page field guide most of your competitors haven't read: the Korean CCUS and biotech ecosystem you can't easily Google in English, and a working map of how to stack Canadian + Korean public capital on the same project.
+          </p>
+          <ul class="mt-6 space-y-2.5">
+            <li class="flex items-start gap-2.5 text-sm" style="color:rgba(251,248,243,.85)"><i data-lucide="check" class="w-4 h-4 mt-0.5 flex-none" style="color:var(--amber)"></i> The six Korean institutions that actually license technology</li>
+            <li class="flex items-start gap-2.5 text-sm" style="color:rgba(251,248,243,.85)"><i data-lucide="check" class="w-4 h-4 mt-0.5 flex-none" style="color:var(--amber)"></i> A worked example: stacking funding on a 50,000&nbsp;t CO₂/yr pilot</li>
+            <li class="flex items-start gap-2.5 text-sm" style="color:rgba(251,248,243,.85)"><i data-lucide="check" class="w-4 h-4 mt-0.5 flex-none" style="color:var(--amber)"></i> Every claim sourced — no vendor catalogue, no fluff</li>
+          </ul>
+
+          <!-- download interaction -->
+          <div class="mt-8" id="lm-zone">
+            <!-- state 1: button -->
+            <div id="lm-state-1">
+              <button class="btn-primary text-base" onclick="lmDownload()">
+                <i data-lucide="download" class="w-5 h-5"></i> Download the guide — free
+              </button>
+              <p class="text-xs mt-3" style="color:rgba(251,248,243,.55)">No spam. One follow-up email, then we leave you alone.</p>
+            </div>
+            <!-- state 2: faux email capture -->
+            <div id="lm-state-2" class="hidden">
+              <div class="flex flex-col sm:flex-row gap-2 max-w-md">
+                <input type="email" placeholder="you@yourcompany.ca" class="px-4 py-3 flex-1" />
+                <button class="btn-primary" onclick="lmSubmit()">Send it to me <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+              </div>
+              <p class="text-xs mt-3" style="color:rgba(251,248,243,.55)">We'll email the PDF and tag your interest area. Unsubscribe anytime.</p>
+            </div>
+            <!-- state 3: loading -->
+            <div id="lm-state-3" class="hidden">
+              <button class="btn-primary text-base" disabled style="opacity:.85;cursor:default">
+                <i data-lucide="loader-2" class="w-5 h-5 spin"></i> Preparing your download…
+              </button>
+            </div>
+            <!-- state 4: success -->
+            <div id="lm-state-4" class="hidden">
+              <div class="inline-flex items-center gap-2.5 px-5 py-3.5 rounded-lg" style="background:rgba(251,248,243,.1);border:1px solid rgba(217,78,38,.4)">
+                <span class="w-7 h-7 rounded-full flex items-center justify-center" style="background:var(--amber)"><i data-lucide="check" class="w-4 h-4" style="color:var(--ink)"></i></span>
+                <span class="text-sm font-semibold text-[#FBF8F3]">Sent — check your inbox. The PDF is on its way.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- brochure mock -->
+        <div class="flex justify-center reveal" data-d="2">
+          <div class="relative">
+            <div class="pulse-ring"></div>
+            <div class="brochure brochure-shadow w-[270px] h-[350px] rounded-lg overflow-hidden" style="background:var(--paper)" onclick="lmDownload()">
+              <div class="h-full flex flex-col p-6" style="background:linear-gradient(155deg,#FBF8F3 0%,#F0E8DA 100%)">
+                <div class="crossing" style="height:11px"><span class="node end"></span><span class="seg" style="width:18px"></span><span class="node amber"></span><span class="seg" style="width:18px"></span><span class="node end"></span></div>
+                <div class="eyebrow mt-5" style="font-size:.62rem">Lead Guide · Canadian CCUS Operators</div>
+                <div class="display text-[1.7rem] leading-[1.12] mt-3">The K-Tech<br><span style="color:var(--pine)">Carbon Bridge</span></div>
+                <p class="text-[.7rem] text-[color:var(--mist)] mt-3 leading-relaxed">A Canadian operator's guide to Korean innovation, technology, and cross-border capital.</p>
+                <div class="mt-auto grid grid-cols-2 gap-2">
+                  <div class="rounded-md p-2" style="background:var(--sand)"><div class="stat-num text-lg" style="color:var(--pine)">15 Mt</div><div class="text-[.55rem] text-[color:var(--mist)]">CA 2030 target</div></div>
+                  <div class="rounded-md p-2" style="background:var(--sand)"><div class="stat-num text-lg" style="color:var(--pine)">10 pp</div><div class="text-[.55rem] text-[color:var(--mist)]">Field guide</div></div>
+                </div>
+              </div>
+            </div>
+            <div class="absolute -bottom-3 -right-3 px-3 py-1.5 rounded-md text-xs font-semibold" style="background:var(--amber);color:var(--ink);box-shadow:0 8px 18px -8px rgba(217,78,38,.7)">PDF · Free</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Insights teaser -->
+  <section class="py-24">
+    <div class="max-w-[1200px] mx-auto px-5">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-12">
+        <div class="reveal">
+          <span class="eyebrow" data-i18n="insights.eyebrow">Insights</span>
+          <h2 class="display text-4xl md:text-5xl mt-3" data-i18n="insights.title">Notes from the desk</h2>
+        </div>
+        <a data-to="insights" class="nav-to link-arrow reveal" data-d="1"><span data-i18n="cta.allArticles">All articles</span> <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+      </div>
+      <div class="grid gap-5">
+        <a href="articles/bridging-the-pacific-ccus-signals-2026.html" class="card card-hover overflow-hidden reveal grid lg:grid-cols-[1.05fr,.95fr]" data-d="1">
+          <div class="min-h-[260px] bg-[color:var(--paper-2)]">
+            <img src="assets/bridging-the-pacific-thumbnail.png" alt="Bridging the Pacific article thumbnail" class="w-full h-full object-cover">
+          </div>
+          <div class="p-6 md:p-8 flex flex-col justify-center">
+            <div class="flex flex-wrap items-center gap-2 text-xs text-[color:var(--mist)]">
+              <span class="chip">Policy analysis</span>
+              <span>May 2026</span>
+              <span>9 min read</span>
+            </div>
+            <h3 class="display text-2xl mt-4 leading-tight">Bridging the Pacific: What 2026 CCUS Signals Mean for Korea-Canada Clean Energy Collaboration</h3>
+            <p class="text-sm text-[color:var(--mist)] mt-3 leading-relaxed">A new cross-border briefing on why Korea's policy shift, Canada's infrastructure position, and the global move from demonstration to deployment make this a live Korea-Canada CCUS window.</p>
+            <div class="mt-5 inline-flex items-center gap-2 text-sm font-semibold" style="color:var(--pine)">
+              Read article
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="pb-24">
+    <div class="max-w-[1200px] mx-auto px-5">
+      <div class="rounded-3xl p-10 md:p-16 relative overflow-hidden" style="background:var(--ink)">
+        <div class="absolute -top-20 -right-10 w-72 h-72 rounded-full" style="background:radial-gradient(circle,rgba(217,78,38,.2),transparent 68%)"></div>
+        <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+          <div>
+            <h3 class="display text-3xl md:text-4xl text-[#FBF8F3]" data-i18n="ctaFinal.title">Let's find your crossing.</h3>
+            <p class="mt-3 max-w-md" style="color:rgba(251,248,243,.7)" data-i18n="ctaFinal.sub">Twenty minutes. We'll clarify your brief, name the Korean archetypes that fit, and map your funding sequence. NDA first if you prefer.</p>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <a data-to="contact" class="nav-to btn-primary"><span data-i18n="cta.discovery">Book a Discovery Call</span> <i data-lucide="arrow-up-right" class="w-4 h-4"></i></a>
+            <a data-to="how" class="nav-to btn-ghost" style="border-color:rgba(251,248,243,.25);color:#FBF8F3"><span data-i18n="cta.process">See the process</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ==================== SERVICES ==================== -->
+<section class="page" id="page-services">
+  <section class="relative overflow-hidden border-b border-[color:var(--line)]">
+    <div class="absolute inset-0 grid-paper opacity-60"></div>
+    <div class="relative max-w-[1200px] mx-auto px-5 pt-20 pb-16">
+      <span class="eyebrow reveal" data-i18n="page.services.eyebrow">Services</span>
+      <h1 class="display text-5xl md:text-6xl mt-4 max-w-3xl reveal" data-d="1" data-i18n-html="page.services.title">Five service lines. <span class="serif-it" style="color:var(--pine)">One desk that closes.</span></h1>
+      <p class="text-lg text-[color:var(--mist)] mt-5 max-w-2xl reveal" data-d="2" data-i18n="page.services.sub">Most Canadian clients buy one or two lines as a package. Prices are bands, shown up front — transparency is a qualifier.</p>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="max-w-[1200px] mx-auto px-5 space-y-5">
+      <!-- service rows -->
+      <div class="card p-7 md:p-9 reveal grid md:grid-cols-[auto,1fr,auto] gap-6 md:gap-10 items-start">
+        <span class="display text-5xl" style="color:var(--sand-2)">A</span>
+        <div>
+          <h2 class="display text-2xl" data-i18n="page.services.a.title">Technology Sourcing</h2>
+          <p class="text-sm text-[color:var(--mist)] mt-1.5 leading-relaxed max-w-xl">We map your technical brief onto KIPRIS, NTB, and the named portfolios of KIER, KIST, KEPCO E&amp;C, KIGAM, KRIBB, KAIST and tier-1 university TLOs. You receive a scored shortlist of 3–5 candidates with redacted technical summaries.</p>
+          <div class="flex flex-wrap gap-2 mt-4">
+            <span class="chip">Intake brief</span><span class="chip">KR portfolio scan</span><span class="chip">Scored shortlist</span><span class="chip">Redacted summaries</span>
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="eyebrow" style="color:var(--mist)" data-i18n="common.engagement">Engagement</div>
+          <div class="display text-lg mt-1">CAD 15–35K</div>
+          <div class="text-xs text-[color:var(--mist)]">Fixed · 4–6 weeks</div>
+        </div>
+      </div>
+
+      <div class="card p-7 md:p-9 reveal grid md:grid-cols-[auto,1fr,auto] gap-6 md:gap-10 items-start">
+        <span class="display text-5xl" style="color:var(--sand-2)">B</span>
+        <div>
+          <h2 class="display text-2xl" data-i18n="page.services.b.title">Grant &amp; Program Navigation</h2>
+          <p class="text-sm text-[color:var(--mist)] mt-1.5 leading-relaxed max-w-xl">The highest-leverage line. We identify and sequence the Canadian public funding your project qualifies for — NRC IRAP, SIF, Net Zero Accelerator, the NRC&nbsp;×&nbsp;KIAT co-innovation call — and structure the Korean-side match.</p>
+          <div class="flex flex-wrap gap-2 mt-4">
+            <span class="chip">Eligibility map</span><span class="chip">Application timeline</span><span class="chip">KR-side match</span><span class="chip">Stack design</span>
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="eyebrow" style="color:var(--mist)" data-i18n="common.engagement">Engagement</div>
+          <div class="display text-lg mt-1">5–8%</div>
+          <div class="text-xs text-[color:var(--mist)]">Of secured capital</div>
+        </div>
+      </div>
+
+      <div class="card p-7 md:p-9 reveal grid md:grid-cols-[auto,1fr,auto] gap-6 md:gap-10 items-start">
+        <span class="display text-5xl" style="color:var(--sand-2)">C</span>
+        <div>
+          <h2 class="display text-2xl" data-i18n="page.services.c.title">Partnership &amp; B2B Match</h2>
+          <p class="text-sm text-[color:var(--mist)] mt-1.5 leading-relaxed max-w-xl">Exclusive licences, technical-services agreements, JV structures, clinical partners, utility pilots, university TLO connections — sourced, qualified, and brokered through signing.</p>
+          <div class="flex flex-wrap gap-2 mt-4">
+            <span class="chip">Counterparty pipeline</span><span class="chip">Term-sheet drafting</span><span class="chip">Bilingual negotiation</span>
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="eyebrow" style="color:var(--mist)" data-i18n="common.engagement">Engagement</div>
+          <div class="display text-lg mt-1">Retainer + fee</div>
+          <div class="text-xs text-[color:var(--mist)]">Lehman scale on close</div>
+        </div>
+      </div>
+
+      <div class="card p-7 md:p-9 reveal grid md:grid-cols-[auto,1fr,auto] gap-6 md:gap-10 items-start">
+        <span class="display text-5xl" style="color:var(--sand-2)">D</span>
+        <div>
+          <h2 class="display text-2xl" data-i18n="page.services.d.title">Capital &amp; IR Connect</h2>
+          <p class="text-sm text-[color:var(--mist)] mt-1.5 leading-relaxed max-w-xl">Korean strategics and CVCs for Canadian companies raising; Canadian capital and family offices for inbound Korean ventures. Bilingual pitch refinement and roadshow logistics included.</p>
+          <div class="flex flex-wrap gap-2 mt-4">
+            <span class="chip">Investor longlist</span><span class="chip">Pitch refinement</span><span class="chip">Roadshow logistics</span>
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="eyebrow" style="color:var(--mist)" data-i18n="common.engagement">Engagement</div>
+          <div class="display text-lg mt-1">3–5%</div>
+          <div class="text-xs text-[color:var(--mist)]">Of capital raised</div>
+        </div>
+      </div>
+
+      <div class="card p-7 md:p-9 reveal grid md:grid-cols-[auto,1fr,auto] gap-6 md:gap-10 items-start">
+        <span class="display text-5xl" style="color:var(--sand-2)">E</span>
+        <div>
+          <h2 class="display text-2xl" data-i18n="page.services.e.title">Forums &amp; Trade Missions</h2>
+          <p class="text-sm text-[color:var(--mist)] mt-1.5 leading-relaxed max-w-xl">Curated Korea–Canada roundtables, an annual delegation, and senior-executive dinners. The relationship flywheel that turns cold sourcing into warm deals.</p>
+          <div class="flex flex-wrap gap-2 mt-4">
+            <span class="chip">Quarterly roundtables</span><span class="chip">Annual delegation</span><span class="chip">Curated dinners</span>
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="eyebrow" style="color:var(--mist)" data-i18n="common.engagement">Engagement</div>
+          <div class="display text-lg mt-1">Sponsorship</div>
+          <div class="text-xs text-[color:var(--mist)]">+ ticket model</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-24">
+    <div class="max-w-[1200px] mx-auto px-5">
+      <div class="card-sand p-10 md:p-14 flex flex-col md:flex-row md:items-center md:justify-between gap-8 reveal">
+        <div>
+          <h3 class="display text-3xl">Not sure which lines you need?</h3>
+          <p class="text-[color:var(--mist)] mt-2 max-w-md">That's what the Discovery Call is for. We'll tell you which one or two services actually move your project — and which you don't need.</p>
+        </div>
+        <a data-to="contact" class="nav-to btn-primary"><span data-i18n="cta.discovery">Book a Discovery Call</span> <i data-lucide="arrow-up-right" class="w-4 h-4"></i></a>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ==================== HOW IT WORKS ==================== -->
+<section class="page" id="page-how">
+  <section class="relative overflow-hidden border-b border-[color:var(--line)]">
+    <div class="absolute inset-0 grid-paper opacity-60"></div>
+    <div class="relative max-w-[1200px] mx-auto px-5 pt-20 pb-16">
+      <span class="eyebrow reveal" data-i18n="page.how.eyebrow">How it works</span>
+      <h1 class="display text-5xl md:text-6xl mt-4 max-w-3xl reveal" data-d="1" data-i18n-html="page.how.title">From first brief to <span class="serif-it" style="color:var(--pine)">signed deal.</span></h1>
+      <p class="text-lg text-[color:var(--mist)] mt-5 max-w-2xl reveal" data-d="2" data-i18n="page.how.sub">No black boxes. Every stage has a named owner, a deliverable, and a gate you control.</p>
+    </div>
+  </section>
+
+  <!-- 4-stage flow -->
+  <section class="py-20">
+    <div class="max-w-[1200px] mx-auto px-5">
+      <div class="grid md:grid-cols-4 gap-5">
+        <div class="card p-6 reveal" data-d="1">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center display text-lg" style="background:var(--pine);color:#FBF8F3">1</div>
+          <h3 class="display text-xl mt-4" data-i18n="page.how.s1.title">Discovery</h3>
+          <div class="text-xs eyebrow mt-1" style="color:var(--mist)" data-i18n="page.how.s1.time">4–6 weeks</div>
+          <p class="text-sm text-[color:var(--mist)] mt-3 leading-relaxed" data-i18n="page.how.s1.body">We extract the job your technology must do, then map it onto the Korean portfolios that fit.</p>
+          <div class="hairline my-4"></div>
+          <p class="text-xs" data-i18n-html="page.how.s1.del"><strong>Deliverable:</strong> scored shortlist of 3–5</p>
+        </div>
+        <div class="card p-6 reveal" data-d="2">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center display text-lg" style="background:var(--pine);color:#FBF8F3">2</div>
+          <h3 class="display text-xl mt-4">Sourcing &amp; Qualification</h3>
+          <div class="text-xs eyebrow mt-1" style="color:var(--mist)">3–6 months</div>
+          <p class="text-sm text-[color:var(--mist)] mt-3 leading-relaxed">Bilingual diligence with our advisor bench: patent strength, FTO, TRL, export controls, KR-government strings.</p>
+          <div class="hairline my-4"></div>
+          <p class="text-xs"><strong>Deliverable:</strong> qualified pipeline</p>
+        </div>
+        <div class="card p-6 reveal" data-d="3">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center display text-lg" style="background:var(--pine);color:#FBF8F3">3</div>
+          <h3 class="display text-xl mt-4">Negotiation &amp; Funding</h3>
+          <div class="text-xs eyebrow mt-1" style="color:var(--mist)">Variable</div>
+          <p class="text-sm text-[color:var(--mist)] mt-3 leading-relaxed">Term-sheet drafting in KR + EN. In parallel: the NRC&nbsp;×&nbsp;KIAT call, ITC eligibility, SIF pathway.</p>
+          <div class="hairline my-4"></div>
+          <p class="text-xs"><strong>Deliverable:</strong> term sheet + funding stack</p>
+        </div>
+        <div class="card p-6 reveal" data-d="4" style="border-color:var(--amber)">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center display text-lg" style="background:var(--amber);color:var(--ink)">4</div>
+          <h3 class="display text-xl mt-4">Closing &amp; Stewardship</h3>
+          <div class="text-xs eyebrow mt-1" style="color:var(--mist)">12 months</div>
+          <p class="text-sm text-[color:var(--mist)] mt-3 leading-relaxed">Bilingual execution, escrow logistics, then milestone tracking and royalty audits post-close.</p>
+          <div class="hairline my-4"></div>
+          <p class="text-xs"><strong>Deliverable:</strong> signed deal + stewardship</p>
+        </div>
+      </div>
+      <div class="flex justify-center mt-10">
+        <span class="crossing" style="height:13px"><span class="node end"></span><span class="seg" style="width:60px"></span><span class="node"></span><span class="seg" style="width:60px"></span><span class="node"></span><span class="seg" style="width:60px"></span><span class="node end amber"></span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Commercial structure -->
+  <section class="py-20 bg-[color:var(--paper-2)] border-y border-[color:var(--line)]">
+    <div class="max-w-[1200px] mx-auto px-5">
+      <div class="max-w-2xl reveal mb-10">
+        <span class="eyebrow">Commercial structure</span>
+        <h2 class="display text-4xl mt-3">You pay for discovery. You pay the success fee when you win.</h2>
+      </div>
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="card p-7 reveal" data-d="1">
+          <div class="flex justify-between items-baseline"><h3 class="display text-xl">Discovery sprint</h3><span class="display text-lg" style="color:var(--pine)">CAD 15–35K</span></div>
+          <p class="text-sm text-[color:var(--mist)] mt-2">Fixed fee, 4–6 weeks. Filters tire-kickers and pays for our diligence time.</p>
+        </div>
+        <div class="card p-7 reveal" data-d="2">
+          <div class="flex justify-between items-baseline"><h3 class="display text-xl">Sourcing retainer</h3><span class="display text-lg" style="color:var(--pine)">CAD 8–15K/mo</span></div>
+          <p class="text-sm text-[color:var(--mist)] mt-2">Ongoing sourcing, qualification, and introduction logistics. 3–6 months.</p>
+        </div>
+        <div class="card p-7 reveal" data-d="3">
+          <div class="flex justify-between items-baseline"><h3 class="display text-xl">Success fee</h3><span class="display text-lg" style="color:var(--pine)">Lehman scale</span></div>
+          <p class="text-sm text-[color:var(--mist)] mt-2">10 / 8 / 6 / 4 / 2% per tranche of deal value. Paid only on a closed deal.</p>
+        </div>
+        <div class="card p-7 reveal" data-d="4">
+          <div class="flex justify-between items-baseline"><h3 class="display text-xl">Grant navigation</h3><span class="display text-lg" style="color:var(--pine)">5–8%</span></div>
+          <p class="text-sm text-[color:var(--mist)] mt-2">Of non-dilutive capital secured, payable on disbursement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-20">
+    <div class="max-w-[820px] mx-auto px-5">
+      <span class="eyebrow reveal">FAQ</span>
+      <h2 class="display text-4xl mt-3 reveal" data-d="1">Questions Canadian operators actually ask</h2>
+      <div class="mt-8 divide-y divide-[color:var(--line)]">
+        <details class="py-5 reveal">
+          <summary class="flex items-center justify-between gap-4"><span class="font-semibold">Do I need to be technical to work with you?</span><i data-lucide="chevron-down" class="w-5 h-5 chev" style="color:var(--mist)"></i></summary>
+          <p class="text-sm text-[color:var(--mist)] mt-3 leading-relaxed">No — and neither do we, in the way you might think. Technical review is delivered by a named advisor bench. Our job is to route the science to the right reviewer and run the deal. We explain exactly who does what before you sign anything.</p>
+        </details>
+        <details class="py-5 reveal">
+          <summary class="flex items-center justify-between gap-4"><span class="font-semibold">How is the success fee calculated?</span><i data-lucide="chevron-down" class="w-5 h-5 chev" style="color:var(--mist)"></i></summary>
+          <p class="text-sm text-[color:var(--mist)] mt-3 leading-relaxed">On total transaction value — upfront plus milestones, with royalties capped. Lehman scale: 10/8/6/4/2% per tranche. It's the industry-standard structure, not something we invented.</p>
+        </details>
+        <details class="py-5 reveal">
+          <summary class="flex items-center justify-between gap-4"><span class="font-semibold">Can you really bring Korean and Canadian funding to the same project?</span><i data-lucide="chevron-down" class="w-5 h-5 chev" style="color:var(--mist)"></i></summary>
+          <p class="text-sm text-[color:var(--mist)] mt-3 leading-relaxed">Yes — that's the core of the model. Your Korean partner can claim KIAT international R&amp;D funding while you claim NRC IRAP, the CCUS ITC, and a SIF or Net Zero Accelerator top-up. Stacked, public capital can cover well over half the project envelope.</p>
+        </details>
+        <details class="py-5 reveal">
+          <summary class="flex items-center justify-between gap-4"><span class="font-semibold">What happens if the deal falls through?</span><i data-lucide="chevron-down" class="w-5 h-5 chev" style="color:var(--mist)"></i></summary>
+          <p class="text-sm text-[color:var(--mist)] mt-3 leading-relaxed">No success fee on a failed close — the retainer covers work to date. We'll substitute an alternative candidate from the shortlist and keep going.</p>
+        </details>
+        <details class="py-5 reveal">
+          <summary class="flex items-center justify-between gap-4"><span class="font-semibold">Why Korea, and why not the US?</span><i data-lucide="chevron-down" class="w-5 h-5 chev" style="color:var(--mist)"></i></summary>
+          <p class="text-sm text-[color:var(--mist)] mt-3 leading-relaxed">The US is crowded and you're already searching there. Korea has world-benchmark R&amp;D, a trade backbone with Canada (CKFTA), a 2024 industrial-cooperation MOU, and institutions actively seeking international demonstration sites. It's the highest-value sourcing pool nobody in your peer group is working.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ==================== SECTORS ==================== -->
+<section class="page" id="page-sectors">
+  <section class="relative overflow-hidden border-b border-[color:var(--line)]">
+    <div class="absolute inset-0 grid-paper opacity-60"></div>
+    <div class="relative max-w-[1200px] mx-auto px-5 pt-20 pb-16">
+      <span class="eyebrow reveal" data-i18n="page.sectors.eyebrow">Sectors</span>
+      <h1 class="display text-5xl md:text-6xl mt-4 max-w-3xl reveal" data-d="1" data-i18n-html="page.sectors.title">Two sectors. <span class="serif-it" style="color:var(--pine)">Real depth.</span></h1>
+      <p class="text-lg text-[color:var(--mist)] mt-5 max-w-2xl reveal" data-d="2">High-value deals, long cycles that favour a patient agent, and abundant public funding on both sides. Pick your sector.</p>
+      <div class="flex gap-2 mt-8 reveal" data-d="3">
+        <button class="tab-btn active" data-tab="clean">Clean Energy &amp; CCUS</button>
+        <button class="tab-btn" data-tab="bio">Biotech &amp; Medical Devices</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="max-w-[1200px] mx-auto px-5">
+      <!-- CLEAN ENERGY -->
+      <div class="tab-panel" data-tab="clean">
+        <div class="grid md:grid-cols-3 gap-5">
+          <div class="card p-8 md:col-span-2 reveal">
+            <span class="pill">Flagship sector</span>
+            <h2 class="display text-3xl mt-4">Clean Energy &amp; CCUS</h2>
+            <p class="text-[color:var(--mist)] mt-3 leading-relaxed">Korean cell makers, cathode producers, and government research institutes hold the global benchmark in EV battery materials, hydrogen systems, and CO₂ capture chemistry. Canadian battery JVs and CCUS operators are deploying multi-billion-dollar capex right now — and competing for the same scarce supply chain.</p>
+            <div class="grid sm:grid-cols-2 gap-5 mt-7">
+              <div><h4 class="font-semibold text-sm">Korean source institutions</h4><p class="text-xs text-[color:var(--mist)] mt-1.5 leading-relaxed">KIER · KIST · KEPCO E&amp;C · KIGAM · UNIST · KIST quantum/materials groups</p></div>
+              <div><h4 class="font-semibold text-sm">Canadian demand</h4><p class="text-xs text-[color:var(--mist)] mt-1.5 leading-relaxed">CCUS operators · battery JV operators · hydrogen utilities · advanced-manufacturing SMEs</p></div>
+              <div><h4 class="font-semibold text-sm">Deal archetypes</h4><p class="text-xs text-[color:var(--mist)] mt-1.5 leading-relaxed">Exclusive licence (Canada territory) · technical-services + option · JV with a cell or cathode maker</p></div>
+              <div><h4 class="font-semibold text-sm">Funding pathways</h4><p class="text-xs text-[color:var(--mist)] mt-1.5 leading-relaxed">CCUS ITC · NRC IRAP × KIAT · Net Zero Accelerator · SIF · provincial top-ups</p></div>
+            </div>
+          </div>
+          <div class="card-sand p-8 reveal" data-d="1">
+            <h4 class="display text-xl">Get the full guide</h4>
+            <p class="text-sm text-[color:var(--mist)] mt-2">The K-Tech Carbon Bridge — our 10-page field guide for Canadian CCUS operators.</p>
+            <div class="my-5 mx-auto w-[150px] h-[195px] rounded-md flex flex-col p-4 brochure-shadow" style="background:linear-gradient(155deg,#FBF8F3,#F0E8DA)">
+              <div class="crossing" style="height:8px"><span class="node end" style="width:8px;height:8px"></span><span class="seg" style="width:12px"></span><span class="node amber" style="width:6px;height:6px"></span><span class="seg" style="width:12px"></span><span class="node end" style="width:8px;height:8px"></span></div>
+              <div class="display text-base leading-tight mt-3">The K-Tech<br><span style="color:var(--pine)">Carbon Bridge</span></div>
+              <div class="mt-auto stat-num text-base" style="color:var(--pine)">15 Mt</div>
+            </div>
+            <button class="btn-primary w-full justify-center" onclick="showPage('insights')"><i data-lucide="download" class="w-4 h-4"></i> Download free</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- BIOTECH -->
+      <div class="tab-panel hidden" data-tab="bio">
+        <div class="grid md:grid-cols-3 gap-5">
+          <div class="card p-8 md:col-span-2 reveal">
+            <span class="pill">Growth sector</span>
+            <h2 class="display text-3xl mt-4">Biotech &amp; Medical Devices</h2>
+            <p class="text-[color:var(--mist)] mt-3 leading-relaxed">KRIBB, KAIST, SNU, Severance and the K-bio cluster supply antibody platforms, regenerative therapies, and cardiometabolic devices. Canadian hospital networks, clinical infrastructure, and biomanufacturing capacity pair naturally with Korean development pipelines.</p>
+            <div class="grid sm:grid-cols-2 gap-5 mt-7">
+              <div><h4 class="font-semibold text-sm">Korean source institutions</h4><p class="text-xs text-[color:var(--mist)] mt-1.5 leading-relaxed">KRIBB · KAIST · SNU · Severance · Samsung Medical Center · K-bio cluster (Songdo, Osong)</p></div>
+              <div><h4 class="font-semibold text-sm">Canadian demand</h4><p class="text-xs text-[color:var(--mist)] mt-1.5 leading-relaxed">Biotech SMEs · UHN / McGill / UBC clinical networks · adMare biomanufacturing · device commercializers</p></div>
+              <div><h4 class="font-semibold text-sm">Deal archetypes</h4><p class="text-xs text-[color:var(--mist)] mt-1.5 leading-relaxed">Option-to-licence with milestones · co-development · clinical-trial partnership · Class II/III device licence</p></div>
+              <div><h4 class="font-semibold text-sm">Funding pathways</h4><p class="text-xs text-[color:var(--mist)] mt-1.5 leading-relaxed">NRC IRAP · Mitacs · CIHR-linked programs · NRC IRAP × KIAT · provincial life-science funds</p></div>
+            </div>
+          </div>
+          <div class="card-sand p-8 reveal" data-d="1">
+            <h4 class="display text-xl">Biotech guide</h4>
+            <p class="text-sm text-[color:var(--mist)] mt-2">A Korean-biotech field guide for Canadian life-science companies — in production.</p>
+            <div class="my-5 mx-auto w-[150px] h-[195px] rounded-md flex flex-col p-4 items-center justify-center text-center" style="background:var(--paper);border:1px dashed var(--sand-2)">
+              <i data-lucide="clock" class="w-7 h-7" style="color:var(--mist)"></i>
+              <div class="text-xs text-[color:var(--mist)] mt-2">Coming soon</div>
+            </div>
+            <button class="btn-ghost w-full justify-center">Notify me <i data-lucide="bell" class="w-4 h-4"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ==================== ECOSYSTEM ==================== -->
+<section class="page" id="page-ecosystem">
+  <section class="relative overflow-hidden border-b border-[color:var(--line)]">
+    <div class="absolute inset-0 grid-paper opacity-60"></div>
+    <div class="relative max-w-[1200px] mx-auto px-5 pt-20 pb-16">
+      <span class="eyebrow reveal" data-i18n="page.ecosystem.eyebrow">Ecosystem</span>
+      <h1 class="display text-5xl md:text-6xl mt-4 max-w-3xl reveal" data-d="1" data-i18n-html="page.ecosystem.title">The map — <span class="serif-it" style="color:var(--pine)">and who to call.</span></h1>
+      <p class="text-lg text-[color:var(--mist)] mt-5 max-w-2xl reveal" data-d="2">Specificity is the whole point. Named institutions, named programs, named bilateral instruments. This is the page that proves we're not bluffing.</p>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="max-w-[1200px] mx-auto px-5 grid md:grid-cols-2 gap-8">
+      <!-- Korea side -->
+      <div class="reveal">
+        <div class="flex items-center gap-2 mb-5"><span class="w-8 h-8 rounded-lg flex items-center justify-center display" style="background:var(--sand);color:var(--pine)">KR</span><h2 class="display text-2xl">Korea side</h2></div>
+        <div class="space-y-3">
+          <div class="card p-5"><div class="eyebrow" style="color:var(--mist)">Layer 1 · Government rails</div><h4 class="font-semibold mt-1">MOTIE · KIPO · KIPRIS</h4><p class="text-xs text-[color:var(--mist)] mt-1">Industrial policy, patent registry, the search backbone.</p></div>
+          <div class="card p-5"><div class="eyebrow" style="color:var(--mist)">Layer 2 · Marketplaces</div><h4 class="font-semibold mt-1">KIAT · NTB · KOTRA</h4><p class="text-xs text-[color:var(--mist)] mt-1">National Tech-Bank marketplace + bilateral matching programs.</p></div>
+          <div class="card p-5"><div class="eyebrow" style="color:var(--mist)">Layer 3 · GRIs &amp; TLOs</div><h4 class="font-semibold mt-1">KIER · KIST · ETRI · KRIBB · KIGAM · KAIST · SNU</h4><p class="text-xs text-[color:var(--mist)] mt-1">The actual technology source — capture chemistry to biologics.</p></div>
+          <div class="card p-5"><div class="eyebrow" style="color:var(--mist)">Layer 4 · Industry &amp; capital</div><h4 class="font-semibold mt-1">Chaebol R&amp;D · CVCs · law firms</h4><p class="text-xs text-[color:var(--mist)] mt-1">Samsung, LG, SK, POSCO open-innovation arms; Kim &amp; Chang, Lee &amp; Ko.</p></div>
+        </div>
+      </div>
+      <!-- Canada side -->
+      <div class="reveal" data-d="1">
+        <div class="flex items-center gap-2 mb-5"><span class="w-8 h-8 rounded-lg flex items-center justify-center display" style="background:var(--pine);color:var(--amber)">CA</span><h2 class="display text-2xl">Canada side</h2></div>
+        <div class="space-y-3">
+          <div class="card p-5"><div class="eyebrow" style="color:var(--mist)">Federal programs</div><h4 class="font-semibold mt-1">NRC IRAP · SIF · NGen · ISED</h4><p class="text-xs text-[color:var(--mist)] mt-1">Advisory, deployment capital, and the clean-economy ITC stack.</p></div>
+          <div class="card p-5"><div class="eyebrow" style="color:var(--mist)">Provincial programs</div><h4 class="font-semibold mt-1">OCI · Alberta Innovates · BC Tech · Invest Québec</h4><p class="text-xs text-[color:var(--mist)] mt-1">Regional top-ups, sector funds, and pilot-site support.</p></div>
+          <div class="card p-5"><div class="eyebrow" style="color:var(--mist)">Universities &amp; research</div><h4 class="font-semibold mt-1">U of T · UBC · Waterloo · McGill · adMare</h4><p class="text-xs text-[color:var(--mist)] mt-1">Partner offices for joint development and inbound technology.</p></div>
+          <div class="card p-5"><div class="eyebrow" style="color:var(--mist)">Trade &amp; promotion</div><h4 class="font-semibold mt-1">Trade Commissioner Service (Seoul) · Invest in Canada</h4><p class="text-xs text-[color:var(--mist)] mt-1">Government-to-government rails into the Korean market.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-24">
+    <div class="max-w-[1200px] mx-auto px-5">
+      <div class="rounded-2xl p-10 reveal" style="background:var(--pine)">
+        <div class="flex flex-col md:flex-row md:items-center gap-6">
+          <div class="flex-1">
+            <span class="eyebrow" style="color:var(--amber)">The bilateral layer</span>
+            <h3 class="display text-2xl md:text-3xl text-[#FBF8F3] mt-2">Where the two sides officially connect</h3>
+            <p class="mt-2 text-sm" style="color:rgba(251,248,243,.72)">The 2024 Canada–Korea Comprehensive Strategic Partnership, the NRC&nbsp;×&nbsp;KIAT co-innovation call (annual since 2020), and CKFTA — the trade backbone in force since 2015.</p>
+          </div>
+          <span class="crossing" style="height:14px"><span class="node end" style="background:var(--amber)"></span><span class="seg" style="width:50px;background:rgba(251,248,243,.25)"></span><span class="node" style="background:#FBF8F3"></span><span class="seg" style="width:50px;background:rgba(251,248,243,.25)"></span><span class="node end" style="background:var(--amber)"></span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ==================== ABOUT ==================== -->
+<section class="page" id="page-about">
+  <section class="relative overflow-hidden border-b border-[color:var(--line)]">
+    <div class="absolute inset-0 grid-paper opacity-60"></div>
+    <div class="relative max-w-[1200px] mx-auto px-5 pt-20 pb-16">
+      <span class="eyebrow reveal" data-i18n="page.about.eyebrow">About</span>
+      <h1 class="display text-5xl md:text-6xl mt-4 max-w-3xl reveal" data-d="1" data-i18n-html="page.about.title">A small team that <span class="serif-it" style="color:var(--pine)">knows both sides.</span></h1>
+      <p class="text-lg text-[color:var(--mist)] mt-5 max-w-2xl reveal" data-d="2">We believe great Korean research deserves great commercialization in Canada — and Canadian industry deserves a real door into it.</p>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="max-w-[1200px] mx-auto px-5 grid md:grid-cols-2 gap-8">
+      <div class="card p-8 reveal">
+        <span class="pill">The thesis</span>
+        <h2 class="display text-2xl mt-4">Why an agent, not a technical brokerage</h2>
+        <p class="text-sm text-[color:var(--mist)] mt-3 leading-relaxed">You don't need a PhD to close a cross-border deal — you need domain literacy and a deal-maker's instincts. The agent opens doors, builds trust, and negotiates. The technical review is delivered by a named advisor bench. Trying to be the analyst <span class="serif-it">and</span> the agent is how deals stall. We chose a lane, and we're honest about it.</p>
+      </div>
+      <div class="card p-8 reveal" data-d="1">
+        <span class="pill">How we work</span>
+        <h2 class="display text-2xl mt-4">Four principles</h2>
+        <ul class="text-sm text-[color:var(--mist)] mt-3 space-y-2.5">
+          <li class="flex gap-2.5"><i data-lucide="check" class="w-4 h-4 mt-0.5 flex-none" style="color:var(--pine)"></i><span><strong style="color:var(--ink)">Source-side honesty.</strong> We tell Korean holders what won't work in Canada.</span></li>
+          <li class="flex gap-2.5"><i data-lucide="check" class="w-4 h-4 mt-0.5 flex-none" style="color:var(--pine)"></i><span><strong style="color:var(--ink)">Buyer-side patience.</strong> Diligence beats speed.</span></li>
+          <li class="flex gap-2.5"><i data-lucide="check" class="w-4 h-4 mt-0.5 flex-none" style="color:var(--pine)"></i><span><strong style="color:var(--ink)">Outcome fees.</strong> We're paid when deals close.</span></li>
+          <li class="flex gap-2.5"><i data-lucide="check" class="w-4 h-4 mt-0.5 flex-none" style="color:var(--pine)"></i><span><strong style="color:var(--ink)">Bilingual by default.</strong> Every artefact ships in EN + KR.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-[color:var(--paper-2)] border-y border-[color:var(--line)]">
+    <div class="max-w-[1200px] mx-auto px-5">
+      <span class="eyebrow reveal">The team</span>
+      <h2 class="display text-4xl mt-3 reveal" data-d="1">Who's signing the deals</h2>
+      <div class="grid md:grid-cols-4 gap-5 mt-10">
+        <div class="card p-6 text-center reveal" data-d="1"><div class="w-20 h-20 mx-auto rounded-full" style="background:var(--sand)"></div><h4 class="font-semibold mt-4 serif-it">Founder name</h4><p class="text-xs text-[color:var(--mist)] mt-1">Managing Director · Toronto</p></div>
+        <div class="card p-6 text-center reveal" data-d="2"><div class="w-20 h-20 mx-auto rounded-full" style="background:var(--sand)"></div><h4 class="font-semibold mt-4 serif-it">Korea lead</h4><p class="text-xs text-[color:var(--mist)] mt-1">Partner · Seoul</p></div>
+        <div class="card p-6 text-center reveal" data-d="3"><div class="w-20 h-20 mx-auto rounded-full" style="background:var(--sand)"></div><h4 class="font-semibold mt-4 serif-it">Canada lead</h4><p class="text-xs text-[color:var(--mist)] mt-1">Partner · Toronto</p></div>
+        <div class="card p-6 text-center reveal" data-d="4"><div class="w-20 h-20 mx-auto rounded-full" style="background:var(--sand)"></div><h4 class="font-semibold mt-4 serif-it">Advisor bench</h4><p class="text-xs text-[color:var(--mist)] mt-1">Biotech · Clean energy · IP counsel</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20">
+    <div class="max-w-[1200px] mx-auto px-5">
+      <div class="card-sand p-10 md:p-14 flex flex-col md:flex-row md:items-center md:justify-between gap-8 reveal">
+        <div>
+          <h3 class="display text-3xl">We hire slowly. Come meet us anyway.</h3>
+          <p class="text-[color:var(--mist)] mt-2">Analysts, counsel, and program leads — bilingual KR/EN preferred.</p>
+        </div>
+        <a data-to="contact" class="nav-to btn-pine">Open a conversation <i data-lucide="arrow-up-right" class="w-4 h-4"></i></a>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ==================== INSIGHTS ==================== -->
+<section class="page" id="page-insights">
+  <section class="relative overflow-hidden border-b border-[color:var(--line)]">
+    <div class="absolute inset-0 grid-paper opacity-60"></div>
+    <div class="relative max-w-[1200px] mx-auto px-5 pt-20 pb-16">
+      <span class="eyebrow reveal" data-i18n="page.insights.eyebrow">Insights</span>
+      <h1 class="display text-5xl md:text-6xl mt-4 max-w-3xl reveal" data-d="1" data-i18n-html="page.insights.title">Playbooks, case studies, <span class="serif-it" style="color:var(--pine)">and policy notes.</span></h1>
+      <p class="text-lg text-[color:var(--mist)] mt-5 max-w-2xl reveal" data-d="2">Field-tested pieces we wish we'd had when we started.</p>
+    </div>
+  </section>
+
+  <!-- featured lead magnet -->
+  <section class="py-16">
+    <div class="max-w-[1200px] mx-auto px-5">
+      <div class="card overflow-hidden grid md:grid-cols-[1fr,1fr] reveal" style="background:var(--pine)">
+        <div class="p-10 md:p-12 flex flex-col justify-center">
+          <span class="eyebrow" style="color:var(--amber)">Featured · Free download</span>
+          <h2 class="display text-3xl md:text-4xl text-[#FBF8F3] mt-3 leading-[1.1]">The K-Tech Carbon Bridge</h2>
+          <p class="mt-3 text-sm leading-relaxed" style="color:rgba(251,248,243,.78)">A 10-page guide to the Korean CCUS ecosystem and the Canadian + Korean funding stack — written for operators, sourced throughout.</p>
+          <div class="mt-7" id="lm2-zone">
+            <div id="lm2-state-1">
+              <div class="flex flex-col sm:flex-row gap-2 max-w-md">
+                <input type="email" placeholder="you@yourcompany.ca" class="px-4 py-3 flex-1" />
+                <button class="btn-primary" onclick="lm2Submit()"><i data-lucide="download" class="w-4 h-4"></i> Get the guide</button>
+              </div>
+              <p class="text-xs mt-3" style="color:rgba(251,248,243,.55)">One follow-up email. NDA-grade discretion on whatever you tell us next.</p>
+            </div>
+            <div id="lm2-state-2" class="hidden">
+              <button class="btn-primary" disabled style="opacity:.85;cursor:default"><i data-lucide="loader-2" class="w-4 h-4 spin"></i> Preparing your download…</button>
+            </div>
+            <div id="lm2-state-3" class="hidden">
+              <div class="inline-flex items-center gap-2.5 px-5 py-3.5 rounded-lg" style="background:rgba(251,248,243,.1);border:1px solid rgba(217,78,38,.4)">
+                <span class="w-7 h-7 rounded-full flex items-center justify-center" style="background:var(--amber)"><i data-lucide="check" class="w-4 h-4" style="color:var(--ink)"></i></span>
+                <span class="text-sm font-semibold text-[#FBF8F3]">Sent — check your inbox.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="relative flex items-center justify-center p-10" style="background:linear-gradient(135deg,var(--pine-mid),var(--pine-deep))">
+          <div class="brochure brochure-shadow w-[210px] h-[273px] rounded-lg overflow-hidden" onclick="lm2Submit()">
+            <div class="h-full flex flex-col p-5" style="background:linear-gradient(155deg,#FBF8F3,#F0E8DA)">
+              <div class="crossing" style="height:9px"><span class="node end" style="width:9px;height:9px"></span><span class="seg" style="width:14px"></span><span class="node amber" style="width:7px;height:7px"></span><span class="seg" style="width:14px"></span><span class="node end" style="width:9px;height:9px"></span></div>
+              <div class="eyebrow mt-4" style="font-size:.55rem">Lead Guide · CCUS Operators</div>
+              <div class="display text-xl leading-[1.1] mt-2">The K-Tech<br><span style="color:var(--pine)">Carbon Bridge</span></div>
+              <p class="text-[.62rem] text-[color:var(--mist)] mt-2 leading-relaxed">A Canadian operator's guide to Korean innovation &amp; cross-border capital.</p>
+              <div class="mt-auto stat-num text-xl" style="color:var(--pine)">15 Mt</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- article grid -->
+  <section class="pb-24">
+    <div class="max-w-[1200px] mx-auto px-5">
+      <div class="grid lg:grid-cols-[1.1fr,.9fr] gap-5">
+        <a href="articles/bridging-the-pacific-ccus-signals-2026.html" class="card card-hover overflow-hidden reveal" data-d="1">
+          <img src="assets/bridging-the-pacific-thumbnail.png" alt="Bridging the Pacific article thumbnail" class="w-full h-64 md:h-80 object-cover">
+          <div class="p-6 md:p-8">
+            <div class="flex flex-wrap items-center gap-2 text-xs text-[color:var(--mist)]">
+              <span class="chip">Policy analysis</span>
+              <span>May 2026</span>
+              <span>9 min read</span>
+            </div>
+            <h3 class="display text-2xl md:text-3xl mt-4 leading-tight">Bridging the Pacific: What 2026 CCUS Signals Mean for Korea-Canada Clean Energy Collaboration</h3>
+            <p class="text-sm text-[color:var(--mist)] mt-4 leading-relaxed">This briefing tracks the policy and market signals that matter most right now: Korea's inclusion of CCUS in emissions accounting, Canada's scale and storage advantage, and the narrow bilateral window created by a broader North American reset.</p>
+            <div class="mt-6 inline-flex items-center gap-2 text-sm font-semibold" style="color:var(--pine)">
+              Open article
+              <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+            </div>
+          </div>
+        </a>
+        <div class="card p-6 md:p-8 reveal" data-d="2">
+          <span class="eyebrow">Inside the piece</span>
+          <h3 class="display text-2xl mt-3">What it covers</h3>
+          <ul class="mt-5 space-y-3 text-sm text-[color:var(--mist)]">
+            <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 mt-0.5 flex-none" style="color:var(--pine)"></i><span>The 2026 shift from CCUS demonstration into commercial deployment.</span></li>
+            <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 mt-0.5 flex-none" style="color:var(--pine)"></i><span>Why Korea's legal and ETS changes increase the need for credible cross-border storage pathways.</span></li>
+            <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 mt-0.5 flex-none" style="color:var(--pine)"></i><span>Why Alberta and Canada remain structurally well-placed despite slower flagship project timelines.</span></li>
+            <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 mt-0.5 flex-none" style="color:var(--pine)"></i><span>Four practical implications for Korea-Canada CCUS pilots, policy design, and investment structure.</span></li>
+          </ul>
+          <div class="mt-8 pt-6 border-t border-[color:var(--line)]">
+            <p class="text-sm text-[color:var(--mist)]">More original briefs will be added here as they are published.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<!-- ==================== CONTACT ==================== -->
+<section class="page" id="page-contact">
+  <section class="relative overflow-hidden border-b border-[color:var(--line)]">
+    <div class="absolute inset-0 grid-paper opacity-60"></div>
+    <div class="relative max-w-[1200px] mx-auto px-5 pt-20 pb-16">
+      <span class="eyebrow reveal" data-i18n="page.contact.eyebrow">Contact</span>
+      <h1 class="display text-5xl md:text-6xl mt-4 max-w-3xl reveal" data-d="1">Tell us what you're <span class="serif-it" style="color:var(--pine)">looking for.</span></h1>
+      <p class="text-lg text-[color:var(--mist)] mt-5 max-w-2xl reveal" data-d="2">We reply within one business day. Choose the best-fitting intent below.</p>
+    </div>
+  </section>
+
+  <section class="py-16">
+    <div class="max-w-[1200px] mx-auto px-5 grid md:grid-cols-[1.3fr,.7fr] gap-8">
+      <div class="card p-7 md:p-9 reveal">
+        <div class="flex flex-wrap gap-2 mb-7">
+          <button class="tab-btn active" data-form="sourcing">Sourcing request</button>
+          <button class="tab-btn" data-form="market">Market entry</button>
+          <button class="tab-btn" data-form="partner">Partnership</button>
+          <button class="tab-btn" data-form="press">Press</button>
+        </div>
+
+        <form class="form-panel space-y-4" data-form="sourcing" onsubmit="fauxSubmit(event)">
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div><label>Your name</label><input class="mt-1.5 w-full px-3 py-2.5" placeholder="Jane Doe" /></div>
+            <div><label>Company</label><input class="mt-1.5 w-full px-3 py-2.5" placeholder="e.g. a Canadian CCUS operator" /></div>
+            <div><label>Work email</label><input type="email" class="mt-1.5 w-full px-3 py-2.5" placeholder="name@company.ca" /></div>
+            <div><label>Sector</label><select class="mt-1.5 w-full px-3 py-2.5"><option>Clean Energy &amp; CCUS</option><option>Biotech &amp; Medical Devices</option><option>Other</option></select></div>
+          </div>
+          <div><label>What job does the Korean technology need to do?</label><textarea rows="4" class="mt-1.5 w-full px-3 py-2.5" placeholder="We need a high-nickel cathode process for our pilot line in Alberta…"></textarea></div>
+          <div class="flex items-center gap-2.5 text-xs text-[color:var(--mist)]"><input type="checkbox" class="w-4 h-4" /> I'd like an NDA before we talk.</div>
+          <div class="flex justify-end"><button class="btn-primary" type="submit">Send request <i data-lucide="send" class="w-4 h-4"></i></button></div>
+        </form>
+
+        <form class="form-panel hidden space-y-4" data-form="market" onsubmit="fauxSubmit(event)">
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div><label>Organization</label><input class="mt-1.5 w-full px-3 py-2.5" placeholder="Korean venture name" /></div>
+            <div><label>Contact name</label><input class="mt-1.5 w-full px-3 py-2.5" /></div>
+            <div><label>Email</label><input type="email" class="mt-1.5 w-full px-3 py-2.5" /></div>
+            <div><label>Sector</label><select class="mt-1.5 w-full px-3 py-2.5"><option>Clean Energy &amp; CCUS</option><option>Biotech &amp; Medical Devices</option></select></div>
+          </div>
+          <div><label>What does landing in Canada look like for you?</label><textarea rows="4" class="mt-1.5 w-full px-3 py-2.5"></textarea></div>
+          <div class="flex justify-end"><button class="btn-primary" type="submit">Send request <i data-lucide="send" class="w-4 h-4"></i></button></div>
+        </form>
+
+        <form class="form-panel hidden space-y-4" data-form="partner" onsubmit="fauxSubmit(event)">
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div><label>Organization</label><input class="mt-1.5 w-full px-3 py-2.5" /></div>
+            <div><label>Type</label><select class="mt-1.5 w-full px-3 py-2.5"><option>Fund / LP</option><option>Program (IRAP, KIAT, Mitacs…)</option><option>Law firm</option><option>Advisor</option></select></div>
+          </div>
+          <div><label>What would you like to explore?</label><textarea rows="4" class="mt-1.5 w-full px-3 py-2.5"></textarea></div>
+          <div class="flex justify-end"><button class="btn-primary" type="submit">Open conversation <i data-lucide="send" class="w-4 h-4"></i></button></div>
+        </form>
+
+        <form class="form-panel hidden space-y-4" data-form="press" onsubmit="fauxSubmit(event)">
+          <div><label>Publication</label><input class="mt-1.5 w-full px-3 py-2.5" /></div>
+          <div><label>Deadline &amp; topic</label><textarea rows="4" class="mt-1.5 w-full px-3 py-2.5"></textarea></div>
+          <div class="flex justify-end"><button class="btn-primary" type="submit">Send inquiry <i data-lucide="send" class="w-4 h-4"></i></button></div>
+        </form>
+
+        <div id="form-success" class="hidden text-center py-10">
+          <span class="w-14 h-14 mx-auto rounded-full flex items-center justify-center" style="background:var(--amber)"><i data-lucide="check" class="w-7 h-7" style="color:var(--ink)"></i></span>
+          <h3 class="display text-2xl mt-4" data-i18n="form.success.title">Got it — talk soon.</h3>
+          <p class="text-sm text-[color:var(--mist)] mt-1" data-i18n="form.success.sub">We reply within one business day.</p>
+        </div>
+      </div>
+
+      <aside class="space-y-4">
+        <div class="card p-6 reveal" data-d="1">
+          <div class="flex items-center gap-2 eyebrow" style="color:var(--mist)"><i data-lucide="calendar-check" class="w-4 h-4"></i> Fastest path</div>
+          <h4 class="display text-xl mt-2">Book a Discovery Call</h4>
+          <p class="text-sm text-[color:var(--mist)] mt-1.5">20 minutes. We clarify your brief, name the Korean archetypes that fit, and map your funding sequence.</p>
+          <button class="btn-pine w-full justify-center mt-4" onclick="alert('Scheduler embed goes here in the live site.')">Open the scheduler <i data-lucide="arrow-up-right" class="w-4 h-4"></i></button>
+        </div>
+        <div class="card p-6 reveal" data-d="2">
+          <div class="flex items-center gap-2 eyebrow" style="color:var(--mist)"><i data-lucide="map-pin" class="w-4 h-4"></i> Contact info</div>
+          <h4 class="font-semibold mt-2">Toronto · Seoul</h4>
+          <ul class="mt-3 space-y-2 text-sm text-[color:var(--mist)]">
+            <li><span class="font-medium" style="color:var(--ink)">P:</span> <a href="tel:+14374358730" class="hover:text-[color:var(--ink)]">+1 (437) 435-8730</a></li>
+            <li><span class="font-medium" style="color:var(--ink)">E:</span> <a href="mailto:info@narulanding.com" class="hover:text-[color:var(--ink)]">info@narulanding.com</a></li>
+            <li><span class="font-medium" style="color:var(--ink)">W:</span> <a href="https://narulanding.com" target="_blank" rel="noreferrer" class="hover:text-[color:var(--ink)]">narulanding.com</a></li>
+            <li><span class="font-medium" style="color:var(--ink)">CA:</span> 100 University Ave, Toronto, ON M5J 1V6, Canada</li>
+            <li><span class="font-medium" style="color:var(--ink)">KR:</span> 26-9 Hwigyeong-ro, Dongdaemun District, Seoul, South Korea</li>
+          </ul>
+        </div>
+        <div class="card-sand p-6 reveal" data-d="3">
+          <div class="flex items-center gap-2 eyebrow" style="color:var(--mist)"><i data-lucide="file-down" class="w-4 h-4"></i> Not ready to talk?</div>
+          <h4 class="font-semibold mt-2">Start with the guide</h4>
+          <p class="text-sm text-[color:var(--mist)] mt-1">The K-Tech Carbon Bridge — our free 10-page field guide.</p>
+          <button class="btn-ghost w-full justify-center mt-4" onclick="showPage('insights')"><i data-lucide="download" class="w-4 h-4"></i> Download free</button>
+        </div>
+      </aside>
+    </div>
+  </section>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="border-t border-[color:var(--line)] bg-[color:var(--paper-2)]">
+  <div class="max-w-[1200px] mx-auto px-5 py-14 grid md:grid-cols-5 gap-10">
+    <div class="md:col-span-2">
+      <div class="flex items-center gap-2.5">
+        <span class="crossing" style="height:12px"><span class="node end"></span><span class="seg" style="width:18px"></span><span class="node amber"></span><span class="seg" style="width:18px"></span><span class="node end"></span></span>
+        <span class="display text-lg font-semibold">Naru</span>
+      </div>
+      <p class="text-sm text-[color:var(--mist)] mt-3 max-w-xs" data-i18n="footer.tagline">Biotech &amp; clean energy innovation intermediary. Connecting solvers with seekers — sourced, funded, and landed.</p>
+      <form class="mt-5 flex gap-2 max-w-sm" onsubmit="event.preventDefault();this.querySelector('input').value='';this.querySelector('button').textContent='Subscribed ✓'">
+        <input type="email" placeholder="The monthly dispatch" data-i18n-placeholder="footer.dispatch" class="px-3 py-2.5 flex-1 text-sm" />
+        <button class="btn-pine text-sm" type="submit" data-i18n="cta.subscribe">Subscribe</button>
+      </form>
+    </div>
+    <div>
+      <h5 class="text-sm font-semibold" data-i18n="footer.company">Company</h5>
+      <ul class="mt-4 space-y-2 text-sm text-[color:var(--mist)]">
+        <li><span data-to="about" class="nav-to cursor-pointer hover:text-[color:var(--ink)]" data-i18n="nav.about">About</span></li>
+        <li><span data-to="insights" class="nav-to cursor-pointer hover:text-[color:var(--ink)]" data-i18n="nav.insights">Insights</span></li>
+        <li><span class="cursor-pointer hover:text-[color:var(--ink)]" data-i18n="footer.careers">Careers</span></li>
+      </ul>
+    </div>
+    <div>
+      <h5 class="text-sm font-semibold" data-i18n="nav.services">Services</h5>
+      <ul class="mt-4 space-y-2 text-sm text-[color:var(--mist)]">
+        <li><span data-to="services" class="nav-to cursor-pointer hover:text-[color:var(--ink)]" data-i18n="cta.allServices">All services</span></li>
+        <li><span data-to="how" class="nav-to cursor-pointer hover:text-[color:var(--ink)]" data-i18n="nav.how">How it works</span></li>
+        <li><span data-to="sectors" class="nav-to cursor-pointer hover:text-[color:var(--ink)]" data-i18n="nav.sectors">Sectors</span></li>
+        <li><span data-to="ecosystem" class="nav-to cursor-pointer hover:text-[color:var(--ink)]" data-i18n="nav.ecosystem">Ecosystem</span></li>
+      </ul>
+    </div>
+    <div>
+      <h5 class="text-sm font-semibold" data-i18n="footer.contact">Contact</h5>
+      <ul class="mt-4 space-y-2 text-sm text-[color:var(--mist)]">
+        <li><a href="tel:+14374358730" class="hover:text-[color:var(--ink)]">+1 (437) 435-8730</a></li>
+        <li><a href="mailto:info@narulanding.com" class="hover:text-[color:var(--ink)]">info@narulanding.com</a></li>
+        <li><a href="https://narulanding.com" target="_blank" rel="noreferrer" class="hover:text-[color:var(--ink)]">narulanding.com</a></li>
+        <li>CA: 100 University Ave, Toronto, ON M5J 1V6, Canada</li>
+        <li>KR: 26-9 Hwigyeong-ro, Dongdaemun District, Seoul, South Korea</li>
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-[color:var(--line)]">
+    <div class="max-w-[1200px] mx-auto px-5 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[color:var(--mist)]">
+      <p data-i18n="footer.copyright">© 2026 Naru — Biotech &amp; Clean Energy Innovation Intermediary.</p>
+      <div class="flex gap-5"><span class="cursor-pointer hover:text-[color:var(--ink)]" data-i18n="footer.privacy">Privacy</span><span class="cursor-pointer hover:text-[color:var(--ink)]" data-i18n="footer.terms">Terms</span></div>
+    </div>
+  </div>
+</footer>
+
+<script src="naru-i18n.js"></script>
+<script>
+  lucide.createIcons();
+
+  /* ---------- page routing ---------- */
+  const pages = document.querySelectorAll('.page');
+  const navLinks = document.querySelectorAll('.nav-link');
+  function showPage(id){
+    pages.forEach(p => p.classList.toggle('active', p.id === 'page-'+id));
+    navLinks.forEach(l => l.classList.toggle('active', l.dataset.to === id));
+    document.querySelectorAll('#proto-switcher button').forEach(b => b.classList.toggle('on', b.dataset.to === id));
+    window.scrollTo({top:0, behavior:'instant'});
+    setTimeout(()=>{
+      armReveals();
+      if(window.lucide) lucide.createIcons();
+      if(window.NaruI18n){
+        const lang = document.documentElement.lang === 'ko' ? 'ko' : 'en';
+        window.NaruI18n.applyLang(lang);
+      }
+    }, 40);
+  }
+  document.querySelectorAll('.nav-to, #proto-switcher button').forEach(el => {
+    el.addEventListener('click', e => { e.preventDefault(); const to = el.dataset.to; if(to) showPage(to); });
+  });
+
+  /* ---------- scroll reveals ---------- */
+  function armReveals(){
+    const els = document.querySelectorAll('.page.active .reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(en => { if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.12 });
+    els.forEach(el => { el.classList.remove('in'); io.observe(el); });
+  }
+  armReveals();
+
+  /* ---------- count-up stats ---------- */
+  function runCounters(){
+    document.querySelectorAll('.page.active .count-up').forEach(el => {
+      const target = parseFloat(el.dataset.target);
+      const dec = parseInt(el.dataset.dec);
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          if(en.isIntersecting){
+            let start = 0; const dur = 1100; const t0 = performance.now();
+            function tick(now){
+              const p = Math.min((now - t0)/dur, 1);
+              const eased = 1 - Math.pow(1 - p, 3);
+              el.textContent = (target * eased).toFixed(dec);
+              if(p < 1) requestAnimationFrame(tick);
+              else el.textContent = target.toFixed(dec);
+            }
+            requestAnimationFrame(tick);
+            io.unobserve(en.target);
+          }
+        });
+      }, { threshold: 0.6 });
+      io.observe(el);
+    });
+  }
+  runCounters();
+
+  /* ---------- tabs (sectors, insights, contact forms) ---------- */
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const group = btn.parentElement;
+      group.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const tab = btn.dataset.tab, form = btn.dataset.form;
+      if(tab){ document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('hidden', p.dataset.tab !== tab)); if(window.lucide) lucide.createIcons(); }
+      if(form){
+        document.getElementById('form-success').classList.add('hidden');
+        document.querySelectorAll('.form-panel').forEach(p => p.classList.toggle('hidden', p.dataset.form !== form));
+      }
+    });
+  });
+
+  /* ---------- LEAD MAGNET (home) faux flow ---------- */
+  function lmDownload(){
+    document.getElementById('lm-state-1').classList.add('hidden');
+    document.getElementById('lm-state-2').classList.remove('hidden');
+    if(window.lucide) lucide.createIcons();
+  }
+  function lmSubmit(){
+    document.getElementById('lm-state-2').classList.add('hidden');
+    document.getElementById('lm-state-3').classList.remove('hidden');
+    if(window.lucide) lucide.createIcons();
+    setTimeout(()=>{
+      document.getElementById('lm-state-3').classList.add('hidden');
+      document.getElementById('lm-state-4').classList.remove('hidden');
+      if(window.lucide) lucide.createIcons();
+    }, 1400);
+  }
+  /* ---------- LEAD MAGNET (insights) faux flow ---------- */
+  function lm2Submit(){
+    document.getElementById('lm2-state-1').classList.add('hidden');
+    document.getElementById('lm2-state-2').classList.remove('hidden');
+    if(window.lucide) lucide.createIcons();
+    setTimeout(()=>{
+      document.getElementById('lm2-state-2').classList.add('hidden');
+      document.getElementById('lm2-state-3').classList.remove('hidden');
+      if(window.lucide) lucide.createIcons();
+    }, 1400);
+  }
+
+  /* ---------- contact form faux submit ---------- */
+  function fauxSubmit(e){
+    e.preventDefault();
+    document.querySelectorAll('.form-panel').forEach(p => p.classList.add('hidden'));
+    document.getElementById('form-success').classList.remove('hidden');
+    if(window.lucide) lucide.createIcons();
+  }
+</script>
+</body>
+</html>
