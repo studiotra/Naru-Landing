@@ -523,10 +523,11 @@
             <!-- state 2: faux email capture -->
             <div id="lm-state-2" class="hidden">
               <div class="flex flex-col sm:flex-row gap-2 max-w-md">
-                <input type="email" placeholder="you@yourcompany.ca" class="px-4 py-3 flex-1" />
-                <button class="btn-primary" onclick="lmSubmit()">Send it to me <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+                <input type="email" id="lm-email" placeholder="you@yourcompany.ca" class="px-4 py-3 flex-1" autocomplete="email" />
+                <button type="button" class="btn-primary" onclick="lmSubmit()">Open the guide <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
               </div>
-              <p class="text-xs mt-3" style="color:rgba(251,248,243,.55)">We'll email the PDF and tag your interest area. Unsubscribe anytime.</p>
+              <p id="lm-email-error" class="hidden text-xs mt-2" style="color:#f4ab91">Please enter a valid work email address.</p>
+              <p class="text-xs mt-3" style="color:rgba(251,248,243,.55)">The PDF opens in a new tab. One follow-up email may follow — unsubscribe anytime.</p>
             </div>
             <!-- state 3: loading -->
             <div id="lm-state-3" class="hidden">
@@ -538,8 +539,11 @@
             <div id="lm-state-4" class="hidden">
               <div class="inline-flex items-center gap-2.5 px-5 py-3.5 rounded-lg" style="background:rgba(251,248,243,.1);border:1px solid rgba(217,78,38,.4)">
                 <span class="w-7 h-7 rounded-full flex items-center justify-center" style="background:var(--amber)"><i data-lucide="check" class="w-4 h-4" style="color:var(--ink)"></i></span>
-                <span class="text-sm font-semibold text-[#FBF8F3]">Sent — check your inbox. The PDF is on its way.</span>
+                <span class="text-sm font-semibold text-[#FBF8F3]">Your guide is open in a new tab.</span>
               </div>
+              <p class="text-xs mt-3" style="color:rgba(251,248,243,.55)">
+                <a href="assets/k-tech-carbon-bridge-guide.pdf" target="_blank" rel="noopener noreferrer" class="underline" style="color:var(--amber)">Open the PDF again</a>
+              </p>
             </div>
           </div>
         </div>
@@ -1046,10 +1050,11 @@
           <div class="mt-7" id="lm2-zone">
             <div id="lm2-state-1">
               <div class="flex flex-col sm:flex-row gap-2 max-w-md">
-                <input type="email" placeholder="you@yourcompany.ca" class="px-4 py-3 flex-1" />
-                <button class="btn-primary" onclick="lm2Submit()"><i data-lucide="download" class="w-4 h-4"></i> Get the guide</button>
+                <input type="email" id="lm2-email" placeholder="you@yourcompany.ca" class="px-4 py-3 flex-1" autocomplete="email" />
+                <button type="button" class="btn-primary" onclick="lm2Submit()"><i data-lucide="download" class="w-4 h-4"></i> Get the guide</button>
               </div>
-              <p class="text-xs mt-3" style="color:rgba(251,248,243,.55)">One follow-up email. NDA-grade discretion on whatever you tell us next.</p>
+              <p id="lm2-email-error" class="hidden text-xs mt-2" style="color:#f4ab91">Please enter a valid work email address.</p>
+              <p class="text-xs mt-3" style="color:rgba(251,248,243,.55)">The PDF opens in a new tab after you submit your email.</p>
             </div>
             <div id="lm2-state-2" class="hidden">
               <button class="btn-primary" disabled style="opacity:.85;cursor:default"><i data-lucide="loader-2" class="w-4 h-4 spin"></i> Preparing your download…</button>
@@ -1057,13 +1062,16 @@
             <div id="lm2-state-3" class="hidden">
               <div class="inline-flex items-center gap-2.5 px-5 py-3.5 rounded-lg" style="background:rgba(251,248,243,.1);border:1px solid rgba(217,78,38,.4)">
                 <span class="w-7 h-7 rounded-full flex items-center justify-center" style="background:var(--amber)"><i data-lucide="check" class="w-4 h-4" style="color:var(--ink)"></i></span>
-                <span class="text-sm font-semibold text-[#FBF8F3]">Sent — check your inbox.</span>
+                <span class="text-sm font-semibold text-[#FBF8F3]">Your guide is open in a new tab.</span>
               </div>
+              <p class="text-xs mt-3" style="color:rgba(251,248,243,.55)">
+                <a href="assets/k-tech-carbon-bridge-guide.pdf" target="_blank" rel="noopener noreferrer" class="underline" style="color:var(--amber)">Open the PDF again</a>
+              </p>
             </div>
           </div>
         </div>
         <div class="relative flex items-center justify-center p-10" style="background:linear-gradient(135deg,var(--pine-mid),var(--pine-deep))">
-          <div class="brochure brochure-shadow w-[210px] h-[273px] rounded-lg overflow-hidden" onclick="lm2Submit()">
+          <div class="brochure brochure-shadow w-[210px] h-[273px] rounded-lg overflow-hidden" onclick="document.getElementById('lm2-email')?.focus()">
             <div class="h-full flex flex-col p-5" style="background:linear-gradient(155deg,#FBF8F3,#F0E8DA)">
               <div class="crossing" style="height:9px"><span class="node end" style="width:9px;height:9px"></span><span class="seg" style="width:14px"></span><span class="node amber" style="width:7px;height:7px"></span><span class="seg" style="width:14px"></span><span class="node end" style="width:9px;height:9px"></span></div>
               <div class="eyebrow mt-4" style="font-size:.55rem">Lead Guide · CCUS Operators</div>
@@ -1338,33 +1346,77 @@
     });
   });
 
-  /* ---------- LEAD MAGNET (home) faux flow ---------- */
+  /* ---------- LEAD MAGNET: Canadian Operator's Guide PDF ---------- */
+  const LEAD_MAGNET_PDF = 'assets/k-tech-carbon-bridge-guide.pdf';
+
+  function isValidEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value).trim());
+  }
+
+  function deliverLeadMagnet(emailInput, errorEl, onStart, onSuccess) {
+    const email = emailInput?.value?.trim() || '';
+    if (!isValidEmail(email)) {
+      errorEl?.classList.remove('hidden');
+      emailInput?.setAttribute('aria-invalid', 'true');
+      emailInput?.focus();
+      return false;
+    }
+    errorEl?.classList.add('hidden');
+    emailInput?.removeAttribute('aria-invalid');
+    onStart?.();
+    window.open(LEAD_MAGNET_PDF, '_blank', 'noopener,noreferrer');
+    setTimeout(() => {
+      onSuccess?.();
+      if (window.lucide) lucide.createIcons();
+    }, 500);
+    return true;
+  }
+
   function lmDownload(){
     document.getElementById('lm-state-1').classList.add('hidden');
     document.getElementById('lm-state-2').classList.remove('hidden');
+    document.getElementById('lm-email')?.focus();
     if(window.lucide) lucide.createIcons();
   }
+
   function lmSubmit(){
-    document.getElementById('lm-state-2').classList.add('hidden');
-    document.getElementById('lm-state-3').classList.remove('hidden');
-    if(window.lucide) lucide.createIcons();
-    setTimeout(()=>{
-      document.getElementById('lm-state-3').classList.add('hidden');
-      document.getElementById('lm-state-4').classList.remove('hidden');
-      if(window.lucide) lucide.createIcons();
-    }, 1400);
+    deliverLeadMagnet(
+      document.getElementById('lm-email'),
+      document.getElementById('lm-email-error'),
+      () => {
+        document.getElementById('lm-state-2').classList.add('hidden');
+        document.getElementById('lm-state-3').classList.remove('hidden');
+        if(window.lucide) lucide.createIcons();
+      },
+      () => {
+        document.getElementById('lm-state-3').classList.add('hidden');
+        document.getElementById('lm-state-4').classList.remove('hidden');
+      }
+    );
   }
-  /* ---------- LEAD MAGNET (insights) faux flow ---------- */
+
   function lm2Submit(){
-    document.getElementById('lm2-state-1').classList.add('hidden');
-    document.getElementById('lm2-state-2').classList.remove('hidden');
-    if(window.lucide) lucide.createIcons();
-    setTimeout(()=>{
-      document.getElementById('lm2-state-2').classList.add('hidden');
-      document.getElementById('lm2-state-3').classList.remove('hidden');
-      if(window.lucide) lucide.createIcons();
-    }, 1400);
+    deliverLeadMagnet(
+      document.getElementById('lm2-email'),
+      document.getElementById('lm2-email-error'),
+      () => {
+        document.getElementById('lm2-state-1').classList.add('hidden');
+        document.getElementById('lm2-state-2').classList.remove('hidden');
+        if(window.lucide) lucide.createIcons();
+      },
+      () => {
+        document.getElementById('lm2-state-2').classList.add('hidden');
+        document.getElementById('lm2-state-3').classList.remove('hidden');
+      }
+    );
   }
+
+  document.getElementById('lm-email')?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); lmSubmit(); }
+  });
+  document.getElementById('lm2-email')?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); lm2Submit(); }
+  });
 
   /* ---------- contact form faux submit ---------- */
   function fauxSubmit(e){
