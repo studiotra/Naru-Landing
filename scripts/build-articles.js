@@ -159,7 +159,7 @@ function build() {
       thumbnail: normalizeThumbnail(data.thumbnail),
       thumbnailAlt: data.thumbnailAlt || data.title || '',
       featured: Boolean(data.featured),
-      url: `articles/${slug}`,
+      url: `articles/${slug}.html`,
     };
 
     fs.writeFileSync(path.join(OUT_DIR, `${slug}.html`), articlePageHtml(article, bodyHtml), 'utf8');

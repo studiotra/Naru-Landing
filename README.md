@@ -67,55 +67,51 @@ Set these environment variables in Vercel Project Settings:
 
 Then redeploy. The front-end posts to `/api/lead-magnet` and opens `assets/k-tech-carbon-bridge-guide.pdf` on success.
 
-## Article CMS (Supabase)
+## Article CMS (Decap)
 
-Articles are stored in **Supabase** and served at runtime — no redeploy needed when you publish.
+Upload and edit articles at **[narulanding.com/admin](https://narulanding.com/admin/)**.
 
-The Vercel **Supabase** integration should already inject:
+### How it works
 
-- `SUPABASE_URL` (or `NEXT_PUBLIC_SUPABASE_URL`)
-- `SUPABASE_ANON_KEY` (or `NEXT_PUBLIC_SUPABASE_ANON_KEY`)
+1. Sign in with GitHub at `/admin/`.
+2. Write articles in the CMS (markdown + metadata + thumbnail).
+3. Decap commits to `content/articles/*.md` in GitHub.
+4. Vercel runs `npm run build`, generating `articles/[slug].html` and `data/articles.json`.
+5. The site updates after deploy (~1–2 min).
 
-For local seeding, also set `SUPABASE_SERVICE_ROLE_KEY` (Supabase → Project Settings → API).
+### One-time GitHub OAuth setup (Vercel)
 
-### One-time database setup
+The Netlify OAuth bridge (`api.netlify.com`) only works for Netlify-hosted sites. This project uses **`api/oauth.js`** on Vercel instead.
 
-1. In [Supabase](https://supabase.com/dashboard) → **SQL Editor**, run the contents of `supabase/schema.sql`.
-2. Seed your first article from the repo markdown (optional):
+1. **GitHub → Settings → Developer settings → OAuth Apps → New OAuth App**
+   - **Application name:** Naru CMS
+   - **Homepage URL:** `https://narulanding.com`
+   - **Authorization callback URL:** `https://narulanding.com/api/oauth`
+2. Copy the **Client ID** and generate a **Client secret**.
+3. In **Vercel → Project → Settings → Environment Variables**, add:
+   - `GITHUB_OAUTH_CLIENT_ID`
+   - `GITHUB_OAUTH_CLIENT_SECRET`
+4. Redeploy, then open `/admin/` and log in with GitHub.
+
+Your GitHub user needs **write access** to `studiotra/Naru-Landing`.
+
+### Local preview
 
 ```bash
-cd github-publish
 npm install
-SUPABASE_URL="..." SUPABASE_SERVICE_ROLE_KEY="..." npm run seed:articles
+npm run build
+npm run dev
 ```
 
-Or add rows manually in **Table Editor** → `articles`.
+Open `http://localhost:8080` and `http://localhost:8080/admin/` (OAuth only works on the deployed URL unless you add a second OAuth callback for localhost).
 
-### Managing content
+### New article checklist
 
-Open **Supabase → Table Editor → `articles`**. Fields:
-
-| Column | Notes |
-|--------|--------|
-| `slug` | URL path, e.g. `my-new-post` → `/articles/my-new-post` |
-| `title`, `excerpt`, `category`, `author`, `read_time` | Listing + hero |
-| `body` | Markdown |
-| `thumbnail` | Path like `assets/my-thumb.png` or full URL |
-| `featured` | Homepage teaser |
-| `published` | Must be `true` to appear on the site |
-| `published_at` | Shown date |
-
-Changes go live within about a minute (API cache). No git commit required.
-
-### How the site loads articles
-
-- **Listings:** `GET /api/articles` → home + insights sections
-- **Article page:** `/articles/[slug]` → `articles/view.html` + `GET /api/article?slug=...`
-- **Fallback:** If Supabase is empty or unavailable, the build still generates `data/articles.json` from `content/articles/*.md`
-
-### Legacy Decap CMS (optional)
-
-`/admin/` (Decap + GitHub) still works if you prefer git-based drafts. For production, use Supabase as the source of truth and set `published = true` there after editing.
+- Title, slug, excerpt, category, date
+- Thumbnail (saved under `assets/uploads/`)
+- Body in markdown
+- **Featured on homepage** if needed
+- Publish in CMS → wait for Vercel deploy
 
 ## Do not upload
 

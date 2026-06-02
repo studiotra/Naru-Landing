@@ -7,21 +7,6 @@
       .replace(/"/g, '&quot;');
   }
 
-  async function loadArticles() {
-    try {
-      const response = await fetch('/api/articles');
-      if (response.ok) {
-        const articles = await response.json();
-        if (Array.isArray(articles) && articles.length) return articles;
-      }
-    } catch (error) {
-      console.warn('Supabase articles API unavailable', error);
-    }
-
-    const fallback = await fetch('/data/articles.json');
-    return fallback.json();
-  }
-
   function cardHtml(article, layout) {
     const title = escapeHtml(article.title);
     const excerpt = escapeHtml(article.excerpt || '');
@@ -72,7 +57,8 @@
     if (!homeEl && !insightsEl) return;
 
     try {
-      const articles = await loadArticles();
+      const response = await fetch('/data/articles.json');
+      const articles = await response.json();
       if (!Array.isArray(articles) || !articles.length) return;
 
       const featured = articles.find((a) => a.featured) || articles[0];
