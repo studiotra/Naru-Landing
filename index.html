@@ -6,6 +6,7 @@
 <title>Naru — Biotech &amp; Clean Energy Innovation Intermediary</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="colors_and_type.css">
+<link rel="stylesheet" href="assets/site-chrome.css">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
   :root{
@@ -143,15 +144,15 @@
 <body class="min-h-screen">
 
 <!-- ============ NAV ============ -->
-<header class="sticky top-0 z-40 border-b border-[color:var(--line)] bg-[rgba(252,251,248,.86)] backdrop-blur-xl">
-  <div class="max-w-[1200px] mx-auto px-5 h-[70px] flex items-center gap-8">
-    <a data-to="home" class="nav-to flex items-center gap-2.5 cursor-pointer">
+<header id="site-header" class="site-header sticky top-0 z-40 border-b border-[color:var(--line)] bg-[rgba(252,251,248,.86)] backdrop-blur-xl">
+  <div class="max-w-[1200px] mx-auto px-5 h-[70px] flex items-center gap-4">
+    <a data-to="home" class="nav-to flex items-center gap-2.5 cursor-pointer shrink-0">
       <span class="crossing" style="height:13px">
         <span class="node end"></span><span class="seg" style="width:22px"></span><span class="node amber"></span><span class="seg" style="width:22px"></span><span class="node end"></span>
       </span>
       <span class="display text-xl font-semibold tracking-tight">Naru</span>
     </a>
-    <nav class="hidden md:flex items-center gap-7" id="main-nav">
+    <nav class="hidden md:flex items-center gap-7 flex-1" id="main-nav" aria-label="Main">
       <span data-to="services" class="nav-to nav-link" data-i18n="nav.services">Services</span>
       <span data-to="how" class="nav-to nav-link" data-i18n="nav.how">How It Works</span>
       <span data-to="sectors" class="nav-to nav-link" data-i18n="nav.sectors">Sectors</span>
@@ -159,14 +160,36 @@
       <span data-to="insights" class="nav-to nav-link" data-i18n="nav.insights">Insights</span>
       <span data-to="about" class="nav-to nav-link" data-i18n="nav.about">About</span>
     </nav>
-    <div class="ml-auto flex items-center gap-3">
+    <div class="ml-auto flex items-center gap-2 sm:gap-3">
       <div class="hidden sm:flex items-center gap-1 text-xs text-[color:var(--mist)] border border-[color:var(--line)] rounded-full p-0.5">
         <button type="button" class="lang-btn px-2.5 py-1 rounded-full bg-[color:var(--ink)] text-[#FBF8F3] font-semibold" data-lang="en">EN</button>
         <button type="button" class="lang-btn px-2.5 py-1 rounded-full" data-lang="ko">KO</button>
       </div>
       <a data-to="contact" class="nav-to btn-primary text-sm hidden sm:inline-flex"><span data-i18n="cta.discovery">Book a Discovery Call</span> <i data-lucide="arrow-up-right" class="w-4 h-4"></i></a>
+      <button type="button" class="mobile-nav-toggle md:hidden" aria-expanded="false" aria-controls="mobile-nav-panel" aria-label="Open menu">
+        <i data-lucide="menu" class="w-6 h-6" data-menu-icon></i>
+        <i data-lucide="x" class="w-6 h-6 hidden" data-close-icon></i>
+      </button>
     </div>
   </div>
+  <div id="mobile-nav-panel" class="mobile-nav-panel md:hidden" hidden>
+    <nav class="mobile-nav-links" aria-label="Mobile">
+      <span data-to="services" class="nav-to mobile-nav-link" data-i18n="nav.services">Services</span>
+      <span data-to="how" class="nav-to mobile-nav-link" data-i18n="nav.how">How It Works</span>
+      <span data-to="sectors" class="nav-to mobile-nav-link" data-i18n="nav.sectors">Sectors</span>
+      <span data-to="ecosystem" class="nav-to mobile-nav-link" data-i18n="nav.ecosystem">Ecosystem</span>
+      <span data-to="insights" class="nav-to mobile-nav-link" data-i18n="nav.insights">Insights</span>
+      <span data-to="about" class="nav-to mobile-nav-link" data-i18n="nav.about">About</span>
+    </nav>
+    <div class="mobile-nav-footer">
+      <div class="flex items-center gap-1 text-xs text-[color:var(--mist)] border border-[color:var(--line)] rounded-full p-0.5 sm:hidden">
+        <button type="button" class="lang-btn px-2.5 py-1 rounded-full bg-[color:var(--ink)] text-[#FBF8F3] font-semibold" data-lang="en">EN</button>
+        <button type="button" class="lang-btn px-2.5 py-1 rounded-full" data-lang="ko">KO</button>
+      </div>
+      <a data-to="contact" class="nav-to btn-primary w-full justify-center sm:hidden"><span data-i18n="cta.discovery">Book a Discovery Call</span> <i data-lucide="arrow-up-right" class="w-4 h-4"></i></a>
+    </div>
+  </div>
+  <div class="mobile-nav-backdrop md:hidden" hidden aria-hidden="true"></div>
 </header>
 
 <main>
@@ -1224,6 +1247,7 @@
 </footer>
 
 <script src="naru-i18n.js"></script>
+<script src="scripts/mobile-nav.js"></script>
 <script src="scripts/render-articles.js"></script>
 <script>
   lucide.createIcons();
@@ -1234,6 +1258,9 @@
   function showPage(id, updateHash){
     pages.forEach(p => p.classList.toggle('active', p.id === 'page-'+id));
     navLinks.forEach(l => l.classList.toggle('active', l.dataset.to === id));
+    document.querySelectorAll('.mobile-nav-link.nav-to').forEach(l => {
+      l.classList.toggle('mobile-nav-link-active', l.dataset.to === id);
+    });
     document.querySelectorAll('#proto-switcher button').forEach(b => b.classList.toggle('on', b.dataset.to === id));
     if(updateHash !== false && id) history.replaceState(null, '', '#'+id);
     window.scrollTo({top:0, behavior:'instant'});

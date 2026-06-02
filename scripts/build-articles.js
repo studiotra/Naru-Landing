@@ -131,6 +131,7 @@ ${siteHeaderHtml()}
   </footer>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script src="../naru-i18n.js"></script>
+<script src="../scripts/mobile-nav.js"></script>
 <script src="../scripts/article-page.js"></script>
 </body>
 </html>`;
