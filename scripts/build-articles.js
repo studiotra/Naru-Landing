@@ -87,7 +87,6 @@ ${siteHeaderHtml()}
           <div>
             <div class="eyebrow">${category} · ${dateLabel}</div>
             <h1 class="display">${title}</h1>
-            <p class="dek">${dek}</p>
             <div class="meta">
               <span>${author}</span>
               ${readTime ? `<span>${readTime}</span>` : ''}
