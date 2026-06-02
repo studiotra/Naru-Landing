@@ -12,5 +12,19 @@
     "thumbnailAlt": "Bridging the Pacific thumbnail showing Korea and Canada clean energy collaboration",
     "featured": true,
     "url": "articles/bridging-the-pacific-ccus-signals-2026.html"
+  },
+  {
+    "slug": "the-83-percent-problem",
+    "title": "The 83% Problem: Why Korea's Synthetic Biology Breakthrough Belongs in Canada",
+    "excerpt": "Korea's Synthetic Biology Promotion Act (world-first, effective 2026-04-23) vs. 83% K-Biofoundry budget cut",
+    "category": "Policy analysis",
+    "date": "2026-05-18T00:00:00.000Z",
+    "dateLabel": "May 2026",
+    "readTime": "9 min read",
+    "author": "Naru Desk",
+    "thumbnail": "/assets/bridging-the-pacific-thumbnail.png",
+    "thumbnailAlt": "The 83% Problem: Why Korea's Synthetic Biology Breakthrough Belongs in Canada",
+    "featured": true,
+    "url": "articles/the-83-percent-problem.html"
   }
 ]
