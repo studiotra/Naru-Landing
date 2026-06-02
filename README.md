@@ -60,12 +60,17 @@ Commit and push to GitHub; Pages redeploys automatically.
 
 This repo now includes `api/lead-magnet.js` (a Vercel Serverless Function) to store lead-magnet emails in Resend before opening the PDF.
 
-Set these environment variables in Vercel Project Settings:
+Set these environment variables in **Vercel → naru-landing → Settings → Environment Variables** (Production), then redeploy:
 
-- `RESEND_API_KEY`
-- `RESEND_AUDIENCE_ID`
+| Variable | Where to find it |
+|----------|------------------|
+| `RESEND_API_KEY` | [Resend → API Keys](https://resend.com/api-keys) |
+| `RESEND_SEGMENT_ID` | Resend → **Segments** → your list → copy ID (preferred) |
+| `RESEND_AUDIENCE_ID` | Legacy audiences only — same ID works as fallback |
 
-Then redeploy. The front-end posts to `/api/lead-magnet` and opens `assets/k-tech-carbon-bridge-guide.pdf` on success.
+Without these keys the guide PDF still downloads, but emails are not saved until configured.
+
+The front-end posts to `/api/lead-magnet` and opens `assets/k-tech-carbon-bridge-guide.pdf` on success.
 
 ## Vercel Web Analytics
 
