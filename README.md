@@ -67,6 +67,16 @@ Set these environment variables in Vercel Project Settings:
 
 Then redeploy. The front-end posts to `/api/lead-magnet` and opens `assets/k-tech-carbon-bridge-guide.pdf` on success.
 
+## Vercel Web Analytics
+
+The site includes the [Vercel Web Analytics](https://vercel.com/docs/analytics/quickstart) script on all public pages (`partials/vercel-analytics.html`).
+
+1. In Vercel → **naru-landing** → **Analytics** → enable **Web Analytics**.
+2. Redeploy so the `/_vercel/insights/script.js` endpoint is active.
+3. View traffic at [your project analytics](https://vercel.com/studiotrapetra-5132s-projects/naru-landing/analytics).
+
+No npm package required for this static HTML setup.
+
 ## Article CMS (Decap)
 
 Upload and edit articles at **[narulanding.com/admin](https://narulanding.com/admin/)**.

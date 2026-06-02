@@ -8,10 +8,15 @@ const CONTENT_DIR = path.join(ROOT, 'content', 'articles');
 const OUT_DIR = path.join(ROOT, 'articles');
 const DATA_DIR = path.join(ROOT, 'data');
 const SITE_HEADER = path.join(ROOT, 'partials', 'site-header.html');
+const VERCEL_ANALYTICS = path.join(ROOT, 'partials', 'vercel-analytics.html');
 
 function siteHeaderHtml() {
   const partial = fs.readFileSync(SITE_HEADER, 'utf8');
   return partial.replace(/\{\{ROOT\}\}/g, '../');
+}
+
+function vercelAnalyticsHtml() {
+  return fs.readFileSync(VERCEL_ANALYTICS, 'utf8').trim();
 }
 
 marked.setOptions({ gfm: true, breaks: false });
@@ -76,6 +81,7 @@ ${ogImage ? `<meta property="og:image" content="${ogImage}" />` : ''}
 <link rel="stylesheet" href="../colors_and_type.css" />
 <link rel="stylesheet" href="../assets/site-chrome.css" />
 <link rel="stylesheet" href="../assets/article.css" />
+${vercelAnalyticsHtml()}
 </head>
 <body class="min-h-screen">
 ${siteHeaderHtml()}
