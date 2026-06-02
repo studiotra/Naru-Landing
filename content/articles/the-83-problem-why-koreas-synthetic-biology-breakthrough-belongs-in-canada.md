@@ -7,7 +7,7 @@ category: Policy analysis
 date: 2026-05-18
 readTime: 9 min read
 author: Naru Desk
-thumbnail: assets/bridging-the-pacific-thumbnail.png
+thumbnail: /assets/uploads/56135.png
 thumbnailAlt: ""
 featured: true
 ---
