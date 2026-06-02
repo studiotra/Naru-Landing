@@ -54,21 +54,34 @@ export default async function handler(req, res) {
     return res.status(400).end(message);
   }
 
-  const payload = JSON.stringify({
+  const authPayload = JSON.stringify({
     token: tokenData.access_token,
     provider: 'github',
   });
-  const postMessage = `authorization:github:success:${payload}`;
 
+  // Decap CMS handshake: announce auth, wait for parent reply, then send token.
+  // See https://gist.github.com/lukas-h/33739fc3e01d8c3c16f4dddff500116d
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
   return res.status(200).send(`<!doctype html>
-<html lang="en"><body><script>
+<html lang="en"><head><title>Authorizing…</title></head><body>
+<script>
 (function () {
-  var msg = ${JSON.stringify(postMessage)};
-  if (window.opener) {
-    window.opener.postMessage(msg, '*');
+  var content = ${authPayload};
+  function receiveMessage(message) {
+    if (!window.opener) return;
+    window.opener.postMessage(
+      'authorization:github:success:' + JSON.stringify(content),
+      message.origin
+    );
+    window.removeEventListener('message', receiveMessage, false);
+    window.close();
   }
-  window.close();
+  window.addEventListener('message', receiveMessage, false);
+  if (window.opener) {
+    window.opener.postMessage('authorizing:github', '*');
+  }
 })();
-</script><p>Signing in… You can close this window.</p></body></html>`);
+</script>
+<p>Signing in…</p>
+</body></html>`);
 }
