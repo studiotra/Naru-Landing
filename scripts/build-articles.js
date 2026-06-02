@@ -7,6 +7,12 @@ const ROOT = path.join(__dirname, '..');
 const CONTENT_DIR = path.join(ROOT, 'content', 'articles');
 const OUT_DIR = path.join(ROOT, 'articles');
 const DATA_DIR = path.join(ROOT, 'data');
+const SITE_HEADER = path.join(ROOT, 'partials', 'site-header.html');
+
+function siteHeaderHtml() {
+  const partial = fs.readFileSync(SITE_HEADER, 'utf8');
+  return partial.replace(/\{\{ROOT\}\}/g, '../');
+}
 
 marked.setOptions({ gfm: true, breaks: false });
 
@@ -66,16 +72,13 @@ function articlePageHtml(article, bodyHtml) {
 <meta property="og:description" content="${dek}" />
 ${ogImage ? `<meta property="og:image" content="${ogImage}" />` : ''}
 <meta property="og:type" content="article" />
+<script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="../assets/site-chrome.css" />
 <link rel="stylesheet" href="../assets/article.css" />
 </head>
-<body>
-  <header class="topbar">
-    <div class="shell topbar-inner">
-      <a class="brand" href="../index.html">Naru</a>
-      <a class="back-link" href="../index.html#insights">Back to insights</a>
-    </div>
-  </header>
+<body class="min-h-screen">
+${siteHeaderHtml()}
 
   <main>
     <section class="hero">
@@ -104,7 +107,7 @@ ${ogImage ? `<meta property="og:image" content="${ogImage}" />` : ''}
             <p>Naru supports Korean ventures entering Canada and Canadian partners seeking Korean technology and capital across clean energy and biotech.</p>
             <div class="cta-actions">
               <a class="btn btn-primary" href="mailto:info@narulanding.com">Contact Naru</a>
-              <a class="btn btn-secondary" href="../index.html">View main site</a>
+              <a class="btn btn-secondary" href="../index.html#insights">All insights</a>
             </div>
           </section>
         </article>
@@ -127,6 +130,9 @@ ${ogImage ? `<meta property="og:image" content="${ogImage}" />` : ''}
   <footer class="footer">
     <div class="shell">Naru — Korea-Canada market entry, partnership, and cross-border commercialization.</div>
   </footer>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="../naru-i18n.js"></script>
+<script src="../scripts/article-page.js"></script>
 </body>
 </html>`;
 }

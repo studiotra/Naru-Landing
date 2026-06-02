@@ -1,0 +1,27 @@
+/* Shared header chrome (main site nav on article pages) */
+:root{
+  --paper: var(--paper-0);
+  --ink: var(--ink-1);
+  --pine: var(--sage-ink);
+  --pine-mid: var(--sage);
+  --amber: var(--clay);
+  --amber-deep: var(--clay-ink);
+  --mist: var(--ink-3);
+  --line: var(--paper-3);
+}
+.crossing{display:inline-flex;align-items:center;gap:7px;height:14px}
+.crossing .node{width:9px;height:9px;border-radius:50%;background:var(--pine);flex:none}
+.crossing .node.end{width:13px;height:13px}
+.crossing .node.amber{background:var(--amber)}
+.crossing .seg{height:1.5px;background:var(--line);width:34px;position:relative;overflow:visible}
+.crossing .seg::after{content:"";position:absolute;top:50%;left:0;width:7px;height:7px;border-radius:50%;background:var(--amber);transform:translate(-50%,-50%);animation:travel 3.4s cubic-bezier(.6,.05,.4,.95) infinite}
+.crossing .seg:nth-child(4)::after{animation-delay:.4s}
+@keyframes travel{0%{left:0;opacity:0}10%{opacity:1}90%{opacity:1}100%{left:100%;opacity:0}}
+.nav-link{color:var(--mist);font-size:.9rem;font-weight:500;position:relative;padding:.3rem 0;transition:color .18s ease;text-decoration:none}
+.nav-link:hover{color:var(--ink)}
+.nav-link-active{color:var(--ink)}
+.nav-link-active::after{content:"";position:absolute;left:0;right:0;bottom:-3px;height:2px;background:var(--amber);border-radius:2px}
+.btn-primary{background:var(--amber);color:#FBF8F3;border-radius:12px;padding:.85rem 1.4rem;font-weight:500;font-size:.92rem;display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;border:none;transition:transform .18s ease,box-shadow .18s ease,background .18s ease;cursor:pointer;box-shadow:0 1px 2px rgba(31,26,23,.10)}
+.btn-primary:hover{transform:translateY(-1px);background:var(--amber-deep);box-shadow:0 8px 18px -8px rgba(217,78,38,.45)}
+.display{font-family:var(--font-serif);letter-spacing:.04em;font-weight:var(--w-regular)}
+html[lang="ko"] .nav-link{word-break:keep-all}

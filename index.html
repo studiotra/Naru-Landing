@@ -1231,10 +1231,11 @@
   /* ---------- page routing ---------- */
   const pages = document.querySelectorAll('.page');
   const navLinks = document.querySelectorAll('.nav-link');
-  function showPage(id){
+  function showPage(id, updateHash){
     pages.forEach(p => p.classList.toggle('active', p.id === 'page-'+id));
     navLinks.forEach(l => l.classList.toggle('active', l.dataset.to === id));
     document.querySelectorAll('#proto-switcher button').forEach(b => b.classList.toggle('on', b.dataset.to === id));
+    if(updateHash !== false && id) history.replaceState(null, '', '#'+id);
     window.scrollTo({top:0, behavior:'instant'});
     setTimeout(()=>{
       armReveals();
@@ -1248,6 +1249,12 @@
   document.querySelectorAll('.nav-to, #proto-switcher button').forEach(el => {
     el.addEventListener('click', e => { e.preventDefault(); const to = el.dataset.to; if(to) showPage(to); });
   });
+  function pageFromHash(){
+    const id = (location.hash || '').replace(/^#/, '');
+    if(id && document.getElementById('page-'+id)) showPage(id, false);
+  }
+  pageFromHash();
+  window.addEventListener('hashchange', pageFromHash);
 
   /* ---------- scroll reveals ---------- */
   function armReveals(){
