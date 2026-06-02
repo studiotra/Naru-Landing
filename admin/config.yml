@@ -1,0 +1,72 @@
+backend:
+  name: github
+  repo: studiotra/Naru-Landing
+  branch: main
+
+media_folder: assets/uploads
+public_folder: /assets/uploads
+
+publish_mode: editorial_workflow
+
+site_url: https://narulanding.com
+display_url: https://narulanding.com
+logo_url: https://narulanding.com/assets/bridging-the-pacific-thumbnail.png
+
+collections:
+  - name: articles
+    label: Articles
+    label_singular: Article
+    folder: content/articles
+    create: true
+    slug: "{{slug}}"
+    extension: md
+    format: frontmatter
+    summary: "{{category}} · {{date}}"
+    fields:
+      - label: Title
+        name: title
+        widget: string
+      - label: URL slug
+        name: slug
+        widget: string
+        hint: "Lowercase with hyphens, e.g. korea-canada-ccus-2026"
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', 'Use lowercase letters, numbers, and hyphens only']
+      - label: Excerpt
+        name: excerpt
+        widget: text
+      - label: Category
+        name: category
+        widget: select
+        options:
+          - Policy analysis
+          - Playbook
+          - Case study
+          - Policy note
+      - label: Publish date
+        name: date
+        widget: datetime
+        date_format: true
+        time_format: false
+      - label: Read time
+        name: readTime
+        widget: string
+        default: "8 min read"
+      - label: Author
+        name: author
+        widget: string
+        default: Naru Desk
+      - label: Featured image
+        name: thumbnail
+        widget: image
+        required: false
+      - label: Image alt text
+        name: thumbnailAlt
+        widget: string
+        required: false
+      - label: Featured on homepage
+        name: featured
+        widget: boolean
+        default: false
+      - label: Body
+        name: body
+        widget: markdown

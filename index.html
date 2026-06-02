@@ -582,26 +582,7 @@
         </div>
         <a data-to="insights" class="nav-to link-arrow reveal" data-d="1"><span data-i18n="cta.allArticles">All articles</span> <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
       </div>
-      <div class="grid gap-5">
-        <a href="articles/bridging-the-pacific-ccus-signals-2026.html" class="card card-hover overflow-hidden reveal grid lg:grid-cols-[1.05fr,.95fr]" data-d="1">
-          <div class="min-h-[260px] bg-[color:var(--paper-2)]">
-            <img src="assets/bridging-the-pacific-thumbnail.png" alt="Bridging the Pacific article thumbnail" class="w-full h-full object-cover">
-          </div>
-          <div class="p-6 md:p-8 flex flex-col justify-center">
-            <div class="flex flex-wrap items-center gap-2 text-xs text-[color:var(--mist)]">
-              <span class="chip">Policy analysis</span>
-              <span>May 2026</span>
-              <span>9 min read</span>
-            </div>
-            <h3 class="display text-2xl mt-4 leading-tight">Bridging the Pacific: What 2026 CCUS Signals Mean for Korea-Canada Clean Energy Collaboration</h3>
-            <p class="text-sm text-[color:var(--mist)] mt-3 leading-relaxed">A new cross-border briefing on why Korea's policy shift, Canada's infrastructure position, and the global move from demonstration to deployment make this a live Korea-Canada CCUS window.</p>
-            <div class="mt-5 inline-flex items-center gap-2 text-sm font-semibold" style="color:var(--pine)">
-              Read article
-              <i data-lucide="arrow-right" class="w-4 h-4"></i>
-            </div>
-          </div>
-        </a>
-      </div>
+      <div id="home-articles-list" class="grid gap-5"></div>
     </div>
   </section>
 
@@ -1090,37 +1071,7 @@
   <!-- article grid -->
   <section class="pb-24">
     <div class="max-w-[1200px] mx-auto px-5">
-      <div class="grid lg:grid-cols-[1.1fr,.9fr] gap-5">
-        <a href="articles/bridging-the-pacific-ccus-signals-2026.html" class="card card-hover overflow-hidden reveal" data-d="1">
-          <img src="assets/bridging-the-pacific-thumbnail.png" alt="Bridging the Pacific article thumbnail" class="w-full h-64 md:h-80 object-cover">
-          <div class="p-6 md:p-8">
-            <div class="flex flex-wrap items-center gap-2 text-xs text-[color:var(--mist)]">
-              <span class="chip">Policy analysis</span>
-              <span>May 2026</span>
-              <span>9 min read</span>
-            </div>
-            <h3 class="display text-2xl md:text-3xl mt-4 leading-tight">Bridging the Pacific: What 2026 CCUS Signals Mean for Korea-Canada Clean Energy Collaboration</h3>
-            <p class="text-sm text-[color:var(--mist)] mt-4 leading-relaxed">This briefing tracks the policy and market signals that matter most right now: Korea's inclusion of CCUS in emissions accounting, Canada's scale and storage advantage, and the narrow bilateral window created by a broader North American reset.</p>
-            <div class="mt-6 inline-flex items-center gap-2 text-sm font-semibold" style="color:var(--pine)">
-              Open article
-              <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-            </div>
-          </div>
-        </a>
-        <div class="card p-6 md:p-8 reveal" data-d="2">
-          <span class="eyebrow">Inside the piece</span>
-          <h3 class="display text-2xl mt-3">What it covers</h3>
-          <ul class="mt-5 space-y-3 text-sm text-[color:var(--mist)]">
-            <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 mt-0.5 flex-none" style="color:var(--pine)"></i><span>The 2026 shift from CCUS demonstration into commercial deployment.</span></li>
-            <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 mt-0.5 flex-none" style="color:var(--pine)"></i><span>Why Korea's legal and ETS changes increase the need for credible cross-border storage pathways.</span></li>
-            <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 mt-0.5 flex-none" style="color:var(--pine)"></i><span>Why Alberta and Canada remain structurally well-placed despite slower flagship project timelines.</span></li>
-            <li class="flex gap-3"><i data-lucide="check" class="w-4 h-4 mt-0.5 flex-none" style="color:var(--pine)"></i><span>Four practical implications for Korea-Canada CCUS pilots, policy design, and investment structure.</span></li>
-          </ul>
-          <div class="mt-8 pt-6 border-t border-[color:var(--line)]">
-            <p class="text-sm text-[color:var(--mist)]">More original briefs will be added here as they are published.</p>
-          </div>
-        </div>
-      </div>
+      <div id="insights-articles-list" class="grid lg:grid-cols-[1.1fr,.9fr] gap-5"></div>
     </div>
   </section>
 </section>
@@ -1273,6 +1224,7 @@
 </footer>
 
 <script src="naru-i18n.js"></script>
+<script src="scripts/render-articles.js"></script>
 <script>
   lucide.createIcons();
 

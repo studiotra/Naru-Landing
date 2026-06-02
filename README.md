@@ -58,6 +58,50 @@ Set these environment variables in Vercel Project Settings:
 
 Then redeploy. The front-end posts to `/api/lead-magnet` and opens `assets/k-tech-carbon-bridge-guide.pdf` on success.
 
+## Article CMS (Decap)
+
+Upload and edit articles at:
+
+**`https://narulanding.com/admin/`** (or `/admin/` on your Vercel preview URL)
+
+### How it works
+
+1. You write articles in the CMS (markdown + metadata + thumbnail).
+2. Decap commits files to `content/articles/*.md` in GitHub.
+3. Vercel runs `npm run build`, which generates:
+   - `articles/[slug].html` — public article pages
+   - `data/articles.json` — listing for the Insights section
+4. The site updates automatically after deploy.
+
+### One-time CMS setup (GitHub login)
+
+Decap needs GitHub OAuth to save articles to your repo:
+
+1. Create a **GitHub OAuth App** (Settings → Developer settings → OAuth Apps).
+2. **Homepage URL:** `https://narulanding.com`
+3. **Callback URL:** `https://api.netlify.com/auth/done`  
+   (Netlify’s free OAuth bridge works with Vercel-hosted sites — see [Decap docs](https://decapcms.org/docs/authentication-backends/))
+4. Open `/admin/` and sign in with GitHub when prompted.
+
+### Local preview
+
+```bash
+cd github-publish
+npm install
+npm run build
+npm run dev
+```
+
+Then open `http://localhost:8080` and `http://localhost:8080/admin/`.
+
+### New article checklist
+
+- Title, slug, excerpt, category, date
+- Upload thumbnail (saved under `assets/uploads/`)
+- Write body in markdown
+- Set **Featured on homepage** if it should appear on the home Insights teaser
+- Publish in CMS → wait for Vercel deploy (~1–2 min)
+
 ## Do not upload
 
 - `recovery-codes.txt`, `.pptx`, `.docx`, meeting notes, or draft HTML variants (`Naru Landing KO.html`, etc.)
