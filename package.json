@@ -3,9 +3,11 @@
   "private": true,
   "scripts": {
     "build": "node scripts/build-articles.js",
-    "dev": "npm run build && npx --yes serve . -p 8080"
+    "dev": "npm run build && npx --yes serve . -p 8080",
+    "seed:articles": "node scripts/seed-supabase-article.js"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.49.8",
     "gray-matter": "^4.0.3",
     "marked": "^15.0.6"
   }

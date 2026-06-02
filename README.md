@@ -67,49 +67,55 @@ Set these environment variables in Vercel Project Settings:
 
 Then redeploy. The front-end posts to `/api/lead-magnet` and opens `assets/k-tech-carbon-bridge-guide.pdf` on success.
 
-## Article CMS (Decap)
+## Article CMS (Supabase)
 
-Upload and edit articles at:
+Articles are stored in **Supabase** and served at runtime — no redeploy needed when you publish.
 
-**`https://narulanding.com/admin/`** (or `/admin/` on your Vercel preview URL)
+The Vercel **Supabase** integration should already inject:
 
-### How it works
+- `SUPABASE_URL` (or `NEXT_PUBLIC_SUPABASE_URL`)
+- `SUPABASE_ANON_KEY` (or `NEXT_PUBLIC_SUPABASE_ANON_KEY`)
 
-1. You write articles in the CMS (markdown + metadata + thumbnail).
-2. Decap commits files to `content/articles/*.md` in GitHub.
-3. Vercel runs `npm run build`, which generates:
-   - `articles/[slug].html` — public article pages
-   - `data/articles.json` — listing for the Insights section
-4. The site updates automatically after deploy.
+For local seeding, also set `SUPABASE_SERVICE_ROLE_KEY` (Supabase → Project Settings → API).
 
-### One-time CMS setup (GitHub login)
+### One-time database setup
 
-Decap needs GitHub OAuth to save articles to your repo:
-
-1. Create a **GitHub OAuth App** (Settings → Developer settings → OAuth Apps).
-2. **Homepage URL:** `https://narulanding.com`
-3. **Callback URL:** `https://api.netlify.com/auth/done`  
-   (Netlify’s free OAuth bridge works with Vercel-hosted sites — see [Decap docs](https://decapcms.org/docs/authentication-backends/))
-4. Open `/admin/` and sign in with GitHub when prompted.
-
-### Local preview
+1. In [Supabase](https://supabase.com/dashboard) → **SQL Editor**, run the contents of `supabase/schema.sql`.
+2. Seed your first article from the repo markdown (optional):
 
 ```bash
 cd github-publish
 npm install
-npm run build
-npm run dev
+SUPABASE_URL="..." SUPABASE_SERVICE_ROLE_KEY="..." npm run seed:articles
 ```
 
-Then open `http://localhost:8080` and `http://localhost:8080/admin/`.
+Or add rows manually in **Table Editor** → `articles`.
 
-### New article checklist
+### Managing content
 
-- Title, slug, excerpt, category, date
-- Upload thumbnail (saved under `assets/uploads/`)
-- Write body in markdown
-- Set **Featured on homepage** if it should appear on the home Insights teaser
-- Publish in CMS → wait for Vercel deploy (~1–2 min)
+Open **Supabase → Table Editor → `articles`**. Fields:
+
+| Column | Notes |
+|--------|--------|
+| `slug` | URL path, e.g. `my-new-post` → `/articles/my-new-post` |
+| `title`, `excerpt`, `category`, `author`, `read_time` | Listing + hero |
+| `body` | Markdown |
+| `thumbnail` | Path like `assets/my-thumb.png` or full URL |
+| `featured` | Homepage teaser |
+| `published` | Must be `true` to appear on the site |
+| `published_at` | Shown date |
+
+Changes go live within about a minute (API cache). No git commit required.
+
+### How the site loads articles
+
+- **Listings:** `GET /api/articles` → home + insights sections
+- **Article page:** `/articles/[slug]` → `articles/view.html` + `GET /api/article?slug=...`
+- **Fallback:** If Supabase is empty or unavailable, the build still generates `data/articles.json` from `content/articles/*.md`
+
+### Legacy Decap CMS (optional)
+
+`/admin/` (Decap + GitHub) still works if you prefer git-based drafts. For production, use Supabase as the source of truth and set `published = true` there after editing.
 
 ## Do not upload
 
