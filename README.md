@@ -13,6 +13,15 @@ articles/
 Brand fonts/
 ```
 
+## Deploy on Vercel
+
+This repo is configured for Vercel with:
+
+- **Build command:** `npm run build`
+- **Output directory:** `.` (repo root — not `public`)
+
+If the dashboard still shows **Output Directory: `public`**, change it to **`.`** or leave blank so `vercel.json` applies. See [Vercel: missing public directory](https://vercel.com/docs/errors/error-list#missing-public-directory).
+
 ## Publish on GitHub Pages
 
 1. Create a new GitHub repository (e.g. `narulanding` or `narulanding-site`).
