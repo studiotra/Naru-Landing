@@ -139,6 +139,21 @@
   html[lang="ko"] body{word-break:keep-all;}
   html[lang="ko"] .eyebrow{text-transform:none;letter-spacing:.04em;}
 
+  /* ---------- flip cards (Why act now) ---------- */
+  .flip-card{perspective:1200px;min-height:240px;height:100%}
+  .flip-card-inner{position:relative;width:100%;height:100%;min-height:240px;transition:transform .65s cubic-bezier(.16,1,.3,1);transform-style:preserve-3d}
+  .flip-card:hover .flip-card-inner,.flip-card:focus-within .flip-card-inner{transform:rotateY(180deg)}
+  .flip-card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;justify-content:center}
+  .flip-card-back{transform:rotateY(180deg);justify-content:flex-start;overflow-y:auto}
+  .flip-card--highlight .flip-card-front{border-color:var(--amber);box-shadow:0 0 0 1px rgba(217,78,38,.25)}
+  @media (hover:none){
+    .flip-card-inner{transform:none!important}
+    .flip-card-back{position:relative;transform:none;backface-visibility:visible;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+    .flip-card-front{position:relative;inset:auto}
+    .flip-card{min-height:auto}
+    .flip-card-inner{min-height:auto;display:flex;flex-direction:column}
+  }
+
 </style>
 <script>
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -441,36 +456,27 @@
         <p class="text-[color:var(--mist)] mt-4 leading-relaxed" data-i18n-html="korea.sub">Biotech and clean energy are capital-heavy and policy-timed. Korea is not a generic “Asia option”: it is a concentrated R&amp;D and industrial deployment stack with a formal trade and innovation spine to Canada. The points below are drawn from public frameworks — the same ones we map in <a href="#leadmagnet" class="font-semibold text-[color:var(--pine)] underline decoration-[color:var(--pine-mid)] underline-offset-2 hover:text-[color:var(--ink)]">The K-Tech Carbon Bridge</a> guide.</p>
       </div>
 
-      <!-- Why South Korea -->
-      <div class="mb-16">
-        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8 reveal">
-          <div>
-            <h3 class="display text-3xl md:text-4xl" data-i18n="korea.sk.title">Why South Korea?</h3>
-            <p class="text-[color:var(--mist)] mt-2 text-lg" data-i18n="korea.sk.sub">The missing puzzle piece for Canadian CCUS</p>
-          </div>
-        </div>
-        <div class="grid md:grid-cols-2 gap-5">
-          <article class="card card-hover p-7 reveal" data-d="1">
-            <div class="flex items-center gap-2 mb-3"><i data-lucide="factory" class="w-5 h-5" style="color:var(--pine)"></i><span class="pill text-[.72rem]" data-i18n="korea.c1.pill">Lab-to-Fab</span></div>
-            <h4 class="display text-xl" data-i18n="korea.c1.title">The scale-up &amp; manufacturing powerhouse</h4>
-            <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="korea.c1.body">While Canada excels in early-stage R&amp;D (TRL 1–4), scaling up to commercial facilities (TRL 5–9) can be a major bottleneck. South Korea is arguably the world’s best at <strong style="color:var(--ink)">Lab-to-Fab commercialization</strong> — with the world-class EPC and manufacturing ecosystem required to turn lab-scale innovation into commercial-scale reality, faster than anyone else.</p>
-          </article>
-          <article class="card card-hover p-7 reveal" data-d="2">
-            <div class="flex items-center gap-2 mb-3"><i data-lucide="shield-check" class="w-5 h-5" style="color:var(--pine)"></i><span class="pill text-[.72rem]">Friend-shoring</span></div>
-            <h4 class="display text-xl" data-i18n="korea.c2.title">The ideal “friend-shoring” partner</h4>
-            <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="korea.c2.body">In today’s geopolitical climate, navigating the supply chain between the US and China is risky. South Korea offers the perfect <strong style="color:var(--ink)">friend-shoring destination</strong> — top-tier technology and strict IP protection laws, with a stable and reliable partnership without the geopolitical risks or aggressive takeover threats.</p>
-          </article>
-          <article class="card card-hover p-7 reveal" data-d="1">
-            <div class="flex items-center gap-2 mb-3"><i data-lucide="timer" class="w-5 h-5" style="color:var(--pine)"></i><span class="pill text-[.72rem]" data-i18n="korea.c3.pill">Time is CAPEX</span></div>
-            <h4 class="display text-xl" data-i18n="korea.c3.title">Unmatched execution speed</h4>
-            <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="korea.c3.body">In North America, project development and engineering cycles can be slow — which directly increases your CAPEX. South Korea’s engineering culture is built on <strong style="color:var(--ink)">unprecedented agility and speed</strong>. Partnering with a Korean firm can cut pilot design and procurement time in half, saving millions in CAPEX.</p>
-          </article>
-          <article class="card card-hover p-7 reveal" data-d="2">
-            <div class="flex items-center gap-2 mb-3"><i data-lucide="layers" class="w-5 h-5" style="color:var(--pine)"></i><span class="pill text-[.72rem]" data-i18n="korea.c4.pill">Dual grants</span></div>
-            <h4 class="display text-xl" data-i18n="korea.c4.title">Co-funding synergy</h4>
-            <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="korea.c4.body">Partnering with a Korean company doesn’t just bring technology — it brings capital. The Korean government is deploying billions into global R&amp;D for carbon neutrality. With the right partnership structure, we can <strong style="color:var(--ink)">match Canadian grants (SDTC, IRAP) with Korean government funds</strong> — drastically lowering the equity burden and risk for your project.</p>
-          </article>
-        </div>
+      <div class="grid md:grid-cols-2 gap-5 mb-16">
+        <article class="card card-hover p-7 reveal" data-d="1">
+          <div class="flex items-center gap-2 mb-3"><i data-lucide="factory" class="w-5 h-5" style="color:var(--pine)"></i><span class="pill text-[.72rem]" data-i18n="korea.c1.pill">Lab-to-Fab</span></div>
+          <h4 class="display text-xl" data-i18n="korea.c1.title">The scale-up &amp; manufacturing powerhouse</h4>
+          <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="korea.c1.body">While Canada excels in early-stage R&amp;D (TRL 1–4), scaling up to commercial facilities (TRL 5–9) can be a major bottleneck. South Korea is arguably the world’s best at <strong style="color:var(--ink)">Lab-to-Fab commercialization</strong> — with the world-class EPC and manufacturing ecosystem required to turn lab-scale innovation into commercial-scale reality, faster than anyone else.</p>
+        </article>
+        <article class="card card-hover p-7 reveal" data-d="2">
+          <div class="flex items-center gap-2 mb-3"><i data-lucide="shield-check" class="w-5 h-5" style="color:var(--pine)"></i><span class="pill text-[.72rem]">Friend-shoring</span></div>
+          <h4 class="display text-xl" data-i18n="korea.c2.title">The ideal “friend-shoring” partner</h4>
+          <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="korea.c2.body">In today’s geopolitical climate, navigating the supply chain between the US and China is risky. South Korea offers the perfect <strong style="color:var(--ink)">friend-shoring destination</strong> — top-tier technology and strict IP protection laws, with a stable and reliable partnership without the geopolitical risks or aggressive takeover threats.</p>
+        </article>
+        <article class="card card-hover p-7 reveal" data-d="1">
+          <div class="flex items-center gap-2 mb-3"><i data-lucide="timer" class="w-5 h-5" style="color:var(--pine)"></i><span class="pill text-[.72rem]" data-i18n="korea.c3.pill">Time is CAPEX</span></div>
+          <h4 class="display text-xl" data-i18n="korea.c3.title">Unmatched execution speed</h4>
+          <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="korea.c3.body">In North America, project development and engineering cycles can be slow — which directly increases your CAPEX. South Korea’s engineering culture is built on <strong style="color:var(--ink)">unprecedented agility and speed</strong>. Partnering with a Korean firm can cut pilot design and procurement time in half, saving millions in CAPEX.</p>
+        </article>
+        <article class="card card-hover p-7 reveal" data-d="2">
+          <div class="flex items-center gap-2 mb-3"><i data-lucide="layers" class="w-5 h-5" style="color:var(--pine)"></i><span class="pill text-[.72rem]" data-i18n="korea.c4.pill">Dual grants</span></div>
+          <h4 class="display text-xl" data-i18n="korea.c4.title">Co-funding synergy</h4>
+          <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="korea.c4.body">Partnering with a Korean company doesn’t just bring technology — it brings capital. The Korean government is deploying billions into global R&amp;D for carbon neutrality. With the right partnership structure, we can <strong style="color:var(--ink)">match Canadian grants (SDTC, IRAP) with Korean government funds</strong> — drastically lowering the equity burden and risk for your project.</p>
+        </article>
       </div>
 
       <!-- Why act now -->
@@ -479,34 +485,66 @@
           <h3 class="display text-3xl md:text-4xl" data-i18n-html="now.title">Why companies should <span class="serif-it" style="color:var(--pine)">act now</span></h3>
         </div>
         <div class="grid md:grid-cols-3 gap-5">
-          <article class="card p-7 reveal" data-d="1" style="border-color:var(--amber);box-shadow:0 0 0 1px rgba(217,78,38,.25)">
-            <span class="eyebrow" style="color:var(--amber-deep)" data-i18n="now.c1.eyebrow">Tax &amp; policy clock</span>
-            <h4 class="display text-xl mt-2" data-i18n="now.c1.title">CCUS ITC: full rate this decade</h4>
-            <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="now.c1.body">Canada’s <strong style="color:var(--ink)">refundable CCUS Investment Tax Credit</strong> applies to eligible expenditures from 2022 through 2030 at the headline rates (including up to <strong style="color:var(--ink)">50%</strong> on eligible capture equipment and <strong style="color:var(--ink)">37.5%</strong> on transport, storage, and use). From <strong style="color:var(--ink)">2031 to 2040</strong>, those rates are <strong style="color:var(--ink)">halved</strong> — then the credit ends. Capital scheduled after 2030 still matters, but the envelope is strictly smaller.</p>
-            <p class="text-[.65rem] text-[color:var(--mist)] mt-3" data-i18n="now.c1.src">Source: Canada Revenue Agency — CCUS Investment Tax Credit (clean-economy ITC rules).</p>
+          <article class="flip-card flip-card--highlight reveal" data-d="1" tabindex="0">
+            <div class="flip-card-inner">
+              <div class="flip-card-face flip-card-front card p-7">
+                <span class="eyebrow" style="color:var(--amber-deep)" data-i18n="now.c1.eyebrow">Tax &amp; policy clock</span>
+                <h4 class="display text-xl mt-2" data-i18n="now.c1.title">CCUS ITC: full rate this decade</h4>
+              </div>
+              <div class="flip-card-face flip-card-back card p-7">
+                <p class="text-sm text-[color:var(--mist)] leading-relaxed" data-i18n-html="now.c1.body">Canada’s <strong style="color:var(--ink)">refundable CCUS Investment Tax Credit</strong> applies to eligible expenditures from 2022 through 2030 at the headline rates (including up to <strong style="color:var(--ink)">50%</strong> on eligible capture equipment and <strong style="color:var(--ink)">37.5%</strong> on transport, storage, and use). From <strong style="color:var(--ink)">2031 to 2040</strong>, those rates are <strong style="color:var(--ink)">halved</strong> — then the credit ends. Capital scheduled after 2030 still matters, but the envelope is strictly smaller.</p>
+                <p class="text-[.65rem] text-[color:var(--mist)] mt-3" data-i18n="now.c1.src">Source: Canada Revenue Agency — CCUS Investment Tax Credit (clean-economy ITC rules).</p>
+              </div>
+            </div>
           </article>
-          <article class="card p-7 reveal" data-d="2">
-            <span class="eyebrow" style="color:var(--mist)" data-i18n="now.c2.eyebrow">Deployment targets</span>
-            <h4 class="display text-xl mt-2" data-i18n="now.c2.title">2030 storage and abatement curves</h4>
-            <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="now.c2.body">Ottawa’s emissions-reduction plan points to <strong style="color:var(--ink)">at least ~15&nbsp;Mt CO₂/yr</strong> of permanent storage capacity by 2030 — roughly tripling today’s installed base. Korea’s national framework includes a <strong style="color:var(--ink)">~11.2&nbsp;Mt CO₂/yr CCUS sequestration target for 2030</strong>. Both governments are mobilizing capital into the same decade — which means <strong style="color:var(--ink)">EPC slots, offtake, and qualified vendors lock up early</strong>, not at FEED completion.</p>
-            <p class="text-[.65rem] text-[color:var(--mist)] mt-3" data-i18n="now.c2.src">Sources: Natural Resources Canada — Carbon Management Strategy; Republic of Korea 1st Basic Plan (2023).</p>
+          <article class="flip-card reveal" data-d="2" tabindex="0">
+            <div class="flip-card-inner">
+              <div class="flip-card-face flip-card-front card p-7">
+                <span class="eyebrow" style="color:var(--mist)" data-i18n="now.c2.eyebrow">Deployment targets</span>
+                <h4 class="display text-xl mt-2" data-i18n="now.c2.title">2030 storage and abatement curves</h4>
+              </div>
+              <div class="flip-card-face flip-card-back card p-7">
+                <p class="text-sm text-[color:var(--mist)] leading-relaxed" data-i18n-html="now.c2.body">Ottawa’s emissions-reduction plan points to <strong style="color:var(--ink)">at least ~15&nbsp;Mt CO₂/yr</strong> of permanent storage capacity by 2030 — roughly tripling today’s installed base. Korea’s national framework includes a <strong style="color:var(--ink)">~11.2&nbsp;Mt CO₂/yr CCUS sequestration target for 2030</strong>. Both governments are mobilizing capital into the same decade — which means <strong style="color:var(--ink)">EPC slots, offtake, and qualified vendors lock up early</strong>, not at FEED completion.</p>
+                <p class="text-[.65rem] text-[color:var(--mist)] mt-3" data-i18n="now.c2.src">Sources: Natural Resources Canada — Carbon Management Strategy; Republic of Korea 1st Basic Plan (2023).</p>
+              </div>
+            </div>
           </article>
-          <article class="card p-7 reveal" data-d="3">
-            <span class="eyebrow" style="color:var(--mist)" data-i18n="now.c3.eyebrow">First-mover + Korea rulebook</span>
-            <h4 class="display text-xl mt-2" data-i18n="now.c3.title">Sourcing arbitrage is temporary</h4>
-            <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="now.c3.body">Korea’s <strong style="color:var(--ink)">Act on the Capture, Transportation, Storage and Utilization of Carbon Dioxide</strong> entered into force in <strong style="color:var(--ink)">February&nbsp;2025</strong>, clarifying licensing, infrastructure, and market rules for CO₂ as a managed resource. That reduces ambiguity for Korean champions — and signals a <strong style="color:var(--ink)">busier outbound technology and equipment lane</strong> as projects firm up. Waiting until “everyone sources Korea” means higher licence fees and picked-over pilot windows.</p>
-            <p class="text-[.65rem] text-[color:var(--mist)] mt-3" data-i18n="now.c3.src">Source: National Assembly enactment / legal commentary (e.g. Kim &amp; Chang, 2024–2025).</p>
+          <article class="flip-card reveal" data-d="3" tabindex="0">
+            <div class="flip-card-inner">
+              <div class="flip-card-face flip-card-front card p-7">
+                <span class="eyebrow" style="color:var(--mist)" data-i18n="now.c3.eyebrow">First-mover + Korea rulebook</span>
+                <h4 class="display text-xl mt-2" data-i18n="now.c3.title">Sourcing arbitrage is temporary</h4>
+              </div>
+              <div class="flip-card-face flip-card-back card p-7">
+                <p class="text-sm text-[color:var(--mist)] leading-relaxed" data-i18n-html="now.c3.body">Korea’s <strong style="color:var(--ink)">Act on the Capture, Transportation, Storage and Utilization of Carbon Dioxide</strong> entered into force in <strong style="color:var(--ink)">February&nbsp;2025</strong>, clarifying licensing, infrastructure, and market rules for CO₂ as a managed resource. That reduces ambiguity for Korean champions — and signals a <strong style="color:var(--ink)">busier outbound technology and equipment lane</strong> as projects firm up. Waiting until “everyone sources Korea” means higher licence fees and picked-over pilot windows.</p>
+                <p class="text-[.65rem] text-[color:var(--mist)] mt-3" data-i18n="now.c3.src">Source: National Assembly enactment / legal commentary (e.g. Kim &amp; Chang, 2024–2025).</p>
+              </div>
+            </div>
           </article>
         </div>
         <div class="grid md:grid-cols-2 gap-5 mt-5">
-          <article class="card p-7 reveal" data-d="1">
-            <div class="flex items-center gap-2 text-[color:var(--pine)] font-semibold text-sm"><i data-lucide="layers" class="w-4 h-4"></i> <span data-i18n="now.b1.title">Bilateral momentum</span></div>
-            <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="now.b1.body">The <strong style="color:var(--ink)">2023 MOU</strong> between Canada and Korea on <strong style="color:var(--ink)">critical minerals, clean-energy transition, and energy security</strong> explicitly names cooperation on CCUS and carbon removal. The <strong style="color:var(--ink)">July&nbsp;2024 Canada–Korea Comprehensive Strategic Partnership action plan</strong> adds implementation rails for trade, supply chains, and innovation. Programs and ministerial trade missions are aligned with that direction — the practical work is matchmaking and diligence, not writing white papers.</p>
+          <article class="flip-card reveal" data-d="1" tabindex="0">
+            <div class="flip-card-inner">
+              <div class="flip-card-face flip-card-front card p-7">
+                <span class="eyebrow" style="color:var(--mist)" data-i18n="now.b1.eyebrow">Partnership</span>
+                <h4 class="display text-xl mt-2" data-i18n="now.b1.title">Bilateral momentum</h4>
+              </div>
+              <div class="flip-card-face flip-card-back card p-7">
+                <p class="text-sm text-[color:var(--mist)] leading-relaxed" data-i18n-html="now.b1.body">The <strong style="color:var(--ink)">2023 MOU</strong> between Canada and Korea on <strong style="color:var(--ink)">critical minerals, clean-energy transition, and energy security</strong> explicitly names cooperation on CCUS and carbon removal. The <strong style="color:var(--ink)">July&nbsp;2024 Canada–Korea Comprehensive Strategic Partnership action plan</strong> adds implementation rails for trade, supply chains, and innovation. Programs and ministerial trade missions are aligned with that direction — the practical work is matchmaking and diligence, not writing white papers.</p>
+              </div>
+            </div>
           </article>
-          <article class="card p-7 reveal" data-d="2">
-            <div class="flex items-center gap-2 text-[color:var(--pine)] font-semibold text-sm"><i data-lucide="timer" class="w-4 h-4"></i> <span data-i18n="now.b2.title">Programs evolve — stacks don’t wait</span></div>
-            <p class="text-sm text-[color:var(--mist)] mt-2 leading-relaxed" data-i18n-html="now.b2.body">Non-dilutive pathways shift: for example, <strong style="color:var(--ink)">SDTC was wound down as an independent foundation in mid‑2024</strong> with programming folded toward <strong style="color:var(--ink)">NRC‑led successors</strong> — a reminder to sequence grants with current owners, not last year’s deck. The <strong style="color:var(--ink)">NRC IRAP × KIAT</strong> call is annual; CCUS ITC eligibility ties to project design choices made <em>before</em> procurement.</p>
-            <p class="text-[.65rem] text-[color:var(--mist)] mt-3" data-i18n="now.b2.src">Source: Government of Canada announcements; NRC / IRAP program pages.</p>
+          <article class="flip-card reveal" data-d="2" tabindex="0">
+            <div class="flip-card-inner">
+              <div class="flip-card-face flip-card-front card p-7">
+                <span class="eyebrow" style="color:var(--mist)" data-i18n="now.b2.eyebrow">Funding stack</span>
+                <h4 class="display text-xl mt-2" data-i18n="now.b2.title">Programs evolve — stacks don’t wait</h4>
+              </div>
+              <div class="flip-card-face flip-card-back card p-7">
+                <p class="text-sm text-[color:var(--mist)] leading-relaxed" data-i18n-html="now.b2.body">Non-dilutive pathways shift: for example, <strong style="color:var(--ink)">SDTC was wound down as an independent foundation in mid‑2024</strong> with programming folded toward <strong style="color:var(--ink)">NRC‑led successors</strong> — a reminder to sequence grants with current owners, not last year’s deck. The <strong style="color:var(--ink)">NRC IRAP × KIAT</strong> call is annual; CCUS ITC eligibility ties to project design choices made <em>before</em> procurement.</p>
+                <p class="text-[.65rem] text-[color:var(--mist)] mt-3" data-i18n="now.b2.src">Source: Government of Canada announcements; NRC / IRAP program pages.</p>
+              </div>
+            </div>
           </article>
         </div>
         <div class="mt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 reveal">
