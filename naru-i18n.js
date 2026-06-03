@@ -120,7 +120,6 @@
       'now.c3.body': 'Korea’s <strong style="color:var(--ink)">Act on the Capture, Transportation, Storage and Utilization of Carbon Dioxide</strong> entered into force in <strong style="color:var(--ink)">February 2025</strong>, clarifying licensing, infrastructure, and market rules for CO₂ as a managed resource. That reduces ambiguity for Korean champions — and signals a <strong style="color:var(--ink)">busier outbound technology and equipment lane</strong> as projects firm up. Waiting until “everyone sources Korea” means higher licence fees and picked-over pilot windows.',
       'now.c3.src': 'Source: National Assembly enactment / legal commentary (e.g. Kim & Chang, 2024–2025).',
       'now.b1.eyebrow': 'Partnership',
-      'now.b1.eyebrow': 'Partnership',
       'now.b1.title': 'Bilateral momentum',
       'now.b1.body': 'The <strong style="color:var(--ink)">2023 MOU</strong> between Canada and Korea on <strong style="color:var(--ink)">critical minerals, clean-energy transition, and energy security</strong> explicitly names cooperation on CCUS and carbon removal. The <strong style="color:var(--ink)">July 2024 Canada–Korea Comprehensive Strategic Partnership action plan</strong> adds implementation rails for trade, supply chains, and innovation. Programs and ministerial trade missions are aligned with that direction — the practical work is matchmaking and diligence, not writing white papers.',
       'now.b2.eyebrow': 'Funding stack',
