@@ -248,6 +248,7 @@
       'common.ticket': '+ ticket model',
       'form.success.title': 'Got it — talk soon.',
       'form.success.sub': 'We reply within one business day.',
+      'form.error': 'Something went wrong. Please try again or email info@narulanding.com.',
     },
     ko: {
       'meta.title': 'Naru — 바이오텍·클린에너지 혁신 중개',
@@ -494,6 +495,7 @@
       'common.ticket': '+ 티켓 모델',
       'form.success.title': '접수했습니다 — 곧 연락드리겠습니다.',
       'form.success.sub': '영업일 기준 1일 내 답변합니다.',
+      'form.error': '전송에 실패했습니다. 다시 시도하거나 info@narulanding.com 으로 이메일 주세요.',
     },
   };
 

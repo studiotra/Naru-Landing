@@ -1163,42 +1163,54 @@
           <button class="tab-btn" data-form="press">Press</button>
         </div>
 
-        <form class="form-panel space-y-4" data-form="sourcing" onsubmit="fauxSubmit(event)">
+        <div id="form-error" class="hidden mb-4 rounded-xl border border-[color:var(--amber)] bg-[rgba(217,78,38,.08)] px-4 py-3 text-sm" style="color:var(--amber-deep)" data-i18n="form.error">Something went wrong. Please try again or email info@narulanding.com.</div>
+
+        <form class="form-panel space-y-4" data-form="sourcing" data-intent="sourcing" novalidate>
+          <input type="text" name="website" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <div class="grid sm:grid-cols-2 gap-4">
-            <div><label>Your name</label><input class="mt-1.5 w-full px-3 py-2.5" placeholder="Jane Doe" /></div>
-            <div><label>Company</label><input class="mt-1.5 w-full px-3 py-2.5" placeholder="e.g. a Canadian CCUS operator" /></div>
-            <div><label>Work email</label><input type="email" class="mt-1.5 w-full px-3 py-2.5" placeholder="name@company.ca" /></div>
-            <div><label>Sector</label><select class="mt-1.5 w-full px-3 py-2.5"><option>Clean Energy &amp; CCUS</option><option>Biotech &amp; Medical Devices</option><option>Other</option></select></div>
+            <div><label for="cf-sourcing-name">Your name</label><input id="cf-sourcing-name" name="name" required class="mt-1.5 w-full px-3 py-2.5" placeholder="Jane Doe" /></div>
+            <div><label for="cf-sourcing-company">Company</label><input id="cf-sourcing-company" name="company" class="mt-1.5 w-full px-3 py-2.5" placeholder="e.g. a Canadian CCUS operator" /></div>
+            <div><label for="cf-sourcing-email">Work email</label><input id="cf-sourcing-email" name="email" type="email" required class="mt-1.5 w-full px-3 py-2.5" placeholder="name@company.ca" /></div>
+            <div><label for="cf-sourcing-sector">Sector</label><select id="cf-sourcing-sector" name="sector" class="mt-1.5 w-full px-3 py-2.5"><option>Clean Energy &amp; CCUS</option><option>Biotech &amp; Medical Devices</option><option>Other</option></select></div>
           </div>
-          <div><label>What job does the Korean technology need to do?</label><textarea rows="4" class="mt-1.5 w-full px-3 py-2.5" placeholder="We need a high-nickel cathode process for our pilot line in Alberta…"></textarea></div>
-          <div class="flex items-center gap-2.5 text-xs text-[color:var(--mist)]"><input type="checkbox" class="w-4 h-4" /> I'd like an NDA before we talk.</div>
-          <div class="flex justify-end"><button class="btn-primary" type="submit">Send request <i data-lucide="send" class="w-4 h-4"></i></button></div>
+          <div><label for="cf-sourcing-message">What job does the Korean technology need to do?</label><textarea id="cf-sourcing-message" name="message" required rows="4" class="mt-1.5 w-full px-3 py-2.5" placeholder="We need a high-nickel cathode process for our pilot line in Alberta…"></textarea></div>
+          <div class="flex items-center gap-2.5 text-xs text-[color:var(--mist)]"><input id="cf-sourcing-nda" name="nda" type="checkbox" value="yes" class="w-4 h-4" /> <label for="cf-sourcing-nda">I'd like an NDA before we talk.</label></div>
+          <div class="flex justify-end"><button class="btn-primary contact-submit" type="submit">Send request <i data-lucide="send" class="w-4 h-4"></i></button></div>
         </form>
 
-        <form class="form-panel hidden space-y-4" data-form="market" onsubmit="fauxSubmit(event)">
+        <form class="form-panel hidden space-y-4" data-form="market" data-intent="market" novalidate>
+          <input type="text" name="website" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <div class="grid sm:grid-cols-2 gap-4">
-            <div><label>Organization</label><input class="mt-1.5 w-full px-3 py-2.5" placeholder="Korean venture name" /></div>
-            <div><label>Contact name</label><input class="mt-1.5 w-full px-3 py-2.5" /></div>
-            <div><label>Email</label><input type="email" class="mt-1.5 w-full px-3 py-2.5" /></div>
-            <div><label>Sector</label><select class="mt-1.5 w-full px-3 py-2.5"><option>Clean Energy &amp; CCUS</option><option>Biotech &amp; Medical Devices</option></select></div>
+            <div><label for="cf-market-company">Organization</label><input id="cf-market-company" name="company" required class="mt-1.5 w-full px-3 py-2.5" placeholder="Korean venture name" /></div>
+            <div><label for="cf-market-name">Contact name</label><input id="cf-market-name" name="name" required class="mt-1.5 w-full px-3 py-2.5" /></div>
+            <div><label for="cf-market-email">Email</label><input id="cf-market-email" name="email" type="email" required class="mt-1.5 w-full px-3 py-2.5" /></div>
+            <div><label for="cf-market-sector">Sector</label><select id="cf-market-sector" name="sector" class="mt-1.5 w-full px-3 py-2.5"><option>Clean Energy &amp; CCUS</option><option>Biotech &amp; Medical Devices</option></select></div>
           </div>
-          <div><label>What does landing in Canada look like for you?</label><textarea rows="4" class="mt-1.5 w-full px-3 py-2.5"></textarea></div>
-          <div class="flex justify-end"><button class="btn-primary" type="submit">Send request <i data-lucide="send" class="w-4 h-4"></i></button></div>
+          <div><label for="cf-market-message">What does landing in Canada look like for you?</label><textarea id="cf-market-message" name="message" required rows="4" class="mt-1.5 w-full px-3 py-2.5"></textarea></div>
+          <div class="flex justify-end"><button class="btn-primary contact-submit" type="submit">Send request <i data-lucide="send" class="w-4 h-4"></i></button></div>
         </form>
 
-        <form class="form-panel hidden space-y-4" data-form="partner" onsubmit="fauxSubmit(event)">
+        <form class="form-panel hidden space-y-4" data-form="partner" data-intent="partner" novalidate>
+          <input type="text" name="website" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
           <div class="grid sm:grid-cols-2 gap-4">
-            <div><label>Organization</label><input class="mt-1.5 w-full px-3 py-2.5" /></div>
-            <div><label>Type</label><select class="mt-1.5 w-full px-3 py-2.5"><option>Fund / LP</option><option>Program (IRAP, KIAT, Mitacs…)</option><option>Law firm</option><option>Advisor</option></select></div>
+            <div><label for="cf-partner-company">Organization</label><input id="cf-partner-company" name="company" required class="mt-1.5 w-full px-3 py-2.5" /></div>
+            <div><label for="cf-partner-name">Contact name</label><input id="cf-partner-name" name="name" required class="mt-1.5 w-full px-3 py-2.5" /></div>
+            <div><label for="cf-partner-email">Email</label><input id="cf-partner-email" name="email" type="email" required class="mt-1.5 w-full px-3 py-2.5" /></div>
+            <div><label for="cf-partner-type">Type</label><select id="cf-partner-type" name="type" class="mt-1.5 w-full px-3 py-2.5"><option>Fund / LP</option><option>Program (IRAP, KIAT, Mitacs…)</option><option>Law firm</option><option>Advisor</option></select></div>
           </div>
-          <div><label>What would you like to explore?</label><textarea rows="4" class="mt-1.5 w-full px-3 py-2.5"></textarea></div>
-          <div class="flex justify-end"><button class="btn-primary" type="submit">Open conversation <i data-lucide="send" class="w-4 h-4"></i></button></div>
+          <div><label for="cf-partner-message">What would you like to explore?</label><textarea id="cf-partner-message" name="message" required rows="4" class="mt-1.5 w-full px-3 py-2.5"></textarea></div>
+          <div class="flex justify-end"><button class="btn-primary contact-submit" type="submit">Open conversation <i data-lucide="send" class="w-4 h-4"></i></button></div>
         </form>
 
-        <form class="form-panel hidden space-y-4" data-form="press" onsubmit="fauxSubmit(event)">
-          <div><label>Publication</label><input class="mt-1.5 w-full px-3 py-2.5" /></div>
-          <div><label>Deadline &amp; topic</label><textarea rows="4" class="mt-1.5 w-full px-3 py-2.5"></textarea></div>
-          <div class="flex justify-end"><button class="btn-primary" type="submit">Send inquiry <i data-lucide="send" class="w-4 h-4"></i></button></div>
+        <form class="form-panel hidden space-y-4" data-form="press" data-intent="press" novalidate>
+          <input type="text" name="website" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div><label for="cf-press-name">Your name</label><input id="cf-press-name" name="name" required class="mt-1.5 w-full px-3 py-2.5" /></div>
+            <div><label for="cf-press-email">Email</label><input id="cf-press-email" name="email" type="email" required class="mt-1.5 w-full px-3 py-2.5" /></div>
+          </div>
+          <div><label for="cf-press-publication">Publication</label><input id="cf-press-publication" name="publication" required class="mt-1.5 w-full px-3 py-2.5" /></div>
+          <div><label for="cf-press-message">Deadline &amp; topic</label><textarea id="cf-press-message" name="message" required rows="4" class="mt-1.5 w-full px-3 py-2.5"></textarea></div>
+          <div class="flex justify-end"><button class="btn-primary contact-submit" type="submit">Send inquiry <i data-lucide="send" class="w-4 h-4"></i></button></div>
         </form>
 
         <div id="form-success" class="hidden text-center py-10">
@@ -1372,6 +1384,7 @@
       if(tab){ document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('hidden', p.dataset.tab !== tab)); if(window.lucide) lucide.createIcons(); }
       if(form){
         document.getElementById('form-success').classList.add('hidden');
+        document.getElementById('form-error')?.classList.add('hidden');
         document.querySelectorAll('.form-panel').forEach(p => p.classList.toggle('hidden', p.dataset.form !== form));
       }
     });
@@ -1481,13 +1494,75 @@
     if (e.key === 'Enter') { e.preventDefault(); lm2Submit(); }
   });
 
-  /* ---------- contact form faux submit ---------- */
-  function fauxSubmit(e){
-    e.preventDefault();
-    document.querySelectorAll('.form-panel').forEach(p => p.classList.add('hidden'));
-    document.getElementById('form-success').classList.remove('hidden');
-    if(window.lucide) lucide.createIcons();
+  /* ---------- contact forms ---------- */
+  const formErrorEl = document.getElementById('form-error');
+  const formSuccessEl = document.getElementById('form-success');
+
+  function formDataFromForm(form) {
+    const fd = new FormData(form);
+    return {
+      intent: form.dataset.intent || 'sourcing',
+      name: String(fd.get('name') || '').trim(),
+      email: String(fd.get('email') || '').trim(),
+      company: String(fd.get('company') || '').trim(),
+      sector: String(fd.get('sector') || '').trim(),
+      type: String(fd.get('type') || '').trim(),
+      publication: String(fd.get('publication') || '').trim(),
+      message: String(fd.get('message') || '').trim(),
+      nda: fd.get('nda') === 'yes',
+      website: String(fd.get('website') || '').trim(),
+    };
   }
+
+  async function submitContactForm(event) {
+    event.preventDefault();
+    const form = event.target;
+    if (!form || !form.classList.contains('form-panel')) return;
+
+    formErrorEl?.classList.add('hidden');
+    if (!form.reportValidity()) return;
+
+    const payload = formDataFromForm(form);
+    const submitBtn = form.querySelector('.contact-submit');
+    const originalHtml = submitBtn?.innerHTML;
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Sending…';
+    }
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result?.ok) {
+        throw new Error(result?.error || 'Unable to send message');
+      }
+      document.querySelectorAll('.form-panel').forEach((p) => p.classList.add('hidden'));
+      formSuccessEl?.classList.remove('hidden');
+      form.reset();
+      if (window.lucide) lucide.createIcons();
+    } catch (error) {
+      if (formErrorEl) {
+        formErrorEl.textContent =
+          error?.message ||
+          'Something went wrong. Please try again or email info@narulanding.com.';
+        formErrorEl.classList.remove('hidden');
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalHtml;
+        if (window.lucide) lucide.createIcons();
+      }
+    }
+  }
+
+  document.querySelectorAll('.form-panel').forEach((form) => {
+    form.addEventListener('submit', submitContactForm);
+  });
 </script>
 </body>
 </html>

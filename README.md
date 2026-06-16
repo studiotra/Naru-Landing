@@ -68,9 +68,21 @@ Set these environment variables in **Vercel → naru-landing → Settings → En
 | `RESEND_SEGMENT_ID` | Resend → **Segments** → your list → copy ID (preferred) |
 | `RESEND_AUDIENCE_ID` | Legacy audiences only — same ID works as fallback |
 
-Without these keys the guide PDF still downloads, but emails are not saved until configured.
+Without segment/audience keys the guide PDF still downloads, but emails are not saved to a list until configured.
 
 The front-end posts to `/api/lead-magnet` and opens `assets/k-tech-carbon-bridge-guide.pdf` on success.
+
+## Contact form (`/api/contact`)
+
+All four contact tabs (Sourcing, Market entry, Partnership, Press) POST to `api/contact.js`, which sends email via Resend.
+
+| Variable | Purpose |
+|----------|---------|
+| `RESEND_API_KEY` | Required (same key as lead magnet) |
+| `CONTACT_TO_EMAIL` | Inbox for submissions (default: `info@narulanding.com`) |
+| `CONTACT_FROM_EMAIL` | Verified sender, e.g. `Naru <hello@narulanding.com>` |
+
+**Important:** In [Resend → Domains](https://resend.com/domains), verify `narulanding.com` and set `CONTACT_FROM_EMAIL` to an address on that domain. Until then, Resend only allows test sends from `onboarding@resend.dev` to your Resend account email.
 
 ## Vercel Web Analytics
 
