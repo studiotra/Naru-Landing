@@ -110,6 +110,12 @@ The actionable insight is straightforward: Canada should treat Korea not merely 
 - **Reuters via EnergyNow - "US Power Use to Beat Record Highs in 2026 and 2027 as AI Use Surges, EIA Says" (July 7, 2026).** https://energynow.com/2026/07/us-power-use-to-beat-record-highs-in-2026-and-2027-as-ai-use-surges-eia-says-4/
   - Summary: EIA expects US electricity demand to rise to new records in 2026 and 2027, with commercial power demand outpacing residential demand for the first time on record.
   - Why it matters: It provides the US demand-side context for AI-driven power infrastructure investment.
+- **Bloomberg - "Largest US Grid Misses Power Supply Goal Amid Rampant AI Surge" (July 14, 2026).** https://www.bloomberg.com/news/articles/2026-07-14/largest-us-grid-misses-power-supply-goal-amid-rampant-ai-surge
+  - Summary: PJM missed a power-supply target as data-center development pushed supply costs higher and exposed reliability concerns in the largest US grid market.
+  - Why it matters: It shows how AI demand is already flowing through to capacity markets, ratepayer costs, and interconnection risk.
+- **Reuters Events via EnergyNow - "Canada Carves Role for Gas in Clean Power Grid Strategy" (July 7, 2026).** https://energynow.com/2026/07/canada-carves-role-for-gas-in-clean-power-grid-strategy/
+  - Summary: Canada's national power strategy targets major grid and generation expansion while retaining investment tax credits and creating room for gas-fired power under specific conditions.
+  - Why it matters: It explains Canada's clean-power advantage and the policy tension created by gas-backed AI infrastructure in Alberta.
 - **Reuters via 95 KQDS - "Meta to build C$13 billion Alberta data center, its first in Canada" (July 8, 2026).** https://95kqds.com/2026/07/08/meta-to-build-c13-billion-alberta-data-center-its-first-in-canada/
   - Summary: Meta plans a C$13 billion, 1 GW Alberta data center scalable to 1.8 GW, supported by new generation and grid infrastructure.
   - Why it matters: It shows how AI infrastructure is reshaping Canadian provincial energy strategy and creating demand for firm power.
