@@ -180,17 +180,17 @@ a.rr-btn-underline::after,
 /* ---- Service card icon placeholders (replaces image thumbs) ---- */
 .service-box .thumb.service-icon{
   display:flex; align-items:center; justify-content:center;
-  aspect-ratio:16/10; width:100%;
+  aspect-ratio:10/10; width:100%;
   background:rgba(217,78,38,.06);
   border:1px solid rgba(217,78,38,.16);
-  border-radius:16px;
+  border-radius:50px;
   transition:background .3s ease, border-color .3s ease;
 }
 .service-box .thumb.service-icon a{
   display:flex; align-items:center; justify-content:center; width:100%; height:100%;
 }
 .service-box .thumb.service-icon i{
-  font-size:44px; color:var(--naru-clay); line-height:1;
+  font-size:28px; color:var(--naru-clay); line-height:1;
   transition:transform .3s ease, color .3s ease;
 }
 .service-box:hover .thumb.service-icon{
@@ -198,7 +198,7 @@ a.rr-btn-underline::after,
 }
 .service-box:hover .thumb.service-icon i{ color:#fff; transform:translateY(-4px); }
 @media only screen and (max-width:767px){
-  .service-box .thumb.service-icon i{ font-size:36px; }
+  .service-box .thumb.service-icon i{ font-size:24px; }
 }
 
 /* ---- Services page (services-wrapper-4): tone down the huge display titles ---- */
