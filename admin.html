@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insights Admin — Naru Landing</title>
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    :root{
+      --paper:#FCFBF8; --paper-2:#F5F1EA; --paper-3:#ECE6DC;
+      --ink:#1F1A17; --ink-2:#4A423B; --mist:#8A8074;
+      --pine:#2F5A3A; --clay:#D94E26; --clay-ink:#B23C1C;
+      --line:#E3DCD1; --danger:#C0392B;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; background:var(--paper); color:var(--ink);
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo","Noto Sans KR",Roboto,sans-serif;
+      line-height:1.55;
+    }
+    a{color:var(--pine)}
+    .topbar{
+      display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+      padding:16px 24px; background:#fff; border-bottom:1px solid var(--line);
+      position:sticky; top:0; z-index:5;
+    }
+    .brand{display:inline-flex;align-items:center;gap:9px;font-weight:700;font-size:18px}
+    .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--clay);display:inline-block}
+    .topbar .spacer{flex:1}
+    .btn{
+      border:1px solid var(--line); background:#fff; color:var(--ink);
+      padding:9px 16px; border-radius:9px; font-size:14px; font-weight:600;
+      cursor:pointer; transition:.2s ease; text-decoration:none; display:inline-flex; align-items:center; gap:7px;
+    }
+    .btn:hover{border-color:var(--ink)}
+    .btn.primary{background:var(--clay); border-color:var(--clay); color:#fff}
+    .btn.primary:hover{background:var(--clay-ink); border-color:var(--clay-ink)}
+    .btn.ghost{background:transparent}
+    .btn.danger{color:var(--danger); border-color:#e7c4bf}
+    .btn.danger:hover{background:var(--danger); color:#fff; border-color:var(--danger)}
+    .btn.small{padding:6px 11px; font-size:13px}
+
+    .wrap{max-width:1200px; margin:0 auto; padding:26px 24px 80px}
+    .layout{display:grid; grid-template-columns:360px 1fr; gap:26px; align-items:start}
+    @media (max-width:900px){ .layout{grid-template-columns:1fr} }
+
+    .panel{background:#fff; border:1px solid var(--line); border-radius:16px; padding:20px}
+    .panel h2{margin:0 0 14px; font-size:15px; text-transform:uppercase; letter-spacing:.08em; color:var(--mist)}
+
+    .post-list{display:flex; flex-direction:column; gap:10px; max-height:70vh; overflow:auto}
+    .post-item{
+      border:1px solid var(--line); border-radius:12px; padding:12px 14px; cursor:pointer; transition:.15s ease;
+      display:flex; flex-direction:column; gap:4px; background:var(--paper);
+    }
+    .post-item:hover{border-color:var(--ink)}
+    .post-item.active{border-color:var(--clay); box-shadow:0 0 0 2px rgba(217,78,38,.12)}
+    .post-item .pt{font-weight:600; font-size:14.5px; line-height:1.3}
+    .post-item .pm{font-size:12px; color:var(--mist); display:flex; gap:8px; flex-wrap:wrap}
+    .post-item .chip{background:var(--paper-3); padding:1px 8px; border-radius:20px; color:var(--ink-2)}
+    .post-item .row{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:6px}
+
+    form .field{margin-bottom:16px}
+    form label{display:block; font-size:13px; font-weight:600; margin-bottom:6px; color:var(--ink-2)}
+    form label .hint{font-weight:400; color:var(--mist)}
+    input[type=text], input[type=date], textarea, select{
+      width:100%; border:1px solid var(--line); border-radius:10px; padding:11px 13px;
+      font:inherit; color:var(--ink); background:var(--paper); transition:.15s ease;
+    }
+    input:focus, textarea:focus, select:focus{outline:none; border-color:var(--clay); background:#fff}
+    textarea{resize:vertical; line-height:1.6}
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+    @media (max-width:600px){ .grid2{grid-template-columns:1fr} }
+    .form-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; padding-top:16px; border-top:1px solid var(--line)}
+    .note{font-size:13px; color:var(--mist); margin-top:8px}
+    .toast{
+      position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(20px);
+      background:var(--ink); color:#fff; padding:12px 20px; border-radius:10px; font-size:14px;
+      opacity:0; pointer-events:none; transition:.25s ease; z-index:20;
+    }
+    .toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+    .preview{border:1px dashed var(--line); border-radius:12px; padding:16px; margin-top:12px; background:var(--paper)}
+    .preview h1,.preview h2,.preview h3{font-family:Georgia,"Noto Serif KR",serif}
+    .preview :first-child{margin-top:0}
+    .empty{color:var(--mist); font-size:14px; padding:20px; text-align:center}
+    .banner{
+      background:var(--paper-2); border:1px solid var(--line); border-left:3px solid var(--pine);
+      border-radius:12px; padding:12px 16px; font-size:13.5px; color:var(--ink-2); margin-bottom:22px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <span class="brand"><span class="dot"></span> Naru Insights · Admin</span>
+    <div class="spacer"></div>
+    <a class="btn ghost" href="insights.html" target="_blank">View site ↗</a>
+    <button class="btn" id="btn-import">Import JSON</button>
+    <input type="file" id="file-import" accept="application/json" hidden>
+    <button class="btn" id="btn-export">Export JSON</button>
+    <button class="btn primary" id="btn-new">+ New post</button>
+  </div>
+
+  <div class="wrap">
+    <div class="banner">
+      Posts are saved in this browser (localStorage). Published content lives in
+      <strong>assets/data/posts.json</strong>. Export JSON to update the live site, or use
+      <strong>Import JSON</strong> to load the file.
+    </div>
+
+    <div class="layout">
+      <!-- Dashboard list -->
+      <div class="panel">
+        <h2>Posts (<span id="count">0</span>)</h2>
+        <div class="post-list" id="post-list"></div>
+        <div class="note" style="margin-top:14px">
+          <a href="#" id="btn-reset">Reset to published posts</a>
+        </div>
+      </div>
+
+      <!-- Editor -->
+      <div class="panel">
+        <h2 id="editor-title">New post</h2>
+        <form id="post-form">
+          <div class="field">
+            <label>Title</label>
+            <input type="text" id="f-title" required placeholder="e.g. How Korean startups win their first North American customer">
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label>Slug <span class="hint">(URL id)</span></label>
+              <input type="text" id="f-slug" placeholder="auto-generated-from-title">
+            </div>
+            <div class="field">
+              <label>Category</label>
+              <input type="text" id="f-category" placeholder="e.g. Market Trends">
+            </div>
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label>Date</label>
+              <input type="date" id="f-date">
+            </div>
+            <div class="field">
+              <label>Author</label>
+              <input type="text" id="f-author" placeholder="Naru">
+            </div>
+          </div>
+          <div class="field">
+            <label>Cover image URL <span class="hint">(optional)</span></label>
+            <input type="text" id="f-cover" placeholder="assets/imgs/blog/blog-5.webp or https://…">
+          </div>
+          <div class="field">
+            <label>Excerpt <span class="hint">(short summary)</span></label>
+            <textarea id="f-excerpt" rows="2" placeholder="One or two sentences shown in previews."></textarea>
+          </div>
+          <div class="field">
+            <label>Body <span class="hint">(HTML: &lt;p&gt;, &lt;h2&gt;, &lt;ul&gt;&lt;li&gt;, &lt;blockquote&gt;, &lt;a&gt;, &lt;img&gt;)</span></label>
+            <textarea id="f-body" rows="14" placeholder="<p>Write your article here…</p>"></textarea>
+            <div class="note"><a href="#" id="btn-preview-toggle">Toggle preview</a></div>
+            <div class="preview" id="preview" style="display:none"></div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn primary">Save post</button>
+            <button type="button" class="btn" id="btn-cancel">Clear</button>
+            <button type="button" class="btn danger" id="btn-delete" style="display:none">Delete</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="assets/js/naru-posts-seed.js?v=1.0"></script>
+  <script src="assets/js/naru-blog.js?v=1.4"></script>
+  <script>
+    (function () {
+      var posts = [];
+      var editingSlug = null;
+
+      var $ = function (id) { return document.getElementById(id); };
+      var listEl = $('post-list');
+      var toastEl = $('toast');
+
+      function toast(msg) {
+        toastEl.textContent = msg;
+        toastEl.classList.add('show');
+        clearTimeout(toast._t);
+        toast._t = setTimeout(function () { toastEl.classList.remove('show'); }, 2200);
+      }
+
+      function persist() { NaruBlog.savePosts(posts); }
+
+      function sortPosts() {
+        posts.sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); });
+      }
+
+      function renderList() {
+        sortPosts();
+        $('count').textContent = posts.length;
+        if (!posts.length) { listEl.innerHTML = '<div class="empty">No posts yet. Create one →</div>'; return; }
+        listEl.innerHTML = posts.map(function (p) {
+          var active = p.slug === editingSlug ? ' active' : '';
+          return '<div class="post-item' + active + '" data-slug="' + encodeURIComponent(p.slug) + '">' +
+            '<span class="pt">' + esc(p.title) + '</span>' +
+            '<span class="pm"><span class="chip">' + esc(p.category || 'Insight') + '</span>' +
+            '<span>' + esc(NaruBlog.formatDate(p.date)) + '</span></span>' +
+            '<span class="row"><a class="btn small" href="insight-detail.html?slug=' + encodeURIComponent(p.slug) + '" target="_blank">Open ↗</a>' +
+            '<button type="button" class="btn small edit" data-slug="' + encodeURIComponent(p.slug) + '">Edit</button></span>' +
+            '</div>';
+        }).join('');
+      }
+
+      function esc(s) {
+        return (s || '').toString().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+
+      function findIndex(slug) {
+        for (var i = 0; i < posts.length; i++) if (posts[i].slug === slug) return i;
+        return -1;
+      }
+
+      function loadIntoForm(p) {
+        editingSlug = p ? p.slug : null;
+        $('editor-title').textContent = p ? 'Edit post' : 'New post';
+        $('f-title').value = p ? p.title || '' : '';
+        $('f-slug').value = p ? p.slug || '' : '';
+        $('f-category').value = p ? p.category || '' : '';
+        $('f-date').value = p ? p.date || '' : new Date().toISOString().slice(0, 10);
+        $('f-author').value = p ? p.author || 'Naru' : 'Naru';
+        $('f-cover').value = p ? p.cover || '' : '';
+        $('f-excerpt').value = p ? p.excerpt || '' : '';
+        $('f-body').value = p ? p.body || '' : '';
+        $('btn-delete').style.display = p ? 'inline-flex' : 'none';
+        $('preview').style.display = 'none';
+        renderList();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // ---- events ----
+      listEl.addEventListener('click', function (e) {
+        var editBtn = e.target.closest('.edit');
+        var item = e.target.closest('.post-item');
+        var slug = editBtn ? decodeURIComponent(editBtn.getAttribute('data-slug'))
+          : (item ? decodeURIComponent(item.getAttribute('data-slug')) : null);
+        if (e.target.closest('a')) return; // let "Open" link work
+        if (slug) {
+          var idx = findIndex(slug);
+          if (idx > -1) loadIntoForm(posts[idx]);
+        }
+      });
+
+      $('btn-new').addEventListener('click', function () { loadIntoForm(null); });
+      $('btn-cancel').addEventListener('click', function () { loadIntoForm(null); });
+
+      $('f-title').addEventListener('input', function () {
+        if (!editingSlug && !$('f-slug').value.trim()) {
+          $('f-slug').placeholder = NaruBlog.slugify(this.value) || 'auto-generated-from-title';
+        }
+      });
+
+      $('btn-preview-toggle').addEventListener('click', function (e) {
+        e.preventDefault();
+        var pv = $('preview');
+        if (pv.style.display === 'none') { pv.innerHTML = $('f-body').value; pv.style.display = 'block'; }
+        else { pv.style.display = 'none'; }
+      });
+
+      $('post-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var title = $('f-title').value.trim();
+        if (!title) { toast('Title is required'); return; }
+        var slug = ($('f-slug').value.trim() || NaruBlog.slugify(title));
+        // ensure unique slug (unless editing same post)
+        var clashIdx = findIndex(slug);
+        if (clashIdx > -1 && posts[clashIdx].slug !== editingSlug) {
+          slug = slug + '-' + Date.now().toString().slice(-4);
+        }
+        var post = {
+          slug: slug,
+          title: title,
+          category: $('f-category').value.trim() || 'Insight',
+          date: $('f-date').value || new Date().toISOString().slice(0, 10),
+          author: $('f-author').value.trim() || 'Naru',
+          cover: $('f-cover').value.trim(),
+          excerpt: $('f-excerpt').value.trim(),
+          body: $('f-body').value
+        };
+        if (editingSlug) {
+          var i = findIndex(editingSlug);
+          if (i > -1) posts[i] = post; else posts.push(post);
+        } else {
+          posts.push(post);
+        }
+        persist();
+        editingSlug = slug;
+        loadIntoForm(post);
+        toast('Saved');
+      });
+
+      $('btn-delete').addEventListener('click', function () {
+        if (!editingSlug) return;
+        if (!confirm('Delete this post? This cannot be undone.')) return;
+        var i = findIndex(editingSlug);
+        if (i > -1) posts.splice(i, 1);
+        persist();
+        loadIntoForm(null);
+        toast('Deleted');
+      });
+
+      $('btn-export').addEventListener('click', function () {
+        var data = JSON.stringify(posts, null, 2);
+        var blob = new Blob([data], { type: 'application/json' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url; a.download = 'posts.json';
+        document.body.appendChild(a); a.click(); a.remove();
+        URL.revokeObjectURL(url);
+        toast('Exported posts.json');
+      });
+
+      $('btn-import').addEventListener('click', function () { $('file-import').click(); });
+      $('file-import').addEventListener('change', function (e) {
+        var file = e.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function () {
+          try {
+            var arr = JSON.parse(reader.result);
+            if (!Array.isArray(arr)) throw new Error('not an array');
+            posts = arr;
+            persist();
+            loadIntoForm(null);
+            toast('Imported ' + arr.length + ' posts');
+          } catch (err) { toast('Invalid JSON file'); }
+        };
+        reader.readAsText(file);
+        e.target.value = '';
+      });
+
+      $('btn-reset').addEventListener('click', function (e) {
+        e.preventDefault();
+        if (!confirm('Replace all posts with content from assets/data/posts.json?')) return;
+        NaruBlog.resetToSeed().then(function () {
+          posts = NaruBlog.getPosts();
+          loadIntoForm(null);
+          toast('Reset to published posts');
+        });
+      });
+
+      // init
+      NaruBlog.init().then(function () {
+        posts = NaruBlog.getPosts();
+        renderList();
+        loadIntoForm(null);
+      });
+    })();
+  </script>
+</body>
+
+</html>

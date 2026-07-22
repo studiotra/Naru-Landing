@@ -1,145 +1,76 @@
-# Naru Landing — GitHub Pages
+# Naru Landing — GitHub Pages / Vercel deploy bundle
 
-Static site for [narulanding.com](https://narulanding.com). Upload **this folder only** as the repository root (or push its contents to an empty repo).
+Static site for [narulanding.com](https://narulanding.com). Push **this folder** to [studiotra/Naru-Landing](https://github.com/studiotra/Naru-Landing).
 
-## What’s included
+## Site structure
 
 ```
-index.html
-colors_and_type.css
-naru-i18n.js
-assets/                 (includes k-tech-carbon-bridge-guide.pdf)
-articles/
-Brand fonts/
+index.html              Homepage
+about.html              About
+services.html           Services
+insights.html           Insights list
+insight-detail.html     Article detail (?slug=...)
+contact.html            Contact form
+privacy-policy.html     Privacy policy
+admin.html              Blog admin (local drafts → export JSON)
+assets/
+  css/naru-overrides.css
+  data/posts.json       Published insights (EN)
+  data/posts-kr.json    Korean insight copy
+  js/naru-blog.js       Blog renderer
+  js/naru-posts-seed.js Embedded posts (works without fetch)
+api/                    Vercel serverless (contact email via Resend)
 ```
 
 ## Deploy on Vercel
 
-This repo is configured for Vercel with:
-
-- **Build command:** `npm run build`
-- **Output directory:** `.` (repo root — not `public`)
-
-If the dashboard still shows **Output Directory: `public`**, change it to **`.`** or leave blank so `vercel.json` applies. See [Vercel: missing public directory](https://vercel.com/docs/errors/error-list#missing-public-directory).
-
-## Publish on GitHub Pages
-
-1. Create a new GitHub repository (e.g. `narulanding` or `narulanding-site`).
-2. Upload **everything inside** `github-publish/` to the repo root — not the parent Google Drive folder.
-3. In the repo: **Settings → Pages → Build and deployment**
-   - **Source:** Deploy from a branch
-   - **Branch:** `main` (or `master`)
-   - **Folder:** `/ (root)`
-4. Save. After a minute or two, the site is live at `https://<username>.github.io/<repo>/`.
-
-### Custom domain (optional)
-
-In **Settings → Pages**, set **Custom domain** to `narulanding.com` and add the DNS records GitHub shows (usually `A` records + `CNAME` for `www`).
-
-## Local preview
-
-Open `index.html` in a browser, or from this folder:
-
-```bash
-python3 -m http.server 8080
-```
-
-Then visit `http://localhost:8080`.
-
-## Updating the live site
-
-After editing the main project files, refresh this bundle by copying again from the parent folder:
-
-- `index.html`, `colors_and_type.css`, `naru-i18n.js`
-- `assets/`, `articles/`
-- Font files under `Brand fonts/` (see parent `.gitignore` / project notes)
-
-Commit and push to GitHub; Pages redeploys automatically.
-
-## Vercel + Resend lead magnet capture
-
-This repo now includes `api/lead-magnet.js` (a Vercel Serverless Function) to store lead-magnet emails in Resend before opening the PDF.
-
-Set these environment variables in **Vercel → naru-landing → Settings → Environment Variables** (Production), then redeploy:
-
-| Variable | Where to find it |
-|----------|------------------|
-| `RESEND_API_KEY` | [Resend → API Keys](https://resend.com/api-keys) |
-| `RESEND_SEGMENT_ID` | Resend → **Segments** → your list → copy ID (preferred) |
-| `RESEND_AUDIENCE_ID` | Legacy audiences only — same ID works as fallback |
-
-Without segment/audience keys the guide PDF still downloads, but emails are not saved to a list until configured.
-
-The front-end posts to `/api/lead-magnet` and opens `assets/k-tech-carbon-bridge-guide.pdf` on success.
-
-## Contact form (`/api/contact`)
-
-All four contact tabs (Sourcing, Market entry, Partnership, Press) POST to `api/contact.js`, which sends email via Resend.
+1. Connect repo **studiotra/Naru-Landing** to Vercel.
+2. **Output directory:** `.` (root)
+3. No build step required for the static HTML.
+4. Set environment variables (Production):
 
 | Variable | Purpose |
 |----------|---------|
-| `RESEND_API_KEY` | Required (same key as lead magnet) |
-| `CONTACT_TO_EMAIL` | Inbox for submissions (default: `info@narulanding.com`) |
-| `CONTACT_FROM_EMAIL` | Verified sender, e.g. `Naru <hello@narulanding.com>` |
+| `RESEND_API_KEY` | Contact form email |
+| `CONTACT_TO_EMAIL` | Inbox (default: `info@narulanding.com`) |
+| `CONTACT_FROM_EMAIL` | Verified sender on `narulanding.com` |
 
-**Important:** In [Resend → Domains](https://resend.com/domains), verify `narulanding.com` and set `CONTACT_FROM_EMAIL` to an address on that domain. Until then, Resend only allows test sends from `onboarding@resend.dev` to your Resend account email.
+Contact form POSTs to `/api/contact`.
 
-## Vercel Web Analytics
-
-The site includes the [Vercel Web Analytics](https://vercel.com/docs/analytics/quickstart) script on all public pages (`partials/vercel-analytics.html`).
-
-1. In Vercel → **naru-landing** → **Analytics** → enable **Web Analytics**.
-2. Redeploy so the `/_vercel/insights/script.js` endpoint is active.
-3. View traffic at [your project analytics](https://vercel.com/studiotrapetra-5132s-projects/naru-landing/analytics).
-
-No npm package required for this static HTML setup.
-
-## Article CMS (Decap)
-
-Upload and edit articles at **[narulanding.com/admin](https://narulanding.com/admin/)**.
-
-### How it works
-
-1. Sign in with GitHub at `/admin/`.
-2. Write articles in the CMS (markdown + metadata + thumbnail).
-3. Decap commits to `content/articles/*.md` in GitHub.
-4. Vercel runs `npm run build`, generating `articles/[slug].html` and `data/articles.json`.
-5. The site updates after deploy (~1–2 min).
-
-### One-time GitHub OAuth setup (Vercel)
-
-The Netlify OAuth bridge (`api.netlify.com`) only works for Netlify-hosted sites. This project uses **`api/oauth.js`** on Vercel instead.
-
-1. **GitHub → Settings → Developer settings → OAuth Apps → New OAuth App**
-   - **Application name:** Naru CMS
-   - **Homepage URL:** `https://narulanding.com`
-   - **Authorization callback URL:** `https://narulanding.com/api/oauth`
-2. Copy the **Client ID** and generate a **Client secret**.
-3. In **Vercel → Project → Settings → Environment Variables**, add:
-   - `GITHUB_OAUTH_CLIENT_ID`
-   - `GITHUB_OAUTH_CLIENT_SECRET`
-4. Redeploy, then open `/admin/` and log in with GitHub.
-
-Your GitHub user needs **write access** to `studiotra/Naru-Landing`.
-
-### Local preview
+## Local preview
 
 ```bash
-npm install
-npm run build
-npm run dev
+npx serve . -p 8080
 ```
 
-Open `http://localhost:8080` and `http://localhost:8080/admin/` (OAuth only works on the deployed URL unless you add a second OAuth callback for localhost).
+Open `http://localhost:8080`
 
-### New article checklist
+## Updating insights
 
-- Title, slug, excerpt, category, date
-- Thumbnail (saved under `assets/uploads/`)
-- Body in markdown
-- **Featured on homepage** if needed
-- Publish in CMS → wait for Vercel deploy
+1. Edit `assets/data/posts.json` and `assets/data/posts-kr.json`, **or**
+2. Use `admin.html` locally, export JSON, and commit.
+3. Regenerate seed (optional, for offline preview):
 
-## Do not upload
+```bash
+python3 -c "
+import json, pathlib
+root = pathlib.Path('assets/data')
+posts = json.load(open(root/'posts.json'))
+kr = json.load(open(root/'posts-kr.json'))
+out = pathlib.Path('assets/js/naru-posts-seed.js')
+out.write_text(
+  'window.NARU_POSTS_SEED = ' + json.dumps(posts, ensure_ascii=False) + ';\\n'
+  'window.NARU_POSTS_KR_SEED = ' + json.dumps(kr, ensure_ascii=False) + ';\\n',
+  encoding='utf-8')
+"
+```
 
-- `recovery-codes.txt`, `.pptx`, `.docx`, meeting notes, or draft HTML variants (`Naru Landing KO.html`, etc.)
+## Push updates
+
+```bash
+git add -A
+git commit -m "Describe your change"
+git push origin main
+```
+
+Vercel redeploys automatically after push.

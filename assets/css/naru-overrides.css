@@ -1,0 +1,278 @@
+/* =============================================================
+   Naru Landing — brand overrides on top of agency theme
+   Loaded AFTER style.css. Retunes accent + adds text logo.
+   ============================================================= */
+
+:root{
+  --theme:  #D94E26;   /* Naru clay (was #FF6A3A) */
+  --action: #D94E26;
+  --naru-pine: #2F5A3A;
+  --naru-clay: #D94E26;
+  --naru-clay-ink: #8A2E14;
+}
+
+/* accent recolors that the template hard-codes to the orange */
+::selection{ background: var(--naru-clay); color:#fff; }
+
+a.rr-btn-underline::after,
+.text-underline{ text-decoration-color: var(--naru-clay); }
+
+.section-subtitle{ color: var(--naru-clay) !important; }
+
+/* buttons that use the theme accent */
+.rr-btn-group .c{ background: var(--naru-clay) !important; color:#fff !important; }
+.rr-btn-group:hover .b{ color: var(--naru-clay) !important; }
+
+/* ---- Naru wordmark logo (crossing motif + wordmark, from older site) ---- */
+.naru-logo{
+  display:inline-flex; align-items:center; gap:.55rem;
+  font-family:"Sequel Sans Roman Body", sans-serif;
+  font-weight:700; font-size:24px; letter-spacing:-0.01em;
+  color: var(--primary); line-height:1; text-transform:none;
+}
+.naru-logo:hover{ color: var(--primary); }
+.footer-logo .naru-logo{ font-size:30px; }
+
+.naru-logo .crossing{ display:inline-flex; align-items:center; gap:6px; height:12px; }
+.naru-logo .crossing .node{ width:8px; height:8px; border-radius:50%; background:var(--primary); flex:none; }
+.naru-logo .crossing .node.end{ width:11px; height:11px; }
+.naru-logo .crossing .node.amber{ background:var(--naru-clay); }
+.naru-logo .crossing .seg{ height:1.5px; background:rgba(17,17,17,.18); width:20px; position:relative; overflow:visible; }
+.naru-logo .crossing .seg::after{
+  content:""; position:absolute; top:50%; left:0; width:6px; height:6px; border-radius:50%;
+  background:var(--naru-clay); transform:translate(-50%,-50%);
+  animation:naru-travel 3.4s cubic-bezier(.6,.05,.4,.95) infinite;
+}
+.naru-logo .crossing .seg:nth-child(4)::after{ animation-delay:.4s; }
+@keyframes naru-travel{ 0%{left:0;opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{left:100%;opacity:0} }
+/* footer logo is a touch larger */
+.footer-logo .naru-logo .crossing .node.end{ width:13px; height:13px; }
+.footer-logo .naru-logo .crossing .seg{ width:24px; }
+
+/* keep the throwable client capsules on-brand-neutral */
+.client-capsule-wrapper .client-box:not(.partner-name) img,
+.clients-wrapper .client-box:not(.partner-name) img{ filter:grayscale(1); opacity:.7; transition:.3s ease; }
+.clients-wrapper .client-box:not(.partner-name):hover img,
+.client-capsule-wrapper .client-box:not(.partner-name):hover img{ filter:grayscale(0); opacity:1; }
+
+/* ---- Partner names (text pills in swiper / capsules) ---- */
+.clients-wrapper .swiper-slide,
+.client-area-3 .swiper-slide,
+.client-area-page-about .swiper-slide{
+  background: none !important;
+  padding-left: 5px;
+  padding-right: 5px;
+  min-height: 80px;
+  height: auto !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.clients-wrapper .client-slider-active .swiper-slide,
+.client-area-3 .clients-wrapper .client-slider-active .swiper-slide,
+.client-area-page-about .clients-wrapper .client-slider-active .swiper-slide{
+  min-height: 80px;
+}
+.client-box.partner-name{
+  width: auto !important;
+  min-width: 120px;
+  max-width: 260px;
+  height: auto !important;
+  min-height: 52px;
+  padding: 10px 5px !important;
+  background: none !important;
+  background-color: transparent !important;
+  border: 2px solid #555555 !important;
+  border-radius: 999px !important;
+  filter: none !important;
+  opacity: 1 !important;
+  transition: border-color .25s ease, color .25s ease;
+  box-shadow: none !important;
+}
+.client-box.partner-name:hover{
+  border-color: #333333 !important;
+  box-shadow: none !important;
+}
+.client-box.partner-name .partner-label{
+  font-family:"Sequel Sans Roman Body","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: #555555;
+  text-align: center;
+  white-space: normal;
+  word-break: keep-all;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.client-box.partner-name:hover .partner-label{ color: #333333; }
+.client-area-service-page .client-box.partner-name,
+.client-area-3 .client-box.partner-name,
+.client-area-page-about .client-box.partner-name{
+  background: none !important;
+  background-color: transparent !important;
+  border: 2px solid #555555 !important;
+}
+@media only screen and (max-width:767px){
+  .client-box.partner-name{ min-width: 100px; max-width: 200px; padding: 8px 5px !important; }
+  .client-box.partner-name .partner-label{ font-size: 12px; padding-left: 16px; padding-right: 16px; }
+}
+
+/* legal / privacy page */
+.naru-legal{ max-width: 760px; margin: 0 auto; padding-bottom: 80px; }
+.naru-legal h2{ margin-top: 2rem; margin-bottom: .75rem; font-size: 1.25rem; }
+.naru-legal p, .naru-legal li{ color: rgba(17,17,17,.78); line-height: 1.75; }
+.naru-office-list span{ color: rgba(17,17,17,.72); line-height: 1.6; display: inline-block; max-width: 280px; }
+.contact-offices .text{ color: rgba(17,17,17,.78); line-height: 1.65; margin-bottom: 0; }
+.contact-offices{ margin-top: 2rem; }
+#response-message{ margin-top:16px; font-size:14px; line-height:1.5; display:none; }
+#response-message.success{ color: var(--naru-pine, #2F5A3A); }
+#response-message.error{ color: #b42318; }
+
+/* small helper so a work tag reads as a sector chip */
+.work-box .meta .tag{ color: var(--naru-clay); }
+
+/* ---- EN / KR language toggle ---- */
+.lang-toggle{
+  display:inline-flex; align-items:center; gap:2px;
+  border:1px solid rgba(17,17,17,.14); border-radius:999px;
+  padding:3px; background:rgba(17,17,17,.03); margin-right:16px; flex:none;
+}
+.lang-btn{
+  border:0; background:transparent; font:inherit; cursor:pointer;
+  font-size:12px; font-weight:700; letter-spacing:.04em; line-height:1;
+  color:var(--primary); padding:5px 11px; border-radius:999px;
+  transition:background .25s ease, color .25s ease;
+}
+.lang-btn.active{ background:var(--naru-clay); color:#fff; }
+.lang-btn:not(.active):hover{ color:var(--naru-clay); }
+.header__button-wrap{ display:inline-flex; align-items:center; }
+/* offcanvas variant — space it away from the mobile menu list above it */
+.side-info .lang-toggle{ margin:26px 0 24px; }
+.side-info .mobile-menu,
+.side-info .mean-container{ margin-bottom:10px; }
+
+/* ---- Switch main menu to the mobile / off-canvas menu below 1400px ---- */
+@media (min-width:1400px){
+  .header-area-2 .header__navicon{ display:none; }
+  .side-info .mobile-menu.d-xl-none{ display:none !important; }
+}
+@media (max-width:1399px){
+  .header-area-2 .header__nav{ display:none; }
+  .header-area-2 .header__navicon{ display:block; }
+  .side-info .mobile-menu.d-xl-none{ display:block !important; }
+}
+
+/* ---- Hero: more breathing room under the (absolute) header ---- */
+.hero-area-3-inner{ padding-top:160px; }
+@media only screen and (max-width:1399px){ .hero-area-3-inner{ padding-top:140px; } }
+@media only screen and (max-width:991px){ .hero-area-3-inner{ padding-top:120px; } }
+
+/* ---- Service cards: smaller titles so each stays tidy + equal card heights ---- */
+.services-wrapper-3 .service-box .title{ font-size:22px; line-height:1.2; }
+@media only screen and (max-width:1919px){
+  .services-wrapper-3 .service-box .title{ font-size:20px; }
+}
+/* reserve a consistent two-line title block so descriptions line up */
+.services-wrapper-3 .service-box .content .title{ min-height:2.4em; margin-bottom:0; }
+
+/* ---- Services page (services-wrapper-4): tone down the huge display titles ---- */
+.services-wrapper-4 .service-box .title{ font-size:72px; }
+@media only screen and (max-width:1919px){ .services-wrapper-4 .service-box .title{ font-size:58px; } }
+@media only screen and (max-width:1399px){ .services-wrapper-4 .service-box .title{ font-size:46px; } }
+@media only screen and (max-width:1199px){ .services-wrapper-4 .service-box .title{ font-size:40px; } }
+@media only screen and (max-width:991px){ .services-wrapper-4 .service-box .title{ font-size:34px; } }
+@media only screen and (max-width:767px){ .services-wrapper-4 .service-box .title{ font-size:30px; } }
+
+/* ---- Services page: mobile spacing after capabilities headline ---- */
+@media only screen and (max-width:991px){
+  .service-area-service-page .section-header{ margin-bottom:36px; }
+}
+
+/* ---- About page: mobile padding after Discovery Call CTA ---- */
+@media only screen and (max-width:991px){
+  .media-area-page-about .btn-wrapper{ margin-bottom:48px; padding-bottom:12px; }
+  .media-area-page-about-inner{ padding-bottom:24px; }
+}
+
+/* ---- Sticky header with frosted-glass blur ---- */
+.header-area-2 .header-main.header-sticky.sticky,
+.header-area-2 .header-main.header-sticky.transformed{
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background-color: rgba(252, 251, 248, 0.82) !important;
+  border-bottom: 1px solid rgba(227, 220, 209, 0.55);
+  box-shadow: 0 4px 24px rgba(17, 17, 17, 0.04);
+}
+.header-area-2 .header-main.header-sticky.sticky .header-area-2__inner,
+.header-area-2 .header-main.header-sticky.transformed .header-area-2__inner{
+  height: 70px;
+}
+@media only screen and (max-width:1199px){
+  .header-area-2 .header-main.header-sticky.sticky .header-area-2__inner,
+  .header-area-2 .header-main.header-sticky.transformed .header-area-2__inner{
+    height: 64px;
+  }
+}
+
+/* founder bio block on the About page (sits in the title column, dark section) */
+.founder-bio{ max-width:805px; margin-top:26px; }
+.info-area-page-about .founder-bio .text{ margin-bottom:18px; color:rgba(255,255,255,.72); }
+.founder-bio .text:last-child{ margin-bottom:0; }
+
+/* =============================================================
+   Insight detail (article) page
+   ============================================================= */
+.article-head-inner{ max-width:900px; }
+.article-back{ display:inline-block; margin-bottom:26px; font-size:15px; }
+.article-head-inner .section-subtitle{ display:block; margin-bottom:14px; }
+.article-title{
+  font-size:clamp(34px, 5vw, 66px);
+  font-weight:310; line-height:1.05; letter-spacing:-0.04em;
+  max-width:900px;
+}
+.article-meta{ margin-top:22px; font-size:16px; color:var(--text-2, #6b6b6b); }
+
+.article-area{ padding-top:40px; }
+.article-cover{ border-radius:24px; overflow:hidden; margin-bottom:48px; }
+.article-cover img{ width:100%; height:auto; display:block; }
+
+.article-body{ max-width:760px; margin:0 auto; }
+.article-body p{ font-size:19px; line-height:1.75; margin:0 0 26px; color:var(--primary); }
+.article-body h2{
+  font-family:"Sequel Sans Roman Body","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  font-size:30px; font-weight:310; letter-spacing:-0.03em; line-height:1.2;
+  margin:44px 0 18px; color:var(--primary);
+}
+.article-body h3{ font-size:23px; font-weight:400; margin:34px 0 14px; color:var(--primary); }
+.article-body ul,.article-body ol{ margin:0 0 26px; padding-left:1.3em; }
+.article-body li{ font-size:19px; line-height:1.7; margin:6px 0; color:var(--primary); }
+.article-body a{ color:var(--naru-clay); text-decoration:underline; text-underline-offset:3px; }
+.article-body img{ width:100%; height:auto; border-radius:16px; margin:24px 0; }
+.article-body blockquote{
+  margin:30px 0; padding:6px 0 6px 24px; border-left:3px solid var(--naru-clay);
+  font-size:22px; line-height:1.5; color:var(--primary);
+}
+
+.article-cta{
+  max-width:760px; margin:64px auto 0; padding-top:40px;
+  border-top:1px solid var(--border, #e3dcd1); text-align:center;
+}
+.article-cta .title{ font-size:34px; font-weight:310; letter-spacing:-0.03em; margin-bottom:26px; }
+
+@media only screen and (max-width:767px){
+  .article-body p, .article-body li{ font-size:17px; }
+  .article-cover{ border-radius:16px; margin-bottom:32px; }
+}
+
+/* Korean typography tuning (applied when KR is active) */
+body.lang-kr{ word-break:keep-all; }
+body.lang-kr .section-title,
+body.lang-kr .title,
+body.lang-kr .about-text,
+body.lang-kr .info-text,
+body.lang-kr .naru-logo,
+body.lang-kr .section-subtitle{
+  font-family:"Sequel Sans Roman Body","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+}
