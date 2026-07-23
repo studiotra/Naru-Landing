@@ -39,6 +39,7 @@ api/                    Vercel serverless (contact + newsletter via Resend)
 | `RESEND_NEWSLETTER_SEGMENT_ID` | Resend **Segment** ID for newsletter contacts (Audiences → Segments) |
 | `RESEND_SEGMENT_ID` | Fallback segment ID |
 | `RESEND_AUDIENCE_ID` | Legacy Resend **Audience** ID (older accounts — use this if segment IDs fail) |
+| `RESEND_CONTACT_PROPERTIES` | Set to `true` only after creating matching custom properties in Resend (`lead_source`, `locale`, `subscribed_at`) |
 
 Contact form POSTs to `/api/contact`. Newsletter signup POSTs to `/api/newsletter` and sends an automated welcome email plus an internal notification.
 

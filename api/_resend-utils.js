@@ -33,20 +33,29 @@ function isSegmentMissingError(message) {
   return text.includes('segment') && (text.includes('do not exist') || text.includes('not found'));
 }
 
-function buildContactPayload(email, { source, firstName, locale, segmentId }) {
+function isPropertiesMissingError(message) {
+  const text = String(message || '').toLowerCase();
+  return text.includes('propert') && text.includes('do not exist');
+}
+
+function buildContactPayload(email, { firstName, segmentId, includeProperties, source, locale }) {
   const payload = {
     email,
     unsubscribed: false,
-    properties: {
-      lead_source: source || 'website',
-      locale,
-      subscribed_at: new Date().toISOString(),
-    },
   };
 
   if (firstName) {
     payload.first_name = firstName;
-    payload.properties.first_name = firstName;
+  }
+
+  // Resend only accepts custom properties that are pre-created in the dashboard.
+  if (includeProperties) {
+    payload.properties = {
+      lead_source: source || 'website',
+      locale,
+      subscribed_at: new Date().toISOString(),
+    };
+    if (firstName) payload.properties.first_name = firstName;
   }
 
   if (segmentId) {
@@ -73,11 +82,9 @@ async function createOrUpdateContact(email, payload, apiKey) {
   }
 
   if (createResponse.status === 409) {
-    const patchPayload = {
-      unsubscribed: false,
-      properties: payload.properties,
-    };
+    const patchPayload = { unsubscribed: false };
     if (payload.first_name) patchPayload.first_name = payload.first_name;
+    if (payload.properties) patchPayload.properties = payload.properties;
 
     const updateResponse = await fetch(
       `https://api.resend.com/contacts/${encodeURIComponent(email)}`,
@@ -149,37 +156,60 @@ export async function saveToResendContacts(email, options = {}) {
     locale = 'en',
   } = options;
 
-  const baseOptions = { source, firstName, locale };
+  const includeProperties = process.env.RESEND_CONTACT_PROPERTIES === 'true';
+  const baseOptions = { source, firstName, locale, includeProperties };
   let lastError = null;
+
+  async function trySave(withSegment, withProperties) {
+    return createOrUpdateContact(
+      email,
+      buildContactPayload(email, {
+        ...baseOptions,
+        segmentId: withSegment ? segmentId : '',
+        includeProperties: withProperties,
+      }),
+      apiKey
+    );
+  }
 
   if (segmentId) {
     try {
-      return await createOrUpdateContact(
-        email,
-        buildContactPayload(email, { ...baseOptions, segmentId }),
-        apiKey
-      );
+      return await trySave(true, includeProperties);
     } catch (error) {
       lastError = error;
-      if (!isSegmentMissingError(error.message)) {
-        throw error;
+      if (isPropertiesMissingError(error.message) && includeProperties) {
+        try {
+          return await trySave(true, false);
+        } catch (retryError) {
+          lastError = retryError;
+        }
       }
-      console.warn('Resend segment assignment failed; retrying without segment:', error.message);
+      if (!isSegmentMissingError(lastError?.message)) {
+        throw lastError;
+      }
+      console.warn('Resend segment assignment failed; retrying without segment:', lastError.message);
     }
   }
 
   try {
-    const result = await createOrUpdateContact(
-      email,
-      buildContactPayload(email, baseOptions),
-      apiKey
-    );
+    const result = await trySave(false, includeProperties);
     if (segmentId && lastError) {
       return { ...result, segmentSkipped: true };
     }
     return result;
   } catch (error) {
     lastError = error;
+    if (isPropertiesMissingError(error.message) && includeProperties) {
+      try {
+        const result = await trySave(false, false);
+        if (segmentId && lastError) {
+          return { ...result, segmentSkipped: true };
+        }
+        return result;
+      } catch (retryError) {
+        lastError = retryError;
+      }
+    }
   }
 
   const legacyAudienceId = audienceId || segmentId;
