@@ -101,10 +101,8 @@ export default async function handler(req, res) {
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  const segmentId =
-    process.env.RESEND_NEWSLETTER_SEGMENT_ID ||
-    process.env.RESEND_SEGMENT_ID ||
-    process.env.RESEND_AUDIENCE_ID;
+  const segmentId = process.env.RESEND_NEWSLETTER_SEGMENT_ID || process.env.RESEND_SEGMENT_ID || '';
+  const audienceId = process.env.RESEND_AUDIENCE_ID || '';
   const fromEmail =
     process.env.NEWSLETTER_FROM_EMAIL ||
     process.env.CONTACT_FROM_EMAIL ||
@@ -122,6 +120,7 @@ export default async function handler(req, res) {
     const contactResult = await saveToResendContacts(email, {
       apiKey,
       segmentId,
+      audienceId,
       source,
       firstName,
       locale,

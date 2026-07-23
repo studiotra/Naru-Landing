@@ -1748,9 +1748,10 @@
     });
   }
 
-  // contact-form-daynamic
+  // contact-form-daynamic — skip when naru-contact.js handles the form
   $(document).ready(function () {
     $('#contact__form').submit(function (event) {
+      if ($(this).attr('data-naru-api')) return;
       event.preventDefault();
       var form = $(this);
       $('.loading-form').show();

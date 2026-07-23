@@ -28,15 +28,12 @@ export async function resendJson(response) {
   }
 }
 
-export async function saveToResendContacts(email, options = {}) {
-  const {
-    apiKey,
-    segmentId,
-    source = '',
-    firstName = '',
-    locale = 'en',
-  } = options;
+function isSegmentMissingError(message) {
+  const text = String(message || '').toLowerCase();
+  return text.includes('segment') && (text.includes('do not exist') || text.includes('not found'));
+}
 
+function buildContactPayload(email, { source, firstName, locale, segmentId }) {
   const payload = {
     email,
     unsubscribed: false,
@@ -56,6 +53,10 @@ export async function saveToResendContacts(email, options = {}) {
     payload.segments = [{ id: segmentId }];
   }
 
+  return payload;
+}
+
+async function createOrUpdateContact(email, payload, apiKey) {
   const headers = {
     Authorization: `Bearer ${apiKey}`,
     'Content-Type': 'application/json',
@@ -76,7 +77,7 @@ export async function saveToResendContacts(email, options = {}) {
       unsubscribed: false,
       properties: payload.properties,
     };
-    if (firstName) patchPayload.first_name = firstName;
+    if (payload.first_name) patchPayload.first_name = payload.first_name;
 
     const updateResponse = await fetch(
       `https://api.resend.com/contacts/${encodeURIComponent(email)}`,
@@ -92,38 +93,110 @@ export async function saveToResendContacts(email, options = {}) {
     }
   }
 
-  if (segmentId) {
-    const legacyResponse = await fetch(
-      `https://api.resend.com/audiences/${segmentId}/contacts`,
+  const details = await resendJson(createResponse);
+  const message = details.message || details.error || `Resend HTTP ${createResponse.status}`;
+  const error = new Error(message);
+  error.status = createResponse.status;
+  error.details = details;
+  throw error;
+}
+
+async function addLegacyAudienceContact(email, audienceId, apiKey) {
+  const headers = {
+    Authorization: `Bearer ${apiKey}`,
+    'Content-Type': 'application/json',
+  };
+
+  const legacyResponse = await fetch(
+    `https://api.resend.com/audiences/${audienceId}/contacts`,
+    {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ email, unsubscribed: false }),
+    }
+  );
+
+  if (legacyResponse.ok) {
+    return { saved: true, legacy: true };
+  }
+
+  if (legacyResponse.status === 409) {
+    const legacyUpdate = await fetch(
+      `https://api.resend.com/audiences/${audienceId}/contacts/${encodeURIComponent(email)}`,
       {
-        method: 'POST',
+        method: 'PATCH',
         headers,
-        body: JSON.stringify({ email, unsubscribed: false }),
+        body: JSON.stringify({ unsubscribed: false }),
       }
     );
 
-    if (legacyResponse.ok) {
-      return { saved: true, legacy: true };
-    }
-
-    if (legacyResponse.status === 409) {
-      const legacyUpdate = await fetch(
-        `https://api.resend.com/audiences/${segmentId}/contacts/${encodeURIComponent(email)}`,
-        {
-          method: 'PATCH',
-          headers,
-          body: JSON.stringify({ unsubscribed: false }),
-        }
-      );
-
-      if (legacyUpdate.ok || legacyUpdate.status === 404) {
-        return { saved: true, duplicate: true, legacy: true };
-      }
+    if (legacyUpdate.ok || legacyUpdate.status === 404) {
+      return { saved: true, duplicate: true, legacy: true };
     }
   }
 
-  const details = await resendJson(createResponse);
-  throw new Error(details.message || details.error || `Resend HTTP ${createResponse.status}`);
+  const details = await resendJson(legacyResponse);
+  throw new Error(details.message || details.error || `Resend HTTP ${legacyResponse.status}`);
+}
+
+export async function saveToResendContacts(email, options = {}) {
+  const {
+    apiKey,
+    segmentId = '',
+    audienceId = '',
+    source = '',
+    firstName = '',
+    locale = 'en',
+  } = options;
+
+  const baseOptions = { source, firstName, locale };
+  let lastError = null;
+
+  if (segmentId) {
+    try {
+      return await createOrUpdateContact(
+        email,
+        buildContactPayload(email, { ...baseOptions, segmentId }),
+        apiKey
+      );
+    } catch (error) {
+      lastError = error;
+      if (!isSegmentMissingError(error.message)) {
+        throw error;
+      }
+      console.warn('Resend segment assignment failed; retrying without segment:', error.message);
+    }
+  }
+
+  try {
+    const result = await createOrUpdateContact(
+      email,
+      buildContactPayload(email, baseOptions),
+      apiKey
+    );
+    if (segmentId && lastError) {
+      return { ...result, segmentSkipped: true };
+    }
+    return result;
+  } catch (error) {
+    lastError = error;
+  }
+
+  const legacyAudienceId = audienceId || segmentId;
+  if (legacyAudienceId) {
+    try {
+      return await addLegacyAudienceContact(email, legacyAudienceId, apiKey);
+    } catch (error) {
+      console.warn('Resend legacy audience failed:', error.message);
+      lastError = error;
+    }
+  }
+
+  if (lastError && !isSegmentMissingError(lastError.message)) {
+    throw lastError;
+  }
+
+  throw lastError || new Error('Unable to save contact to Resend');
 }
 
 export async function sendResendEmail(apiKey, payload) {

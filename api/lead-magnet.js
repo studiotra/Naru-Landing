@@ -15,9 +15,8 @@ export default async function handler(req, res) {
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  const segmentId =
-    process.env.RESEND_SEGMENT_ID ||
-    process.env.RESEND_AUDIENCE_ID;
+  const segmentId = process.env.RESEND_SEGMENT_ID || '';
+  const audienceId = process.env.RESEND_AUDIENCE_ID || '';
 
   if (!apiKey) {
     return res.status(200).json({
@@ -31,6 +30,7 @@ export default async function handler(req, res) {
     const result = await saveToResendContacts(email, {
       apiKey,
       segmentId,
+      audienceId,
       source,
       locale: String(body.locale || 'en') === 'kr' ? 'kr' : 'en',
     });
