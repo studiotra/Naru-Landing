@@ -11,6 +11,7 @@ services.html           Services
 insights.html           Insights list
 insight-detail.html     Article detail (?slug=...)
 contact.html            Contact form
+newsletter.html         Newsletter / lead magnet landing page
 privacy-policy.html     Privacy policy
 admin.html              Blog admin (local drafts → export JSON)
 assets/
@@ -19,7 +20,7 @@ assets/
   data/posts-kr.json    Korean insight copy
   js/naru-blog.js       Blog renderer
   js/naru-posts-seed.js Embedded posts (works without fetch)
-api/                    Vercel serverless (contact email via Resend)
+api/                    Vercel serverless (contact + newsletter via Resend)
 ```
 
 ## Deploy on Vercel
@@ -31,11 +32,14 @@ api/                    Vercel serverless (contact email via Resend)
 
 | Variable | Purpose |
 |----------|---------|
-| `RESEND_API_KEY` | Contact form email |
-| `CONTACT_TO_EMAIL` | Inbox (default: `info@narulanding.com`) |
+| `RESEND_API_KEY` | Contact form + newsletter emails |
+| `CONTACT_TO_EMAIL` | Inbox for contact form + subscriber alerts (default: `info@narulanding.com`) |
 | `CONTACT_FROM_EMAIL` | Verified sender on `narulanding.com` |
+| `NEWSLETTER_FROM_EMAIL` | Optional sender override for welcome emails |
+| `RESEND_NEWSLETTER_SEGMENT_ID` | Resend segment/audience for newsletter contacts |
+| `RESEND_SEGMENT_ID` | Fallback segment if newsletter segment is not set |
 
-Contact form POSTs to `/api/contact`.
+Contact form POSTs to `/api/contact`. Newsletter signup POSTs to `/api/newsletter` and sends an automated welcome email plus an internal notification.
 
 ## Local preview
 

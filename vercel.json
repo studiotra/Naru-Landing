@@ -3,6 +3,7 @@
   "outputDirectory": ".",
   "env": {
     "CONTACT_TO_EMAIL": "info@narulanding.com",
-    "CONTACT_FROM_EMAIL": "Naru <info@narulanding.com>"
+    "CONTACT_FROM_EMAIL": "Naru Landing <info@narulanding.com>",
+    "NEWSLETTER_FROM_EMAIL": "Naru Landing <info@narulanding.com>"
   }
 }

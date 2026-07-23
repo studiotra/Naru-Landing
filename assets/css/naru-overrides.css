@@ -300,3 +300,133 @@ body.lang-kr .naru-logo,
 body.lang-kr .section-subtitle{
   font-family:"Sequel Sans Roman Body","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
 }
+
+/* =============================================================
+   Newsletter / lead magnet landing page
+   ============================================================= */
+.naru-lead-body{ background:#FCFBF8; }
+.naru-lead-page{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+}
+.naru-lead-visual{
+  background:#555555;
+  min-height:100vh;
+  position:sticky;
+  top:0;
+  height:100vh;
+}
+.naru-lead-visual-inner{
+  width:100%; height:100%;
+  display:flex; align-items:center; justify-content:center;
+  padding:32px;
+}
+.naru-lead-visual-label{
+  font-size:13px; font-weight:600; letter-spacing:.08em;
+  text-transform:uppercase; color:rgba(255,255,255,.45);
+}
+.naru-lead-panel{
+  display:flex; flex-direction:column;
+  min-height:100vh;
+  padding:32px 48px 24px;
+  max-width:640px;
+}
+.naru-lead-header{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:16px; margin-bottom:48px;
+}
+.naru-lead-logo{ text-decoration:none; }
+.naru-lead-main{ flex:1; }
+.naru-lead-title{
+  font-family:"Sequel Sans Roman Body","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+  font-size:clamp(32px,4vw,48px);
+  font-weight:310; line-height:1.08; letter-spacing:-0.03em;
+  margin:0 0 18px; color:var(--primary);
+}
+.naru-lead-desc{
+  font-size:18px; line-height:1.65; color:rgba(17,17,17,.72);
+  margin:0 0 24px; max-width:520px;
+}
+.naru-lead-points{
+  margin:0 0 32px; padding:0; list-style:none;
+}
+.naru-lead-points li{
+  position:relative; padding-left:22px; margin:0 0 10px;
+  font-size:16px; line-height:1.5; color:rgba(17,17,17,.78);
+}
+.naru-lead-points li::before{
+  content:""; position:absolute; left:0; top:.55em;
+  width:8px; height:8px; border-radius:50%; background:var(--naru-clay);
+}
+.naru-lead-form{ max-width:420px; }
+.naru-lead-field{ margin-bottom:16px; }
+.naru-lead-field label{
+  display:block; font-size:13px; font-weight:600;
+  margin-bottom:6px; color:var(--primary);
+}
+.naru-lead-field .optional{ font-weight:400; color:rgba(17,17,17,.45); }
+.naru-lead-field input{
+  width:100%; border:1px solid rgba(17,17,17,.14);
+  border-radius:12px; padding:12px 14px; font:inherit;
+  background:#fff; color:var(--primary);
+}
+.naru-lead-field input:focus{
+  outline:none; border-color:var(--naru-clay);
+  box-shadow:0 0 0 3px rgba(217,78,38,.12);
+}
+.naru-lead-submit{ margin-top:8px; }
+.naru-honeypot{
+  position:absolute; left:-9999px; width:1px; height:1px;
+  opacity:0; pointer-events:none;
+}
+.lead-form-message,
+.subscribe-message{
+  margin-top:12px; font-size:14px; line-height:1.5; display:none;
+}
+.lead-form-message.pending,
+.lead-form-message.success,
+.lead-form-message.error,
+.subscribe-message.pending,
+.subscribe-message.success,
+.subscribe-message.error{ display:block; }
+.lead-form-message.success,
+.subscribe-message.success{ color:var(--naru-pine); }
+.lead-form-message.error,
+.subscribe-message.error{ color:#b42318; }
+.lead-form-message.pending,
+.subscribe-message.pending{ color:rgba(17,17,17,.55); }
+.naru-lead-success h2{
+  font-size:28px; font-weight:310; letter-spacing:-0.02em;
+  margin:0 0 12px;
+}
+.naru-lead-success p{ color:rgba(17,17,17,.72); margin:0 0 24px; }
+.naru-lead-success-actions{
+  display:flex; flex-wrap:wrap; align-items:center; gap:16px 24px;
+  margin-bottom:8px;
+}
+.naru-lead-link{
+  font-size:15px; font-weight:600; color:var(--naru-clay);
+  text-decoration:underline; text-underline-offset:3px;
+}
+.naru-lead-legal{
+  margin-top:28px; font-size:13px; line-height:1.55;
+  color:rgba(17,17,17,.55); max-width:420px;
+}
+.naru-lead-legal a{ color:var(--naru-clay); }
+.naru-lead-footer{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:12px; margin-top:48px; padding-top:20px;
+  border-top:1px solid rgba(17,17,17,.08);
+  font-size:13px; color:rgba(17,17,17,.45);
+}
+.naru-lead-footer a{ color:var(--primary); font-weight:600; }
+
+@media only screen and (max-width:991px){
+  .naru-lead-page{ grid-template-columns:1fr; }
+  .naru-lead-visual{
+    position:relative; height:220px; min-height:220px;
+  }
+  .naru-lead-panel{ padding:28px 24px 20px; max-width:none; }
+  .naru-lead-header{ margin-bottom:28px; }
+}
