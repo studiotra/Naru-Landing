@@ -17,6 +17,16 @@
 a.rr-btn-underline::after,
 .text-underline{ text-decoration-color: var(--naru-clay); }
 
+/* Emphasized headline words — pine instead of faded black */
+.hero-area-3 .section-title .text-underline,
+.approach-area .section-title span{
+  color: var(--naru-pine) !important;
+}
+.dark .hero-area-3 .section-title .text-underline,
+.dark .approach-area .section-title span{
+  color: var(--naru-pine) !important;
+}
+
 .section-subtitle{ color: var(--naru-clay) !important; }
 
 /* buttons that use the theme accent */
