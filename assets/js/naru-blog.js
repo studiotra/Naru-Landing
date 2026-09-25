@@ -14,7 +14,7 @@
   var POSTS_KR_URL = 'assets/data/posts-kr.json';
   var LANG_KEY = 'naru-lang';
   var DEFAULT_COVER = 'assets/imgs/blog/blog-5.webp';
-  var INSIGHTS_PAGE_SIZE = 4;
+  var INSIGHTS_PAGE_SIZE = 6;
 
   var INSIGHTS_CATEGORIES = [
     { key: '', en: 'All', kr: '전체' },

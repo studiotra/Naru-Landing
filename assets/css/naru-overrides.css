@@ -567,14 +567,78 @@ body.lang-kr .article-back{
   border-color:var(--naru-pine, #2F5A3A);
 }
 .naru-insight-category{
-  display:inline-block;
-  margin:0 0 10px;
+  display:block;
+  width:max-content;
+  margin:0 0 14px;
   padding:5px 12px;
   border-radius:999px;
   font-size:12px; font-weight:600; letter-spacing:.02em;
   text-transform:uppercase;
   color:var(--naru-pine, #2F5A3A);
   background:rgba(47,90,58,.08);
+}
+
+/* Insights list — uniform grid (override theme’s 3+2 wide mosaic) */
+.blog-area-2 .blogs-wrapper.naru-insights-grid{
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:56px 40px;
+}
+.blog-area-2 .blogs-wrapper.naru-insights-grid > *{
+  grid-column:auto !important;
+  min-width:0;
+}
+.blog-area-2 .blogs-wrapper.naru-insights-grid > * .content{
+  padding-right:0 !important;
+}
+.blog-area-2 .blogs-wrapper.naru-insights-grid > a{
+  display:block;
+  height:100%;
+}
+.blog-area-2 .blogs-wrapper.naru-insights-grid .blog{
+  display:flex;
+  flex-direction:column;
+  height:100%;
+}
+.blog-area-2 .blogs-wrapper.naru-insights-grid .blog:before{
+  display:none;
+}
+.blog-area-2 .blogs-wrapper.naru-insights-grid .blog .thumb{
+  aspect-ratio:16/10;
+  border-radius:12px;
+  background:rgba(17,17,17,.04);
+}
+.blog-area-2 .blogs-wrapper.naru-insights-grid .blog .thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.blog-area-2 .blogs-wrapper.naru-insights-grid .blog .content{
+  display:flex;
+  flex-direction:column;
+  flex:1;
+  padding-right:0;
+}
+.blog-area-2 .blogs-wrapper.naru-insights-grid .blog .title{
+  display:block;
+  line-height:1.12;
+  margin:0;
+}
+.blog-area-2 .blogs-wrapper.naru-insights-grid .blog .meta{
+  margin-top:auto;
+  padding-top:16px;
+}
+@media only screen and (max-width:1199px){
+  .blog-area-2 .blogs-wrapper.naru-insights-grid{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    gap:40px 28px;
+  }
+}
+@media only screen and (max-width:575px){
+  .blog-area-2 .blogs-wrapper.naru-insights-grid{
+    grid-template-columns:1fr;
+    gap:36px;
+  }
 }
 .naru-insights-pagination{
   display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
