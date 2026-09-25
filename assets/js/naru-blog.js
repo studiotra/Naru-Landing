@@ -14,6 +14,17 @@
   var POSTS_KR_URL = 'assets/data/posts-kr.json';
   var LANG_KEY = 'naru-lang';
   var DEFAULT_COVER = 'assets/imgs/blog/blog-5.webp';
+  var INSIGHTS_PAGE_SIZE = 4;
+
+  var INSIGHTS_CATEGORIES = [
+    { key: '', en: 'All', kr: '전체' },
+    { key: 'go-to-market', en: 'Go-to-Market', kr: 'GTM' },
+    { key: 'funding', en: 'Funding', kr: '펀딩' },
+    { key: 'company', en: 'Company', kr: '회사' },
+    { key: 'market-trends', en: 'Market Trends', kr: '시장 트렌드' },
+    { key: 'branding', en: 'Branding', kr: '브랜딩' },
+    { key: 'growth', en: 'Growth', kr: '성장' }
+  ];
 
   var _posts = null;
   var _krMap = null;
@@ -129,13 +140,25 @@
 
   function localizePost(p) {
     if (!p) return p;
-    if (getLang() !== 'kr') return p;
+    var base = {
+      slug: p.slug,
+      title: p.title,
+      category: p.category,
+      categoryKey: slugify(p.category),
+      excerpt: p.excerpt,
+      body: p.body,
+      date: p.date,
+      author: p.author,
+      cover: p.cover
+    };
+    if (getLang() !== 'kr') return base;
     var kr = (p.kr) || (_krMap && _krMap[p.slug]);
-    if (!kr) return p;
+    if (!kr) return base;
     return {
       slug: p.slug,
       title: kr.title || p.title,
       category: kr.category || p.category,
+      categoryKey: slugify(p.category),
       excerpt: kr.excerpt || p.excerpt,
       body: kr.body || p.body,
       date: p.date,
@@ -199,7 +222,103 @@
     return getLang() === 'kr' ? '작성' : 'By';
   }
 
+  function buildInsightCard(p, delay) {
+    var cover = p.cover || DEFAULT_COVER;
+    var cat = p.category ? '<span class="naru-insight-category">' + escapeHtml(p.category) + '</span>' : '';
+    return '' +
+      '<a href="insight-detail.html?slug=' + encodeURIComponent(p.slug) + '">' +
+      '<article class="blog fade-anim" data-delay="' + delay + '">' +
+      '<div class="thumb"><img src="' + escapeHtml(cover) + '" alt="' + escapeHtml(p.title) + '"></div>' +
+      '<div class="content-wrapper"><div class="content">' +
+      cat +
+      '<h2 class="title">' + escapeHtml(p.title) + '</h2>' +
+      '<div class="meta"><span class="name">' + metaLabel() + ' <span>' + escapeHtml(p.author || 'Naru') + '</span></span>' +
+      '<span class="date has-left-line">' + escapeHtml(formatDate(p.date)) + '</span></div>' +
+      '</div></div>' +
+      '</article></a>';
+  }
+
+  function getInsightsUrl(category, page) {
+    var params = [];
+    if (category) params.push('category=' + encodeURIComponent(category));
+    if (page && page > 1) params.push('page=' + String(page));
+    return 'insights.html' + (params.length ? '?' + params.join('&') : '');
+  }
+
+  function renderInsightsPage() {
+    var listEl = document.getElementById('insights-list');
+    var tabsEl = document.getElementById('insights-category-tabs');
+    var pagerEl = document.getElementById('insights-pagination');
+    if (!listEl) return;
+
+    var kr = getLang() === 'kr';
+    var activeCategory = getParam('category') || '';
+    var page = Math.max(1, parseInt(getParam('page') || '1', 10) || 1);
+
+    var allPosts = getPosts();
+    var filtered = activeCategory
+      ? allPosts.filter(function (p) { return p.categoryKey === activeCategory; })
+      : allPosts;
+
+    var totalPages = Math.max(1, Math.ceil(filtered.length / INSIGHTS_PAGE_SIZE));
+    if (page > totalPages) page = totalPages;
+    var start = (page - 1) * INSIGHTS_PAGE_SIZE;
+    var pagePosts = filtered.slice(start, start + INSIGHTS_PAGE_SIZE);
+
+    var keysWithPosts = {};
+    allPosts.forEach(function (p) { keysWithPosts[p.categoryKey] = true; });
+
+    if (tabsEl) {
+      tabsEl.innerHTML = INSIGHTS_CATEGORIES
+        .filter(function (c) { return !c.key || keysWithPosts[c.key]; })
+        .map(function (c) {
+          var active = c.key === activeCategory ? ' active' : '';
+          var label = kr ? c.kr : c.en;
+          var aria = active ? ' role="tab" aria-selected="true"' : ' role="tab" aria-selected="false"';
+          return '<a href="' + getInsightsUrl(c.key, 1) + '" class="naru-insights-tab' + active + '"' + aria + '>' + escapeHtml(label) + '</a>';
+        }).join('');
+    }
+
+    if (!pagePosts.length) {
+      listEl.innerHTML = kr
+        ? '<p class="text">해당 카테고리에 인사이트가 없습니다.</p>'
+        : '<p class="text">No insights in this category yet.</p>';
+    } else {
+      var delays = ['0.45', '0.60', '0.75'];
+      listEl.innerHTML = pagePosts.map(function (p, i) {
+        return buildInsightCard(p, delays[i % 3]);
+      }).join('');
+    }
+
+    if (pagerEl) {
+      if (totalPages <= 1) {
+        pagerEl.innerHTML = '';
+        pagerEl.hidden = true;
+      } else {
+        pagerEl.hidden = false;
+        var parts = [];
+        if (page > 1) {
+          parts.push('<a href="' + getInsightsUrl(activeCategory, page - 1) + '" class="naru-insights-page-btn" aria-label="' + (kr ? '이전 페이지' : 'Previous page') + '">&larr; ' + (kr ? '이전' : 'Prev') + '</a>');
+        }
+        parts.push('<span class="naru-insights-page-nums">');
+        for (var n = 1; n <= totalPages; n++) {
+          var cls = 'naru-insights-page-num' + (n === page ? ' active' : '');
+          parts.push('<a href="' + getInsightsUrl(activeCategory, n) + '" class="' + cls + '">' + n + '</a>');
+        }
+        parts.push('</span>');
+        if (page < totalPages) {
+          parts.push('<a href="' + getInsightsUrl(activeCategory, page + 1) + '" class="naru-insights-page-btn" aria-label="' + (kr ? '다음 페이지' : 'Next page') + '">' + (kr ? '다음' : 'Next') + ' &rarr;</a>');
+        }
+        pagerEl.innerHTML = parts.join('');
+      }
+    }
+  }
+
   function renderInsightsList(selector) {
+    if (document.getElementById('insights-category-tabs')) {
+      renderInsightsPage();
+      return;
+    }
     var wrap = document.querySelector(selector);
     if (!wrap) return;
     var posts = getPosts();
@@ -211,17 +330,7 @@
     }
     var delays = ['0.45', '0.60', '0.75'];
     wrap.innerHTML = posts.map(function (p, i) {
-      var cover = p.cover || DEFAULT_COVER;
-      return '' +
-        '<a href="insight-detail.html?slug=' + encodeURIComponent(p.slug) + '">' +
-        '<article class="blog fade-anim" data-delay="' + delays[i % 3] + '">' +
-        '<div class="thumb"><img src="' + escapeHtml(cover) + '" alt="' + escapeHtml(p.title) + '"></div>' +
-        '<div class="content-wrapper"><div class="content">' +
-        '<h2 class="title">' + escapeHtml(p.title) + '</h2>' +
-        '<div class="meta"><span class="name">' + metaLabel() + ' <span>' + escapeHtml(p.author || 'Naru') + '</span></span>' +
-        '<span class="date has-left-line">' + escapeHtml(formatDate(p.date)) + '</span></div>' +
-        '</div></div>' +
-        '</article></a>';
+      return buildInsightCard(p, delays[i % 3]);
     }).join('');
   }
 
@@ -265,7 +374,11 @@
   }
 
   function refresh() {
-    renderInsightsList('#insights-list');
+    if (document.getElementById('insights-category-tabs')) {
+      renderInsightsPage();
+    } else {
+      renderInsightsList('#insights-list');
+    }
     if (document.getElementById('article-body')) {
       renderInsightDetail();
     }
@@ -295,6 +408,7 @@
     formatDate: formatDate,
     localizePost: localizePost,
     renderInsightsList: renderInsightsList,
+    renderInsightsPage: renderInsightsPage,
     renderInsightDetail: renderInsightDetail,
     refresh: refresh
   };

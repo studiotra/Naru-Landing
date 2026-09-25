@@ -522,6 +522,99 @@ body.lang-kr .article-back{
 }
 .naru-lead-footer a{ color:var(--primary); font-weight:600; }
 
+/* Insights — horizontal category filter & pagination */
+.naru-insights-filter{
+  margin:0 0 40px;
+}
+.naru-insights-filter-label{
+  margin:0 0 12px;
+  font-size:12px; font-weight:600; letter-spacing:.08em;
+  text-transform:uppercase;
+  color:rgba(17,17,17,.45);
+}
+.naru-insights-tabs{
+  display:flex; flex-wrap:nowrap; align-items:center;
+  gap:10px;
+  margin:0; padding:4px 2px 10px;
+  overflow-x:auto; overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(17,17,17,.2) transparent;
+}
+.naru-insights-tabs::-webkit-scrollbar{ height:6px; }
+.naru-insights-tabs::-webkit-scrollbar-thumb{
+  background:rgba(17,17,17,.18); border-radius:999px;
+}
+.naru-insights-tab{
+  flex:none; white-space:nowrap;
+  display:inline-flex; align-items:center;
+  padding:10px 18px; border-radius:999px;
+  font-size:14px; font-weight:500; line-height:1;
+  color:rgba(17,17,17,.65);
+  background:rgba(17,17,17,.04);
+  border:1px solid rgba(17,17,17,.08);
+  text-decoration:none;
+  transition:color .2s ease, background .2s ease, border-color .2s ease;
+}
+.naru-insights-tab:hover{
+  color:var(--primary);
+  border-color:rgba(47,90,58,.25);
+  background:rgba(47,90,58,.06);
+}
+.naru-insights-tab.active{
+  color:#fff;
+  background:var(--naru-pine, #2F5A3A);
+  border-color:var(--naru-pine, #2F5A3A);
+}
+.naru-insight-category{
+  display:inline-block;
+  margin:0 0 10px;
+  padding:5px 12px;
+  border-radius:999px;
+  font-size:12px; font-weight:600; letter-spacing:.02em;
+  text-transform:uppercase;
+  color:var(--naru-pine, #2F5A3A);
+  background:rgba(47,90,58,.08);
+}
+.naru-insights-pagination{
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:center;
+  gap:8px 12px;
+  margin-top:48px; padding-top:32px;
+  border-top:1px solid rgba(17,17,17,.08);
+}
+.naru-insights-page-nums{
+  display:inline-flex; align-items:center; gap:6px;
+}
+.naru-insights-page-num,
+.naru-insights-page-btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:40px; height:40px; padding:0 14px;
+  border-radius:999px;
+  font-size:14px; font-weight:500;
+  color:rgba(17,17,17,.65);
+  background:transparent;
+  border:1px solid rgba(17,17,17,.1);
+  text-decoration:none;
+  transition:color .2s ease, background .2s ease, border-color .2s ease;
+}
+.naru-insights-page-num:hover,
+.naru-insights-page-btn:hover{
+  color:var(--primary);
+  border-color:rgba(47,90,58,.25);
+  background:rgba(47,90,58,.06);
+}
+.naru-insights-page-num.active{
+  color:#fff;
+  background:var(--naru-pine, #2F5A3A);
+  border-color:var(--naru-pine, #2F5A3A);
+}
+@media only screen and (max-width:767px){
+  .naru-insights-filter{ margin-bottom:28px; }
+  .naru-insights-tabs{ gap:8px; padding-bottom:8px; }
+  .naru-insights-tab{ padding:8px 14px; font-size:13px; }
+  .naru-insights-pagination{ margin-top:36px; padding-top:24px; }
+}
+
 @media only screen and (max-width:991px){
   .naru-lead-page{ grid-template-columns:1fr; }
   .naru-lead-visual{
