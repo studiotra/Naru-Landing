@@ -19,9 +19,9 @@
   var INSIGHTS_CATEGORIES = [
     { key: '', en: 'All', kr: '전체' },
     { key: 'go-to-market', en: 'Go-to-Market', kr: 'GTM' },
-    { key: 'funding', en: 'Funding', kr: '펀딩' },
+    { key: 'funding', en: 'Funding', kr: '자금 조달' },
     { key: 'company', en: 'Company', kr: '회사' },
-    { key: 'market-trends', en: 'Market Trends', kr: '시장 트렌드' },
+    { key: 'market-trends', en: 'Market Trends', kr: '시장 동향' },
     { key: 'branding', en: 'Branding', kr: '브랜딩' },
     { key: 'growth', en: 'Growth', kr: '성장' }
   ];
