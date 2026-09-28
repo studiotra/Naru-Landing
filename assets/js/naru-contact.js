@@ -7,6 +7,14 @@
 
   var msgEl = document.getElementById('response-message');
 
+  function currentLocale() {
+    try {
+      return localStorage.getItem('naru-lang') === 'kr' ? 'kr' : 'en';
+    } catch (e) {
+      return 'en';
+    }
+  }
+
   function setMessage(text, ok) {
     if (!msgEl) return;
     msgEl.textContent = text;
@@ -17,6 +25,7 @@
   form.addEventListener('submit', function (e) {
     e.preventDefault();
 
+    var locale = currentLocale();
     var name = (document.getElementById('name') || {}).value || '';
     var email = (document.getElementById('email') || {}).value || '';
     var message = (document.getElementById('message') || {}).value || '';
@@ -34,7 +43,12 @@
     message = message.trim();
 
     if (!name || !email || !message) {
-      setMessage('Please fill in name, email, and message.', false);
+      setMessage(
+        locale === 'kr' 
+          ? '이름, 이메일, 문의 내용을 입력해 주세요.' 
+          : 'Please fill in name, email, and message.',
+        false
+      );
       return;
     }
 
@@ -53,7 +67,7 @@
 
     var btn = form.querySelector('button[type="submit"]');
     if (btn) btn.disabled = true;
-    setMessage('Sending…', true);
+    setMessage(locale === 'kr' ? '전송 중…' : 'Sending…', true);
 
     fetch('/api/contact', {
       method: 'POST',
@@ -63,14 +77,29 @@
       .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
       .then(function (res) {
         if (res.ok && res.data.ok) {
-          setMessage('Thank you — we will reply within one business day.', true);
+          setMessage(
+            locale === 'kr'
+              ? '감사합니다. 영업일 기준 1일 이내에 답변드리겠습니다.'
+              : 'Thank you — we will reply within one business day.',
+            true
+          );
           form.reset();
         } else {
-          setMessage(res.data.error || 'Something went wrong. Email info@narulanding.com instead.', false);
+          setMessage(
+            res.data.error || (locale === 'kr'
+              ? '문제가 발생했습니다. info@narulanding.com으로 직접 메일을 보내 주세요.'
+              : 'Something went wrong. Email info@narulanding.com instead.'),
+            false
+          );
         }
       })
       .catch(function () {
-        setMessage('Unable to send. Please email info@narulanding.com directly.', false);
+        setMessage(
+          locale === 'kr'
+            ? '전송하지 못했습니다. info@narulanding.com으로 직접 문의해 주세요.'
+            : 'Unable to send. Please email info@narulanding.com directly.',
+          false
+        );
       })
       .finally(function () {
         if (btn) btn.disabled = false;

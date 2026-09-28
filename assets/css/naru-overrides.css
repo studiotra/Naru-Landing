@@ -319,6 +319,18 @@ body.lang-kr{
   word-break:keep-all;
 }
 
+/* Apply word-break: keep-all to all Korean text */
+:lang(ko) {
+  word-break: keep-all;
+}
+
+/* Round-one fix: Korean hero headline line-height at desktop to prevent overlap */
+@media only screen and (min-width:768px) {
+  body.lang-kr .hero-area-3 .section-title {
+    line-height: 1.2;
+  }
+}
+
 /* Headings — SemiBold */
 body.lang-kr h1,
 body.lang-kr h2,
